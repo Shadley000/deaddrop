@@ -1,0 +1,2 @@
+set PORT=3000
+set MAX_MESSAGES=20

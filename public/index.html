@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>DeadDrop</title>
+	<script type="text/javascript" src="deaddrop.js"></script>
+</head>
+
+<body>
+	<div id="container"></div>
+		<div id="Header"></div>
+		<H1>DeadDrop</H1>
+		<H3>a forgetful and anonymous message hub</h3>
+		</div>
+		
+		<div id="myData"></div>
+		</div>
+		<div id="myForm">
+			<P>
+			<label for="user">username:</label>
+			<input type="text" id="user" name="user" value="Anon"><br>
+			<label for="message">message:</label>
+			<input type="text" id="message" name="message" value=""><br>
+			
+			<button onclick="addMessages()">Send</button>
+			<button onclick="loadMessages()">Refresh</button>
+			<button onclick="clearQueue()">Clear</button>
+			</p>
+		</div>
+	</div>
+<SCRIPT>loadMessages()</SCRIPT>
+</body>
+</html>
