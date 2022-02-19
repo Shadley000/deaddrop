@@ -1,4 +1,12 @@
 const express = require('express')
+var fs = require('fs');
+var http = require('http');
+var https = require('https');
+//var privateKey  = fs.readFileSync('sslcert/server.key', 'utf8');
+//var certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
+
+//var credentials = {key: privateKey, cert: certificate};
+
 const path = require('path');
 const bodyParser = require("body-parser");
 const app = express()
@@ -36,7 +44,10 @@ app.get('/clearqueue', function (req, res) {
 	res.send(messages)
 });
 
-app.listen(PORT,function() {
+//var httpsServer = https.createServer(credentials, app);
+var httpServer = http.createServer(app);
+
+httpServer.listen(PORT,function() {
 	console.log("server started on " + PORT);
 });
 
