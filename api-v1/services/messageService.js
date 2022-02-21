@@ -15,19 +15,13 @@ const messageService = {
 	getMessages() {
 		return messages;
 	},
-	createErrorMessage(message) {
-		console.log("error: " + message);
-		return {
-			"status": "error",
+	createSimpleResponse(status, message) {
+		var response = {
+			"status": status,
 			"message": message
-		};
-	},
-	createSuccessMessage(message) {
-		console.log("success: " + message);
-		return {
-			"status": "success",
-			"message": message
-		};
+		}
+		console.log(response);
+		return ;
 	}
 };
 

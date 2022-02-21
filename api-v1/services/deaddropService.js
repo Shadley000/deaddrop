@@ -1,52 +1,92 @@
-
+var toolKit = require('./toolKit').toolKit;
 let deadDrops = [];
-
 
 const deaddropService = {
 
-	createNewDeadDrop(deadDropId, publicKey, privateKey) {
-		if (findDeadDrop(deadDropId)) throw new Error("deaddrop already exists");
-		var newBox = {
+	createNewDeadDrop(deadDropId, writeKey, readKey) {
+		var deadDrop = findDeadDrop(deadDropId);
+		if (deadDrop) throw new Error("deaddrop already exists");
+		toolKit.validateDeadDropId(deadDropId);
+		toolKit.validateKey(writeKey);
+		toolKit.validateKey(readKey);
+
+		deadDrop = {
 			"deadDropId": deadDropId,
-			"privateKey": privateKey,
-			"publicKey": publicKey,
+			"readKey": readKey,
+			"writeKey": writeKey,
 			"messages": []
 		}
-		deadDrops.push(newBox);
+		deadDrops.push(deadDrop);
 	},
 
-	dropAMessage(deadDropId, message) {
-		if (!message) throw new Error("invalid message");
+	addDeaddropMessage(deadDropId, writeKey, message) {
+		toolKit.validateMessageObj(message)
+		toolKit.validateKey(writeKey)
 		var deadDrop = findDeadDrop(deadDropId)
-		if (!deadDrop) throw new Error("deaddrop does not exists");
+		if (!deadDrop) throw new Error("deaddrop not found");
+		if (writeKey != deadDrop.writeKey) throw new Error("deaddrop writeKey does not match");
 		deadDrop.messages.push(message);
 	},
 
-	getDeadDrop(deadDropId, privateKey) {
+	getDeadDropMessages(deadDropId, readKey) {
+		toolKit.validateKey(readKey)
+
 		var deadDrop = findDeadDrop(deadDropId)
-		if (!deadDrop) throw new Error("deaddrop does not exists");
-		if (deadDrop.privateKey != privateKey) throw new Error("deaddrop key does not match");
-		return deadDrops.messages;
+		if (!deadDrop) throw new Error("deaddrop not found");
+		if (deadDrop.readKey != readKey) throw new Error("deaddrop readKey does not match");
+		return deadDrop.messages;
 	},
 	
-	 findDeadDrop(deadDropId) {
-		return deadDrops.find(element => element.deadDropId == deadDropId);
+	deleteDeadDrop(deadDropId, readKey) {
+		toolKit.validateKey(readKey)
+
+		var deadDrop = findDeadDrop(deadDropId)
+		if (!deadDrop) throw new Error("deaddrop not found");
+		if (deadDrop.readKey != readKey) throw new Error("deaddrop readKey does not match");
+		
+		var newDeadDrops = [];
+		deadDrops.forEach(function(adeadDrop) {
+			if(deadDropId != adeadDrop.deadDropId)
+			newDeadDrops.push(adeadDrop);
+		});
+		deadDrops = newDeadDrops; 
 	},
-	createErrorMessage(message) {
-		console.log("error: " + message);
-		return {
-			"status": "error",
-			"message": message
-		};
-	},
-	createSuccessMessage(message) {
-		console.log("success: " + message);
-		return {
-			"status": "success",
-			"message": message
-		};
+
+	getAccessableDeadDrops(writeKeys, readKeys) {
+		var accessableDeadDrops = []
+		deadDrops.forEach(function(deadDrop) {
+
+			if (readKeys.indexOf(deadDrop.readKey) > -1) {
+				if (writeKeys.indexOf(deadDrop.writeKey) > -1) {
+					//has both read and write keys
+					accessableDeadDrops.push(deadDrop);
+				}
+				else {	//has only read access
+					var deadDropCopy = {
+						"deadDropId": deadDrop.deadDropId,
+						"readKey": deadDrop.readKey,
+						"writeKey": "",
+						"messages": deadDrop.messages
+					}
+					accessableDeadDrops.push(deadDropCopy);
+				}
+			}
+			else if (writeKeys.indexOf(deadDrop.writeKey) > -1) {
+				//has only write access
+				var deadDropCopy = {
+					"deadDropId": deadDrop.deadDropId,
+					"readKey": "",
+					"writeKey": deadDrop.writeKey,
+					"messages": deadDrop.messages
+				}
+				accessableDeadDrops.push(deadDropCopy);
+			}
+		});
+		return accessableDeadDrops
 	}
-
 };
+function findDeadDrop(deadDropId) {
+	return deadDrops.find(element => element.deadDropId == deadDropId);
+}
 
-module.exports = { deaddropService};
+module.exports = { deaddropService };

@@ -7,9 +7,10 @@ const bodyParser = require("body-parser");
 var fs = require('fs');
 var https = require('https');
 
-var deaddropService = require('./api-v1/services/deaddropService');
-var messageService = require('./api-v1/services/messageService');
-var v1ApiDoc = require('./api-v1/api-doc');
+var deaddropService = require('./api-v1/services/deaddropService').deaddropService;
+var messageService = require('./api-v1/services/messageService').messageService;
+var toolKit = require('./api-v1/services/toolKit').toolKit;
+var v1ApiDoc = require('./api-v1/api-doc').apiDoc;
 
 const app = express();
 
@@ -28,13 +29,17 @@ app.get('/', function(req, res) {
 app.get('/index.js', function(req, res) {
 	res.sendFile(path.join(__dirname, '/public/index.js'));
 });
+//app.get('/api-v1/api-doc.js', function(req, res) {
+//	res.sendFile(path.join(__dirname, '/api-v1/api-Doc.js'));
+//});
 
 initialize({
 	app,
-	apiDoc: v1ApiDoc.apiDoc,
+	apiDoc: v1ApiDoc,
 	dependencies: {
-		deaddropService: deaddropService.deaddropService,
-		messageService: messageService.messageService
+		deaddropService: deaddropService,
+		messageService: messageService,
+		toolKit: toolKit
 	},
 	consumesMiddleware: {
 		'application/json': bodyParser.json()
@@ -42,7 +47,7 @@ initialize({
 	paths: './api-v1/paths'
 });
 
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(v1ApiDoc.apiDoc));
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(v1ApiDoc));
 
 var httpsServer = https.createServer(credentials, app);
 

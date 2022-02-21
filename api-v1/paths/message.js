@@ -1,5 +1,5 @@
 
-module.exports = function(messageService) {
+module.exports = function(toolKit, messageService) {
 	let operations = {
 		GET,
 		POST,
@@ -14,7 +14,7 @@ module.exports = function(messageService) {
 
 		}
 		catch (e) {
-			res.send(messageService.createErrorMessage(e.message));
+			res.send(toolKit.createSimpleResponse("error",e.message));
 		}
 	};
 
@@ -23,10 +23,10 @@ module.exports = function(messageService) {
 		try {
 			var messageObj = req.body;
 			messageService.addMessage(messageObj)
-			res.send(messageService.createSuccessMessage("added"));
+			res.send(toolKit.createSimpleResponse("success","added"));
 		}
 		catch (e) {
-			res.send(messageService.createErrorMessage(e.message));
+			res.send(toolKit.createSimpleResponse("error",e.message));
 		}
 	};
 
@@ -34,10 +34,10 @@ module.exports = function(messageService) {
 		console.log('DELETE /message ');
 		try {
 			messageService.clearAll();
-			res.send(messageService.createSuccessMessage("deleted"));
+			res.send(toolKit.createSimpleResponse("success","Deleted"));
 		}
 		catch (e) {
-			res.send(messageService.createErrorMessage(e.message));
+			res.send(toolKit.createSimpleResponse("error",e.message));
 		}
 	};
 

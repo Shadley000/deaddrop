@@ -9,12 +9,13 @@ module.exports = function(deaddropService) {
 		var deadDropId = req.deaddropid;
 		var message = req.query.message;
 		var publicKey = req.query.publicKey;
+		
 		try {
 			deaddropService.dropAMessage(deadDropId, publicKey, message);
-			res.send( { "status": "success" });
+			res.send(deaddropService.createSimpleResponse("success","not implemented"));
 		}
 		catch (e) {
-			res.send(createErrorMessage(e.message));
+			res.send(deaddropService.createSimpleResponse("error",e.message));
 		}
 	};
 	
