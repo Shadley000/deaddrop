@@ -1,9 +1,15 @@
-
+var uuid = require('uuid');
 let messages = [];
-
 
 const messageService = {
 
+	createMessageObj(username, message) {
+		return {
+			"user": username,
+			"message": message,
+			"id": uuid.v1()
+		};
+	},
 	clearAll() {
 		messages = [];
 	},

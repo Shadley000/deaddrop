@@ -19,6 +19,10 @@ const apiDoc = {
 				"message": {
 					"description": 'The contents of the message.',
 					"type": 'string'
+				},
+				"id": {
+					"description": 'unique message id.',
+					"type": 'string'
 				}
 			}
 		},
@@ -29,12 +33,8 @@ const apiDoc = {
 					"description": 'The name of the deaddrop.',
 					"type": 'string'
 				},
-				"read_key": {
+				"key": {
 					"description": 'The read key.',
-					"type": 'string'
-				},
-				"write_key": {
-					"description": 'The write key.',
 					"type": 'string'
 				}
 			}

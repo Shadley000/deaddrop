@@ -39,6 +39,7 @@ initialize({
 	dependencies: {
 		deaddropService: deaddropService,
 		messageService: messageService,
+		userService: messageService,
 		toolKit: toolKit
 	},
 	consumesMiddleware: {

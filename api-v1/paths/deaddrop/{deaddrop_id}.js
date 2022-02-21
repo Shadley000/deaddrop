@@ -10,8 +10,8 @@ module.exports = function(deaddropService, toolKit) {
 		console.log('GET v1/deaddrop/:deaddrop_id');
 		try {
 			var deadDropId = req.params.deaddrop_id;
-			var readKey = req.query.read_key;
-			var messages = deaddropService.getDeadDropMessages(deadDropId, readKey);
+			var key = req.query.key;
+			var messages = deaddropService.getDeadDropMessages(deadDropId, key);
 			console.log('GET v1/deaddrop/:deaddrop_id %j', messages);
 			res.send(messages);
 		}
@@ -24,10 +24,10 @@ module.exports = function(deaddropService, toolKit) {
 		console.log('POST v1/deaddrop/:deaddrop_id');
 		try {
 			var deadDropId = req.params.deaddrop_id;
-			var writeKey = req.query.write_key;
+			var key = req.query.key;
 			var messageObj = req.body;
-			console.log('POST v1/deaddrop/:deaddrop_id %s %s %j', deadDropId, writeKey, messageObj);
-			deaddropService.addDeaddropMessage(deadDropId, writeKey, messageObj)
+			console.log('POST v1/deaddrop/:deaddrop_id %s %s %j', deadDropId, key, messageObj);
+			deaddropService.addDeaddropMessage(deadDropId, key, messageObj)
 			res.send(toolKit.createSimpleResponse("success", "message added to deaddrop"));
 		}
 		catch (e) {
@@ -40,8 +40,8 @@ module.exports = function(deaddropService, toolKit) {
 		console.log('DELETE v1/deaddrop/:deaddrop_id ');
 		try {
 			var deadDropId = req.params.deaddrop_id;
-			var readKey = req.query.read_key;
-			deaddropService.deleteDeadDrop(deadDropId, readKey);
+			var key = req.query.key;
+			deaddropService.deleteDeadDrop(deadDropId, key);
 			res.send(toolKit.createSimpleResponse("success", "deaddrop deleted"));
 		}
 		catch (e) {
@@ -60,7 +60,7 @@ module.exports = function(deaddropService, toolKit) {
 			},
 			{
 				"in": 'query',
-				"name": 'read_key',
+				"name": 'key',
 				"type": 'string',
 				"required": true
 			}
@@ -96,7 +96,7 @@ module.exports = function(deaddropService, toolKit) {
 			},
 			{
 				"in": 'query',
-				"name": 'write_key',
+				"name": 'key',
 				"type": 'string',
 				"required": true
 			},
@@ -136,7 +136,7 @@ module.exports = function(deaddropService, toolKit) {
 			},
 			{
 				"in": 'query',
-				"name": 'read_key',
+				"name": 'key',
 				"type": 'string',
 				"required": true
 			}

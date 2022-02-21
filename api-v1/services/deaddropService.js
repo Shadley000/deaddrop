@@ -3,83 +3,66 @@ let deadDrops = [];
 
 const deaddropService = {
 
-	createNewDeadDrop(deadDropId, writeKey, readKey) {
+	createDeadDropObj(deadDropId, key) {
+		return {
+			"deadDropId": deadDropId,
+			"key": key,
+			"messages": []
+		}
+	},
+	createNewDeadDrop(deadDropId, key) {
 		var deadDrop = findDeadDrop(deadDropId);
 		if (deadDrop) throw new Error("deaddrop already exists");
 		toolKit.validateDeadDropId(deadDropId);
-		toolKit.validateKey(writeKey);
-		toolKit.validateKey(readKey);
+		toolKit.validateKey(key);
 
 		deadDrop = {
 			"deadDropId": deadDropId,
-			"readKey": readKey,
-			"writeKey": writeKey,
+			"key": key,
 			"messages": []
 		}
 		deadDrops.push(deadDrop);
 	},
 
-	addDeaddropMessage(deadDropId, writeKey, message) {
+	addDeaddropMessage(deadDropId, key, message) {
 		toolKit.validateMessageObj(message)
-		toolKit.validateKey(writeKey)
+		toolKit.validateKey(key)
 		var deadDrop = findDeadDrop(deadDropId)
 		if (!deadDrop) throw new Error("deaddrop not found");
-		if (writeKey != deadDrop.writeKey) throw new Error("deaddrop writeKey does not match");
+		if (key != deadDrop.key) throw new Error("deaddrop key does not match");
 		deadDrop.messages.push(message);
 	},
 
-	getDeadDropMessages(deadDropId, readKey) {
-		toolKit.validateKey(readKey)
+	getDeadDropMessages(deadDropId, key) {
+		toolKit.validateKey(key)
 
 		var deadDrop = findDeadDrop(deadDropId)
 		if (!deadDrop) throw new Error("deaddrop not found");
-		if (deadDrop.readKey != readKey) throw new Error("deaddrop readKey does not match");
+		if (deadDrop.key != key) throw new Error("deaddrop key does not match");
 		return deadDrop.messages;
 	},
-	
-	deleteDeadDrop(deadDropId, readKey) {
-		toolKit.validateKey(readKey)
+
+	deleteDeadDrop(deadDropId, key) {
+		toolKit.validateKey(key)
 
 		var deadDrop = findDeadDrop(deadDropId)
 		if (!deadDrop) throw new Error("deaddrop not found");
-		if (deadDrop.readKey != readKey) throw new Error("deaddrop readKey does not match");
-		
+		if (deadDrop.key != key) throw new Error("deaddrop key does not match");
+
 		var newDeadDrops = [];
 		deadDrops.forEach(function(adeadDrop) {
-			if(deadDropId != adeadDrop.deadDropId)
-			newDeadDrops.push(adeadDrop);
+			if (deadDropId != adeadDrop.deadDropId)
+				newDeadDrops.push(adeadDrop);
 		});
-		deadDrops = newDeadDrops; 
+		deadDrops = newDeadDrops;
 	},
 
-	getAccessableDeadDrops(writeKeys, readKeys) {
+	getAccessableDeadDrops(keys) {
 		var accessableDeadDrops = []
 		deadDrops.forEach(function(deadDrop) {
 
-			if (readKeys.indexOf(deadDrop.readKey) > -1) {
-				if (writeKeys.indexOf(deadDrop.writeKey) > -1) {
-					//has both read and write keys
-					accessableDeadDrops.push(deadDrop);
-				}
-				else {	//has only read access
-					var deadDropCopy = {
-						"deadDropId": deadDrop.deadDropId,
-						"readKey": deadDrop.readKey,
-						"writeKey": "",
-						"messages": deadDrop.messages
-					}
-					accessableDeadDrops.push(deadDropCopy);
-				}
-			}
-			else if (writeKeys.indexOf(deadDrop.writeKey) > -1) {
-				//has only write access
-				var deadDropCopy = {
-					"deadDropId": deadDrop.deadDropId,
-					"readKey": "",
-					"writeKey": deadDrop.writeKey,
-					"messages": deadDrop.messages
-				}
-				accessableDeadDrops.push(deadDropCopy);
+			if (keys.indexOf(deadDrop.key) > -1) {
+				accessableDeadDrops.push(deadDrop);
 			}
 		});
 		return accessableDeadDrops

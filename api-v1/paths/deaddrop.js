@@ -9,11 +9,10 @@ module.exports = function(deaddropService, toolKit, messageService) {
 
 		console.log('GET /deaddrop');
 		try {
-			var readKeys = req.query.read_keys.split(',');
-			var writeKeys = req.query.write_keys.split(',');
-
-			console.log('GET /deaddrop %s %s', readKeys, writeKeys);
-			res.send(deaddropService.getAccessableDeadDrops(writeKeys, readKeys));
+			var keys = req.query.keys.split(',');
+			
+			console.log('GET /deaddrop %s ', keys);
+			res.send(deaddropService.getAccessableDeadDrops(keys));
 		}
 		catch (e) {
 			res.send(toolKit.createSimpleResponse("error", e.message));
@@ -24,10 +23,9 @@ module.exports = function(deaddropService, toolKit, messageService) {
 		console.log('POST /deaddrop ');
 		try {
 			var deadDropId = req.body.deaddrop_id;
-			var readKey = req.body.read_key;
-			var writeKey = req.body.write_key;
-			console.log('POST /deaddrop %s %s %s', deadDropId, writeKey, readKey);
-			deaddropService.createNewDeadDrop(deadDropId, writeKey, readKey)
+			var key = req.body.key;
+			console.log('POST /deaddrop %s %s', deadDropId, key);
+			deaddropService.createNewDeadDrop(deadDropId, key)
 			res.send(toolKit.createSimpleResponse("success", "new deaddrop created"));
 		}
 		catch (e) {
@@ -40,12 +38,7 @@ module.exports = function(deaddropService, toolKit, messageService) {
 		"parameters": [
 			{
 				"in": 'query',
-				"name": 'read_keys',
-				"type": 'string'
-			},
-			{
-				"in": 'query',
-				"name": 'write_keys',
+				"name": 'keys',
 				"type": 'string'
 			}
 		],
