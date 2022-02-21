@@ -6,11 +6,13 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "body-parser": "*",
-    "express": "*",
+    "body-parser": "^1.19.2",
+    "express": "^4.17.3",
+    "express-openapi": "^10.1.0",
     "fs": "*",
-    "http": "*",
-    "https": "*",
-    "path": "*"
+    "https": "^1.0.0",
+    "path": "^0.12.7",
+    "swagger-ui-express": "^4.3.0",
+    "uuid": "^8.3.2"
   }
 }
