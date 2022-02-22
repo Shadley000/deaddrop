@@ -1,5 +1,5 @@
 
-function clearQueue() {
+function clearMessages() {
 	//console.log('clearQueue');
 	fetch("/v1/message", { method: 'DELETE' })
 		.then(function(response) {
@@ -15,7 +15,7 @@ function loadMessages() {
 		})
 		.then(function(data) {
 			//console.log('appendData: ' + data);
-			var mainContainer = document.getElementById("myData");
+			var mainContainer = document.getElementById("divAnonMessages");
 			mainContainer.innerHTML = "";
 			for (var i = 0; i < data.length; i++) {
 				var message = data[i];
@@ -32,17 +32,77 @@ function loadMessages() {
 
 function addMessages() {
 	var message = {
-			"user": document.getElementById("user").value,
-			"message": document.getElementById("message").value
+			"user": document.getElementById("anon_user").value,
+			"message": document.getElementById("anon_message").value
 	};
-	document.getElementById('message').value = "";
+	document.getElementById('anon_message').value = "";
 	
 	postData("/v1/message", message)
 		.then(data => {
 			loadMessages();
 		});
 }
+// ************************************************************* 
 
+function createDeadDrop() {
+	var deaddrop = {
+			"deaddrop_id": document.getElementById("deaddropid").value,
+			"key": document.getElementById("key").value
+	};
+	
+	postData("/v1/deaddrop", deaddrop)
+		.then(data => {
+			getDeadDrop();
+		});
+}
+
+function getDeadDrop() {
+	var deaddrop_id = document.getElementById("deaddropid").value
+	var key =  document.getElementById("key").value
+	
+	fetch("/v1/deaddrop/"+deaddrop_id+"?key="+key+"&t="+Math.random())
+		.then(function(response) {
+			return response.json();
+		})
+		.then(function(data) {
+			console.log('appendData: ' + data);
+			var mainContainer = document.getElementById("divDeadDropMessages");
+			mainContainer.innerHTML = "";
+			for (var i = 0; i < data.length; i++) {
+				var message = data[i];
+				var div = document.createElement("div");
+				div.innerHTML = message.user + ': ' + message.message + '<BR>';
+				mainContainer.appendChild(div);
+			}
+		})
+		.catch(function(err) {
+			console.log('error: ' + err);
+		});
+}
+
+function clearDeadDrop() {
+	var deaddrop_id = document.getElementById("deaddropid").value
+	var key =  document.getElementById("key").value
+	
+}
+
+function addMessageToDeadDrop(){
+	var deaddrop_id = document.getElementById("deaddropid").value
+	var key =  document.getElementById("key").value
+	var message = {
+			"user": document.getElementById("user").value,
+			"message": document.getElementById("message").value
+	};
+	document.getElementById('message').value = "";
+	
+	postData("/v1/deaddrop/"+deaddrop_id+"?key="+key, message)
+		.then(data => {
+			loadMessages();
+		});
+}
+
+
+// ************************************************************* 
 
 
 async function postData(url = '', data = {}) {
