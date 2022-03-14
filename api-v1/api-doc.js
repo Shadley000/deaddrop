@@ -26,6 +26,12 @@ const apiDoc = {
 				}
 			}
 		},
+		"Messages": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/Message"
+			}
+		},
 		"DeadDrop": {
 			"type": 'object',
 			"properties": {
@@ -33,10 +39,19 @@ const apiDoc = {
 					"description": 'The name of the deaddrop.',
 					"type": 'string'
 				},
-				"key": {
-					"description": 'The read key.',
-					"type": 'string'
+				"messages": {
+					"description": "array of messages",
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/Message"
+					}
 				}
+			}
+		},
+		"DeadDrops": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/DeadDrop"
 			}
 		},
 		"SimpleResponse": {
@@ -48,6 +63,27 @@ const apiDoc = {
 				},
 				"message": {
 					"description": 'The message.',
+					"type": 'string'
+				}
+			}
+		},
+		"User": {
+			"type": 'object',
+			"properties": {
+				"user_id": {
+					"description": 'The name of the user.',
+					"type": 'string'
+				},
+				"password": {
+					"description": 'Password',
+					"type": 'string'
+				},
+				"email": {
+					"description": 'email',
+					"type": 'string'
+				},
+				"authentication_token": {
+					"description": 'authentication_token',
 					"type": 'string'
 				}
 			}

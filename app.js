@@ -1,5 +1,5 @@
 var express = require('express');
-
+const session = require('express-session')
 var initialize = require('express-openapi').initialize;
 var swaggerUi = require("swagger-ui-express");
 const path = require('path');
@@ -8,7 +8,10 @@ var fs = require('fs');
 var https = require('https');
 
 var deaddropService = require('./api-v1/services/deaddropService').deaddropService;
+var userService = require('./api-v1/services/userService').userService;
 var messageService = require('./api-v1/services/messageService').messageService;
+var keyService = require('./api-v1/services/keyService').keyService;
+var dbService = require('./api-v1/services/dbService').dbService;
 var toolKit = require('./api-v1/services/toolKit').toolKit;
 var v1ApiDoc = require('./api-v1/api-doc').apiDoc;
 
@@ -21,17 +24,14 @@ var credentials = { key: privateKey, cert: certificate };
 var PORT = process.env.PORT || 443;
 
 app.use(bodyParser.json());
+app.use(session({
+	secret: 'Some_Secret_Key',
+    resave: true,
+  	saveUninitialized: true, 
+	cookie: { maxAge: 60000 }
+}))
 
-app.get('/', function(req, res) {
-	res.sendFile(path.join(__dirname, '/public/index.html'));
-});
-
-app.get('/index.js', function(req, res) {
-	res.sendFile(path.join(__dirname, '/public/index.js'));
-});
-//app.get('/api-v1/api-doc.js', function(req, res) {
-//	res.sendFile(path.join(__dirname, '/api-v1/api-Doc.js'));
-//});
+app.use(express.static(__dirname + '/public'));
 
 initialize({
 	app,
@@ -39,7 +39,9 @@ initialize({
 	dependencies: {
 		deaddropService: deaddropService,
 		messageService: messageService,
-		userService: messageService,
+		userService: userService,
+		keyService: keyService,
+		dbService: dbService,
 		toolKit: toolKit
 	},
 	consumesMiddleware: {
@@ -47,6 +49,8 @@ initialize({
 	},
 	paths: './api-v1/paths'
 });
+
+//app.use("/docs", swaggerUi.serve, swaggerUi.setup(null, { swaggerOptions: { url: appEnv.url + "/api-docs" } }));
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(v1ApiDoc));
 

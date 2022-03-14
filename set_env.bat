@@ -1,2 +1,3 @@
-set PORT=3000
-set MAX_MESSAGES=20
+
+set MYSQL_URL=mysql://deaddrop:deaddroppassword@localhost:3306/deaddrop
+set ADMIN_PASSWORD=3.1415926

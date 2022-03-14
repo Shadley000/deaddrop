@@ -1,55 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>DeadDrop</title>
-	<script type="text/javascript" src="index.js"></script>
+<meta charset="UTF-8">
+<title>DeadDrop</title>
+<script type="text/javascript" src="index.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="deaddrop.css">
 </head>
 
 <body>
-	<div id="container"></div>
-	<div id="Header"></div>
-	<H1>DeadDrop</H1>
-	<H3>a forgetful and anonymous message hub</h3>
-	</div>
+	<header id='header'> </header>
 
-	<div id="divAnonChat">
-		<div id="divAnonMessages"></div>
-			<p>so much empty</p>
-		</div>
-		<div id="divAnonControls">
-			<P>
-				<label for="anon_message">message:</label>
-				<input type="text" id="anon_message" name="message" value=""><br>
-				<label for="anon_user">username:</label> 
-				<input type="text" id="anon_user"name="anon_user" value="Anon"><br> 
-				
-				<button onclick="addMessages()">Send</button>
-				<button onclick="loadMessages()">Refresh</button>
-				<button onclick="clearMessages()">Clear</button>
-			</p>
-		</div>
-	</div>
-	
-	<div id="divAnonDeadDrop">
-		<H3>secure and anonymous message dead drop</h3>
-		<div id="divDeadDropMessages">
-			<p>so much empty</p>
-		</div>
-		<div id="divDeadDropControls">
-			<label for="message">message:</label>
-			<input type="text" id="message" name="message" value=""><br>
-			<label for="user">user:</label> 
-			<input type="text" id="user"name="user" value="Anonymous"><br> 
-			<label for="deaddropid">DeadDrop:</label> 
-			<input	type="text" id="deaddropid" name="deaddropid"	value="16 digit minimum name"><br> 
-			<label for="key">Key:</label>
-			<input type="text" id="key" name="key" value="16 digit minimum key"><br>
-			<button onclick="addMessageToDeadDrop()">Send</button>
-			<button onclick="getDeadDrop()">Refresh</button>
-			<button onclick="createDeadDrop()">Create</button>
-			<button onclick="clearDeadDrop()">Clear</button>
-		</div>
-	</div>
+	<section>
+		<nav id='nav'></nav>
+		<article id='article'></article>
+	</section>
+
+	<footer id='footer'> </footer>
+
+	<script>
+		buildDisplay();
+	</script>
 </body>
 </html>

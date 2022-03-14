@@ -1,75 +1,56 @@
 var toolKit = require('./toolKit').toolKit;
-let deadDrops = [];
+
 
 const deaddropService = {
+	getDeadDrops(user_id, callback) {
+		var sql = "SELECT    d.deaddrop_id, m.user_id, m.message_id, m.title, m.message, m.publish_date"
+			+ " FROM    user2key k,    deaddrop d,    message m"
+			+ " WHERE  k.deaddrop_id = m.deaddrop_id"
+			+ " AND k.deaddrop_id = d.deaddrop_id"
+			+ " AND k.user_id = ?"
+			+ "order by d.deaddrop_id, m.publish_date"
 
-	createDeadDropObj(deadDropId, key) {
-		return {
-			"deadDropId": deadDropId,
-			"key": key,
-			"messages": []
-		}
-	},
-	createNewDeadDrop(deadDropId, key) {
-		var deadDrop = findDeadDrop(deadDropId);
-		if (deadDrop) throw new Error("deaddrop already exists");
-		toolKit.validateDeadDropId(deadDropId);
-		toolKit.validateKey(key);
+		var connection = dbService.getConnection();
+		connection.query(sql, [user_id], function(error, results, fields) {
 
-		deadDrop = {
-			"deadDropId": deadDropId,
-			"key": key,
-			"messages": []
-		}
-		deadDrops.push(deadDrop);
-	},
-
-	addDeaddropMessage(deadDropId, key, message) {
-		toolKit.validateMessageObj(message)
-		toolKit.validateKey(key)
-		var deadDrop = findDeadDrop(deadDropId)
-		if (!deadDrop) throw new Error("deaddrop not found");
-		if (key != deadDrop.key) throw new Error("deaddrop key does not match");
-		deadDrop.messages.push(message);
-	},
-
-	getDeadDropMessages(deadDropId, key) {
-		toolKit.validateKey(key)
-
-		var deadDrop = findDeadDrop(deadDropId)
-		if (!deadDrop) throw new Error("deaddrop not found");
-		if (deadDrop.key != key) throw new Error("deaddrop key does not match");
-		return deadDrop.messages;
-	},
-
-	deleteDeadDrop(deadDropId, key) {
-		toolKit.validateKey(key)
-
-		var deadDrop = findDeadDrop(deadDropId)
-		if (!deadDrop) throw new Error("deaddrop not found");
-		if (deadDrop.key != key) throw new Error("deaddrop key does not match");
-
-		var newDeadDrops = [];
-		deadDrops.forEach(function(adeadDrop) {
-			if (deadDropId != adeadDrop.deadDropId)
-				newDeadDrops.push(adeadDrop);
-		});
-		deadDrops = newDeadDrops;
-	},
-
-	getAccessableDeadDrops(keys) {
-		var accessableDeadDrops = []
-		deadDrops.forEach(function(deadDrop) {
-
-			if (keys.indexOf(deadDrop.key) > -1) {
-				accessableDeadDrops.push(deadDrop);
+			if (error) throw error;
+			if (results) {
+				var list = [];
+				results.forEach((item, index) => {
+					list.push(item.deaddrop_id);
+				});
+				callback(list);
 			}
+			else callback();
 		});
-		return accessableDeadDrops
+		connection.end();
+	},
+
+	createNewDeadDrop(deaddrop_id, deaddrop_key, callback) {
+
+		var sql = `INSERT (deaddrop_id, deaddrop_key) INTO message VALUES (?,?)`;
+		var connection = dbService.getConnection();
+		connection.query(sql, [deaddrop_id, deaddrop_key],
+			function(error, results, fields) {
+				if (error) throw error;
+				callback();
+			});
+		connection.end();
+	},
+
+	deleteDeadDrop(deaddrop_id, deaddrop_key, callback) {
+		toolKit.validateKey(key)
+
+		var sql = `DELETE FROM deaddrop WHERE deaddrop_id =?`;
+		var connection = dbService.getConnection();
+		connection.query(sql, [deaddrop_id], function(error, results, fields) {
+
+			if (error) throw error;
+			callback();
+		});
+		connection.end();
 	}
 };
-function findDeadDrop(deadDropId) {
-	return deadDrops.find(element => element.deadDropId == deadDropId);
-}
+
 
 module.exports = { deaddropService };

@@ -1,8 +1,14 @@
 
 
+var ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 const toolKit = {
 
+	validateAdminPassword(admin_password)
+	{
+		if(ADMIN_PASSWORD != admin_password)
+			throw new Error("invalid admin_password");
+	},
 	validateDeadDropId(deadDropId) {
 		if (!deadDropId) throw new Error("invalid deadDropId: undefined");
 		if (deadDropId.length < 16) throw new Error("deadDropId must be at least 16 characters");
