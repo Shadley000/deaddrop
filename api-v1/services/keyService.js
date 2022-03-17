@@ -1,9 +1,9 @@
-var dbService = require('./dbService').dbService;
+var toolKit = require('./toolKit').toolKit;
 
 const keyService = {
 	getUserKeys(user_id, callback) {
 		var sql = `SELECT deaddrop_id, user_key FROM user2key WHERE user_id =?`;
-		var connection = dbService.getConnection();
+		var connection = toolKit.getConnection();
 		connection.query(sql, [user_id], function(error, results, fields) {
 			if (error) throw error;
 			if (results) {
@@ -20,7 +20,7 @@ const keyService = {
 
 	addUserKey(user_id,deaddrop_id, key, callback) {
 		var sql = `INSERT INTO user2key (user_id, deaddrop_id, user_key) VALUES (?,?,? )`;
-		var connection = dbService.getConnection();
+		var connection = toolKit.getConnection();
 		connection.query(sql, [user_id, deaddrop_id, key], function(error, results, fields) {
 			if (error) throw error;
 			callback();
@@ -30,7 +30,7 @@ const keyService = {
 	
 	deleteUserKeys(user_id, callback) {
 		var sql = `DELETE FROM user2key WHERE user_id = ?`;
-		var connection = dbService.getConnection();
+		var connection = toolKit.getConnection();
 		connection.query(sql, [user_id], function(error, results, fields) {
 			if (error) throw error;
 			callback();
@@ -40,7 +40,7 @@ const keyService = {
 	
 	deleteUserKeyForDeaddrop(user_id, deaddrop_id, callback) {
 		var sql = `DELETE FROM user2key WHERE user_id = ? and deaddrop_id = ?`;
-		var connection = dbService.getConnection();
+		var connection = toolKit.getConnection();
 		connection.query(sql, [user_id,deaddrop_id], function(error, results, fields) {
 			if (error) throw error;
 			callback();

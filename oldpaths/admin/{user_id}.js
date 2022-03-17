@@ -7,7 +7,7 @@ module.exports = function(toolKit, userService, keyService) {
 	};
 
 	function GET(req, res, next) {
-		console.log('GET /user/{user_id}');
+		console.log('GET /admin/{user_id}');
 		try {
 			var user_id = req.params.user_id;
 			toolKit.validateAdminPassword(req.query.admin_password);
@@ -23,7 +23,7 @@ module.exports = function(toolKit, userService, keyService) {
 	};
 
 	function PUT(req, res, next) {
-		console.log('PUT /user/{user_id}');
+		console.log('PUT /admin/{user_id}');
 		try {
 			var user_id = req.params.user_id;
 			var password = req.query.password;
@@ -39,7 +39,7 @@ module.exports = function(toolKit, userService, keyService) {
 	};
 
 	function POST(req, res, next) {
-		console.log('POST /user/{user_id}');
+		console.log('POST /admin/{user_id}');
 		try {
 			var user_id = req.params.user_id;
 			var password = req.body.password;
@@ -58,7 +58,7 @@ module.exports = function(toolKit, userService, keyService) {
 	};
 
 	function DELETE(req, res, next) {
-		console.log('DELETE /user/{user_id}');
+		console.log('DELETE /admin/{user_id}');
 		try {
 			var user_id = req.params.user_id;
 			toolKit.validateAdminPassword(req.query.admin_password);

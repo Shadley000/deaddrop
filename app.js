@@ -38,10 +38,8 @@ initialize({
 	apiDoc: v1ApiDoc,
 	dependencies: {
 		deaddropService: deaddropService,
-		messageService: messageService,
 		userService: userService,
 		keyService: keyService,
-		dbService: dbService,
 		toolKit: toolKit
 	},
 	consumesMiddleware: {

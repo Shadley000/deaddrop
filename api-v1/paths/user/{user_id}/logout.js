@@ -8,9 +8,15 @@ module.exports = function(toolKit, userService, keyService) {
 		try {
 			var user_id = req.params.user_id;
 
-			req.session.destroy(function(error) {
-				console.log("Session Destroyed")
-			});
+			if (user_id == req.session.user_id &&
+				req.session.authentication_token == req.query.authentication_token) {
+				req.session.destroy(function(error) {
+					console.log("Session Destroyed")
+				});
+			}
+			else {
+				res.status(403).json(toolKit.createSimpleResponse("error", "authentication_token mismatch"));
+			}
 		}
 		catch (e) {
 			res.json(toolKit.createSimpleResponse("error", e.message));

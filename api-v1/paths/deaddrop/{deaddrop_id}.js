@@ -6,19 +6,15 @@ module.exports = function(toolKit, userService, deaddropService, keyService) {
 	};
 
 	function GET(req, res, next) {
-		console.log('GET /user/{user_id}/{deaddrop_id}');
+		console.log('GET /deaddrop/{deaddrop_id}');
 		try {
-			var user_id = req.params.user_id;
+			var user_id =  req.session.user_id;
 			var deaddrop_id = req.params.deaddrop_id;
 
 			if (req.session.authentication_token == req.query.authentication_token) {
-				res.status(200).json({
-					'deaddrop_id': 'public',
-					'messages': [
-						{ "user_id": "anon", "message": "a message", "publish_date": "2022-03-13" },
-						{ "user_id": "anon", "message": "a public message", "publish_date": "2022-03-13" }
-					]
-				});					
+				deaddropService.getDeadDrop(user_id,deaddrop_id, (deaddrops) =>{
+					res.status(200).json(deaddrops);
+				})
 			}
 			else {
 				res.status(404).json(toolKit.createSimpleResponse("error", "authorization failure"));
@@ -30,50 +26,52 @@ module.exports = function(toolKit, userService, deaddropService, keyService) {
 	};
 
 	function POST(req, res, next) {
-		console.log('POST /user/{user_id}/{deaddrop_id}');
+		console.log('POST /deaddrop/{deaddrop_id}');
 		try {
-			var user_id = req.params.user_id;
+			var user_id =  req.session.user_id;
 			var deaddrop_id = req.params.deaddrop_id;
-			var key = req.query.new_password;
+			var deaddrop_key = req.query.deaddrop_key;
 			
 			if (req.session.authentication_token == req.query.authentication_token) {
-				res.status(200).json(toolKit.createSimpleResponse("success", "deaddrop added"));
+				deaddropService.createNewDeadDrop(deaddrop_id, deaddrop_key, () =>{
+					
+					keyService.add(user_id,deaddrop_id,deaddrop_key)
+					
+					res.status(200).json(toolKit.createSimpleResponse("success", "deaddrop added"));
+				})	
+				
 			}
 			else {
 				res.status(404).json(toolKit.createSimpleResponse("error", "authorization failure"));
 			}
 		}
 		catch (e) {
-			res.json(toolKit.createSimpleResponse("error", e.message));
+			res.status(500).json(toolKit.createSimpleResponse("error", e.message));
 		}
 	};
 
 	function DELETE(req, res, next) {
-		console.log('DELETE /user/{user_id}/{deaddrop_id}');
+		console.log('DELETE /deaddrop/{deaddrop_id}');
 		try {
-			var user_id = req.params.user_id;
+			var user_id =  req.session.user_id;
 			var deaddrop_id = req.params.deaddrop_id;
 			if (req.session.authentication_token == req.query.authentication_token) {
-				res.status(200).json(toolKit.createSimpleResponse("success", "deaddrop removed"));
+				deaddropService.deleteDeadDrop(user_id,deaddrop_id, () =>{
+					res.status(200).json(toolKit.createSimpleResponse("success", "deaddrop removed"));
+				})	
 			}
 			else {
 				res.status(404).json(toolKit.createSimpleResponse("error", "authorization failure"));
 			}
 		}
 		catch (e) {
-			res.json(toolKit.createSimpleResponse("error", e.message));
+			res.status(500).json(toolKit.createSimpleResponse("error", e.message));
 		}
 	};
 
 	GET.apiDoc = {
-		"summary": "Get a user",
+		"summary": "Get a deaddrops messages",
 		"parameters": [
-			{
-				"in": 'path',
-				"name": 'user_id',
-				"type": 'string',
-				"required": true
-			},
 			{
 				"in": 'path',
 				"name": 'deaddrop_id',
@@ -103,16 +101,10 @@ module.exports = function(toolKit, userService, deaddropService, keyService) {
 		}
 	};
 	POST.apiDoc = {
-		"summary": "adds a new deaddrop key",
+		"summary": "creates a new deaddrop",
 		"consumes": ["application/json"],
 		"produces": ["application/json"],
 		"parameters": [
-			{
-				"in": 'path',
-				"name": 'user_id',
-				"type": 'string',
-				"required": true
-			},
 			{
 				"in": 'path',
 				"name": 'deaddrop_id',
@@ -151,12 +143,6 @@ module.exports = function(toolKit, userService, deaddropService, keyService) {
 	DELETE.apiDoc = {
 		"summary": "Delete a deaddrop connection",
 		"parameters": [
-			{
-				"in": 'path',
-				"name": 'user_id',
-				"type": 'string',
-				"required": true
-			},
 			{
 				"in": 'path',
 				"name": 'deaddrop_id',

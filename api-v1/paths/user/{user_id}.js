@@ -39,7 +39,8 @@ module.exports = function(toolKit, userService, keyService) {
 			var new_password = req.query.new_password;
 			var new_email = req.query.email;
 
-			if (req.session.authentication_token == req.query.authentication_token) {
+			if (user_id == req.session.user_id &&
+				req.session.authentication_token == req.query.authentication_token) {
 				userService.getUser(user_id, (userObj) => {
 					if (userObj.password == user_password) {
 						if (!new_password) new_password = password;
@@ -91,7 +92,8 @@ module.exports = function(toolKit, userService, keyService) {
 		try {
 			var user_id = req.params.user_id;
 			var password = req.params.password;
-			if (req.session.authentication_token == req.query.authentication_token) {
+			if (user_id == req.session.user_id &&
+				req.session.authentication_token == req.query.authentication_token) {
 				userService.getUser(user_id, (userObj) => {
 					if (userObj) {
 						if (userObj.password == password) {
