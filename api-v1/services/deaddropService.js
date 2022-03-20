@@ -2,14 +2,13 @@ var toolKit = require('./toolKit').toolKit;
 
 
 const deaddropService = {
-	addMessage(user_id,deaddrop_id,message_id,messageObj, callback) {
-		var sql = `INSERT (message_id,deaddrop_id, user_id, publish_date, title, message) INTO message VALUES (?,?,?,?,?,?)`;
+	addMessage(messageObj, callback) {
+		var sql = `INSERT INTO message (deaddrop_id, user_id, publish_date, title, message) VALUES (?,?,now(),?,?)`;
 		var connection = toolKit.getConnection();
 		connection.query(sql, [
-			messageObj.message_id,
 			messageObj.deaddrop_id,
 			messageObj.user_id,
-			messageObj.publish_date,
+		
 			messageObj.title,
 			messageObj.message
 		],
@@ -22,9 +21,9 @@ const deaddropService = {
 	},
 	
 	deleteMessage(user_id,deaddrop_id,message_id, callback) {
-		var sql = `DELETE FROM message WHERE message_id =?`;
+		var sql = `DELETE FROM message WHERE message_id =? AND user_id = ? AND deaddrop_id = ? `;
 		var connection = toolKit.getConnection();
-		connection.query(sql, [message_id], function(error, results, fields) {
+		connection.query(sql, [message_id,user_id,deaddrop_id], function(error, results, fields) {
 
 			if (error) throw error;
 			callback();
@@ -32,39 +31,20 @@ const deaddropService = {
 		connection.end();
 	},
 	
-	
 	getDeadDrops(user_id, callback) {
-		var sql = "SELECT    d.deaddrop_id, m.user_id, m.message_id, m.title, m.message, m.publish_date"
-			+ " FROM    user2deaddrop k,    deaddrop d,    message m"
-			+ " WHERE  k.deaddrop_id = m.deaddrop_id"
-			+ " AND k.deaddrop_id = d.deaddrop_id"
+		var sql = "SELECT    d.deaddrop_id"
+			+ " FROM    user2deaddrop k,    deaddrop d"
+			+ " WHERE   k.deaddrop_id = d.deaddrop_id"
 			+ " AND k.user_id = ?"
-			+ "order by d.deaddrop_id, m.publish_date";
+			+ "order by d.deaddrop_id";
 
 		var connection = toolKit.getConnection();
 		connection.query(sql, [user_id], function(error, results, fields) {
-
 			if (error) throw error;
 			if (results) {
 				var list = [];
-				var currentDeaddrop;
 				results.forEach((item, index) => {
-					var message = {
-						"user_id": item.user_id,
-						"message_id": item.message_id,
-						"title": item.title,
-						"message": item.message,
-						"publish_date": item.publish_date
-					}
-
-					if (!currentDeaddrop || item.deaddrop_id != currentDeaddrop.deaddrop_id) {
-						currentDeaddrop = {
-							"deaddrop_id": item.deaddrop_id,
-							"messages": []
-						}
-						list.push(currentDeaddrop);
-					}
-					currentDeaddrop.messages.push(message);
+					list.push(item.deaddrop_id);					
 				});
 				callback(list);
 			}
@@ -72,8 +52,6 @@ const deaddropService = {
 		});
 		connection.end();
 	},
-	
-	
 	
 	getDeadDrop(user_id, deaddrop_id, callback) {
 		var sql = "SELECT    d.deaddrop_id, m.user_id, m.message_id, m.title, m.message, m.publish_date"
@@ -89,8 +67,8 @@ const deaddropService = {
 
 			if (error) throw error;
 			if (results) {
-				var currentDeaddrop = {
-					"deaddrop_id": item.deaddrop_id,
+				var deaddropObj = {
+					"deaddrop_id": deaddrop_id,
 					"messages": []
 				};
 				results.forEach((item, index) => {
@@ -101,9 +79,9 @@ const deaddropService = {
 						"message": item.message,
 						"publish_date": item.publish_date
 					}
-					currentDeaddrop.messages.push(message);
+					deaddropObj.messages.push(message);
 				});
-				callback(currentDeaddrop);
+				callback(deaddropObj);
 			}
 			else callback();
 		});
@@ -112,7 +90,7 @@ const deaddropService = {
 
 	createNewDeadDrop(deaddrop_id, deaddrop_key, callback) {
 
-		var sql = `INSERT (deaddrop_id, deaddrop_key) INTO message VALUES (?,?)`;
+		var sql = `INSERT INTO deaddrop (deaddrop_id, deaddrop_key) VALUES (?,?)`;
 		var connection = toolKit.getConnection();
 		connection.query(sql, [deaddrop_id, deaddrop_key],
 			function(error, results, fields) {

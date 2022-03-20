@@ -1,4 +1,4 @@
-module.exports = function(toolKit, userService, keyService) {
+module.exports = function(toolKit, deaddropService) {
 	let operations = {
 		GET
 	};
@@ -7,14 +7,9 @@ module.exports = function(toolKit, userService, keyService) {
 		console.log('GET /deaddrop');
 		try {
 			var user_id = req.session.user_id;
-			if (req.session.authentication_token == req.query.authentication_token) {
-				getDeadDrops(user_id, (deaddrops) =>{
-					res.status(200).json(deaddrops);
-				})
-			}
-			else {
-				res.status(404).json(toolKit.createSimpleResponse("error", "authorization failure"));
-			}
+			deaddropService.getDeadDrops(user_id, (deaddrops) => {
+				res.status(200).json(deaddrops);
+			})
 		}
 		catch (e) {
 			res.status(500).json(toolKit.createSimpleResponse("error", e.message));
@@ -22,20 +17,17 @@ module.exports = function(toolKit, userService, keyService) {
 	};
 
 	GET.apiDoc = {
-		"summary": "Get a users deaddrop data",
+		"summary": "Get a users deaddrop list",
 		"parameters": [
-			{
-				"in": 'query',
-				"name": 'authentication_token',
-				"type": 'string',
-				"required": true
-			}
 		],
 		"responses": {
 			"200": {
-				"description": "a list of deaddropObjects",
+				"description": "a list of deaddrop_id",
 				"schema": {
-					"$ref": "#/definitions/DeadDrop"
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
 				}
 			},
 			"default": {

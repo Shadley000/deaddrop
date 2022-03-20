@@ -16,8 +16,16 @@ const apiDoc = {
 					"description": 'The name of the sender.',
 					"type": 'string'
 				},
+				"title": {
+					"description": 'The message title.',
+					"type": 'string'
+				},
 				"message": {
 					"description": 'The contents of the message.',
+					"type": 'string'
+				},
+				"publish_date": {
+					"description": 'The date message was created.',
 					"type": 'string'
 				},
 				"id": {
@@ -32,7 +40,7 @@ const apiDoc = {
 				"$ref": "#/definitions/Message"
 			}
 		},
-		"DeadDrop": {
+		"Deaddrop": {
 			"type": 'object',
 			"properties": {
 				"deaddrop_id": {
@@ -46,12 +54,6 @@ const apiDoc = {
 						"$ref": "#/definitions/Message"
 					}
 				}
-			}
-		},
-		"DeadDrops": {
-			"type": "array",
-			"items": {
-				"$ref": "#/definitions/DeadDrop"
 			}
 		},
 		"SimpleResponse": {

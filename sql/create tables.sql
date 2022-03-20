@@ -39,8 +39,8 @@ CREATE TABLE message (
 );
 
 insert into users (user_id, user_password, email) values ('admin', '0verl00k!2', 'stephenjhadley@gmail.com');
-insert into user2key(user_id, deaddrop_id) values ('admin', 'public');
-insert into user2key(user_id, deaddrop_id) values ('admin', 'adminbox');
+insert into user2deaddrop(user_id, deaddrop_id) values ('admin', 'public');
+insert into user2deaddrop(user_id, deaddrop_id) values ('admin', 'adminbox');
 
 insert into deaddrop (deaddrop_id, deaddrop_key) values ('adminbox', '3.1415926');
 insert into message(deaddrop_id, user_id,publish_date,title,message) values ('adminbox', 'admin', now(),'Admin Only', 'Welcome Admin');
@@ -49,4 +49,4 @@ insert into deaddrop (deaddrop_id, deaddrop_key) values ('public', 'password');
 insert into message(deaddrop_id, user_id,publish_date,title,message) values ('public', 'admin', now(),'Welcome to Deaddrop', 'Messages posted here are visible to all users');
 
 insert into users (user_id, user_password, email) values ('anonymous', 'password', '');
-insert into user2key(user_id, deaddrop_id, user_key) values ('anonymous', 'public');
+insert into user2deaddrop(user_id, deaddrop_id) values ('anonymous', 'public');

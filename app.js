@@ -21,6 +21,19 @@ var PORT = process.env.PORT || 443;
 
 const app = express();
 
+app.use((req, res, next) => {
+	var origin = req.headers.origin;
+	
+	if (origin != null && origin.length > 0) {
+		res.setHeader("Access-Control-Allow-Origin", origin); // allows response
+	}
+	res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,HEAD,PATCH, OPTIONS"); // allows
+	res.setHeader("Access-Control-Allow-Headers", "Origin, content-type, Accept, x-requested-with, Authorization");
+	res.setHeader('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+	res.setHeader('Access-Control-Allow-Credentials', 'true');
+	next();
+});
+
 app.use(bodyParser.json());
 app.use(session({
 	secret: 'Some_Secret_Key',
@@ -30,6 +43,8 @@ app.use(session({
 }))
 
 app.use(express.static(__dirname + '/public'));
+
+app.use(ensureAuthenticated)
 
 initialize({
 	app,
@@ -55,3 +70,25 @@ httpsServer.listen(PORT, function() {
 });
 
 
+function ensureAuthenticated(req, res, next) {
+	if (req.url.startsWith('/index.html') 
+		|| req.url.startsWith('/v1/login')
+		|| req.method === 'OPTIONS' // skip the preflight checks
+	) {
+		//console.log("ensureAuthenticated: Unprotected url %s %s",req.method,req.url);
+		next();
+	} else if (req.headers && req.headers.authentication_token 
+			&& req.session.authentication_token == req.headers.authentication_token
+			&& req.session.user_id == req.headers.user_id) {
+		//console.log("ensureAuthenticated passed");
+		next();
+	} else {
+		console.log("ensureAuthenticated failed: Redirecting to Login page:");
+		
+		//console.log("ensureAuthenticated failed: %s %s %s",req.url, req.headers.user_id,req.headers.authentication_token,);
+		req.session.authentication_token = undefined;
+		req.session.user_id = undefined;
+		return res.json({"status":"error", "message":"authentication error"})
+		//return res.redirect('/index.html');
+	}
+}

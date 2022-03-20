@@ -1,4 +1,4 @@
-module.exports = function(deaddropService) {
+module.exports = function(toolKit,deaddropService) {
 	let operations = {
 		POST,
 		DELETE
@@ -6,45 +6,24 @@ module.exports = function(deaddropService) {
 
 	function POST(req, res, next) {
 		console.log('POST v1/deaddrop/:deaddrop_id/:message_id');
-		var user_id =  req.session.user_id;
+		var user_id = req.session.user_id;
 		var deaddrop_id = req.params.deaddrop_id;
-		var message_id = req.params.message_id;			
 		var messageObj = req.body;
 		try {
-			if (req.session.authentication_token == req.query.authentication_token) {				
-				deaddropService.addMessage(user_id,deaddrop_id,message_id,messageObj, ()=>{
+			if (messageObj.user_id == user_id && messageObj.deaddrop_id == deaddrop_id) {
+				deaddropService.addMessage(messageObj, () => {
 					res.status(200).json(toolKit.createSimpleResponse("Success", "message added"));
-				});				
+				});
 			}
 			else {
-				res.status(404).json(toolKit.createSimpleResponse("error", "authorization failure"));
+				res.status(404).json(toolKit.createSimpleResponse("error", "attempted forgery"));
 			}
 		}
 		catch (e) {
 			res.status(500).json(toolKit.createSimpleResponse("error", e.message));
 		}
 	};
-	function DELETE(req, res, next) {
-		console.log('POST v1/deaddrop/:deaddrop_id/:message_id');
-		var deaddrop_id = req.params.deaddrop_id;
-		var message_id = req.params.message_id;
-		var user_id =  req.session.user_id;
-		
-		try {
-			if (req.session.authentication_token == req.query.authentication_token) {
-				deaddropService.deleteMessage(user_id,deaddrop_id,message_id, ()=>{
-					res.status(200).json(toolKit.createSimpleResponse("Success", "message deleted"));
-				});		
-			}
-			else {
-				res.status(404).json(toolKit.createSimpleResponse("error", "authorization failure"));
-			}
-		}
-		catch (e) {
-			res.status(500).json(deaddropService.createSimpleResponse("error", e.message));
-		}
-	};
-	
+
 	POST.apiDoc = {
 		"summary": "adds a new deaddrop message",
 		"parameters": [
@@ -56,14 +35,8 @@ module.exports = function(deaddropService) {
 
 			},
 			{
-				"in": 'query',
+				"in": 'path',
 				"name": 'message_id',
-				"type": 'string',
-				"required": true
-			},
-			{
-				"in": 'query',
-				"name": 'authentication_token',
 				"type": 'string',
 				"required": true
 			},
@@ -92,6 +65,23 @@ module.exports = function(deaddropService) {
 			}
 		}
 	};
+
+	function DELETE(req, res, next) {
+		console.log('POST v1/deaddrop/:deaddrop_id/:message_id');
+		var deaddrop_id = req.params.deaddrop_id;
+		var message_id = req.params.message_id;
+		var user_id = req.session.user_id;
+
+		try {
+			deaddropService.deleteMessage(user_id, deaddrop_id, message_id, () => {
+				res.status(200).json(toolKit.createSimpleResponse("Success", "message deleted"));
+			});
+		}
+		catch (e) {
+			res.status(500).json(deaddropService.createSimpleResponse("error", e.message));
+		}
+	};
+
 	DELETE.apiDoc = {
 		"summary": "adds a new message",
 		"consumes": ["application/json"],
@@ -105,14 +95,8 @@ module.exports = function(deaddropService) {
 
 			},
 			{
-				"in": 'query',
+				"in": 'path',
 				"name": 'message_id',
-				"type": 'string',
-				"required": true
-			},
-			{
-				"in": 'query',
-				"name": 'authentication_token',
 				"type": 'string',
 				"required": true
 			}

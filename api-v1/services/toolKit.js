@@ -1,4 +1,5 @@
 var MYSQL_URL = process.env.MYSQL_URL;
+var mysql = require('mysql');
 
 const toolKit = {
 	getConnection() {
