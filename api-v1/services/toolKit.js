@@ -1,6 +1,3 @@
-
-
-var ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 var MYSQL_URL = process.env.MYSQL_URL;
 
 const toolKit = {
@@ -9,10 +6,9 @@ const toolKit = {
 
 		connection.connect(function(err) {
 			if (err) {
-				console.error('dbService error connecting: ' + err.stack);
+				console.error('error connecting to database: ' + err.stack);
 				return;
 			}
-			//console.log('dbService connected as id ' + connection.threadId);
 		});
 
 		return connection;

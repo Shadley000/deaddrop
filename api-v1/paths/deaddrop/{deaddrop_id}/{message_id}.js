@@ -1,6 +1,5 @@
 module.exports = function(deaddropService) {
 	let operations = {
-		GET,
 		POST,
 		DELETE
 	};
