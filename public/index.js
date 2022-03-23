@@ -3,7 +3,8 @@ function initData() {
 	return {
 		articleState: "login",
 		deaddrops: [],
-		selectedDeaddropObj: "public",
+		//selectedDeaddrop: "public",
+		selectedDeaddropObj: undefined,
 		userObj: undefined
 	};
 }
@@ -125,6 +126,7 @@ function loadDeadDrops(callback) {
 }
 
 function loadMessages(deaddrop_id, callback) {
+	console.log("loadMessages " + deaddrop_id)
 	getUrl("/v1/deaddrop/" + deaddrop_id + "?" + "&t=" + Math.random())
 		.then(function(deaddropObj) {
 			data.selectedDeaddropObj = deaddropObj;

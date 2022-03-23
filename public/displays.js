@@ -29,8 +29,10 @@ function displayNav() {
 		html += '<li><button onclick="navigate(`account`)">Account</button></li>'
 		html += '<li><button onclick="navigate(`about`)">About</button></li>'
 		html += '<li><button onclick="navigate(`logout`)">Logout</button></li>'
-	}
-	else {
+		if(data.userObj.user_id == "admin")	{
+			html += '<li><button onclick="navigate(`useradmin`)">Logout</button></li>'
+		}
+	} else {
 		html += '<li><button onclick="navigate(`login`)">Login</button></li>'
 		html += '<li><button onclick="navigate(`createaccount`)">Create Account</button></li>'
 		html += '<li><button onclick="navigate(`about`)">About</button></li>'
@@ -46,22 +48,20 @@ function displayArticle() {
 		if (data.userObj && data.userObj.authentication_token) {
 			if (data.articleState == "logout") {
 				html += displayLogout()
-			}
-			else if (data.articleState == "deaddrops") {
+			} else if (data.articleState == "deaddrops") {
 				html += displayDeaddrop();
-			}
-			else if (data.articleState == "createdeaddrop") {
+			} else if (data.articleState == "createdeaddrop") {
 				html += displayCreateDeaddrop()
-			}
-			else if (data.articleState == "account") {
+			} else if (data.articleState == "account") {
 				html += displayAccount()
+			} else if(data.articleState == "useradmin"){
+				html += displayUserAdmin();
 			}
 		}
 		else {
 			if (data.articleState == "login") {
 				html += displayLogin()
-			}
-			else if (data.articleState == "createaccount") {
+			} else if (data.articleState == "createaccount") {
 				html += displayCreateAccount()
 			}
 		}
@@ -117,6 +117,12 @@ function displayLogin() {
 	html += '<label for="password">password:</label>'
 	html += '<input type="text" id="password" name="password" value="password"><br>'
 	html += '<button onclick="login()">Login</button>'
+	return html;
+}
+
+function displayUserAdmin() {
+	var html = "<h3>User Administration</h3>"
+	html += '<H4>Under Construction</H4>'
 	return html;
 }
 
