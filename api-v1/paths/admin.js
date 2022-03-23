@@ -6,10 +6,14 @@ module.exports = function(toolKit, userService) {
 	function GET(req, res, next) {
 		console.log('GET /admin');
 		try {
-			toolKit.validateAdminPassword(req.query.admin_password);
-			userService.getUsers((users) => {
-				res.status(200).json(users)
-			});
+			var user_id = req.session.user_id;
+
+			if (user_id == "admin") {
+				userService.getUsers((users) => {
+					res.status(200).json(users)
+				});
+
+			}
 		}
 		catch (e) {
 			res.json(toolKit.createSimpleResponse("error", e.message));
@@ -42,7 +46,7 @@ module.exports = function(toolKit, userService) {
 		}
 	};
 
-	
+
 	return operations;
 
 }

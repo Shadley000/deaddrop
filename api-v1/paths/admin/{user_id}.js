@@ -9,13 +9,13 @@ module.exports = function(toolKit, userService, keyService) {
 	function GET(req, res, next) {
 		console.log('GET /admin/{user_id}');
 		try {
-			var user_id = req.params.user_id;
-			toolKit.validateAdminPassword(req.query.admin_password);
-
-			userService.getUser(user_id, (userObj) => {
-				res.status(200).json(userObj);
-			});
-
+			var requested_user_id = req.params.user_id;
+			var user_id = req.session.user_id;
+			if (user_id == "admin") {
+				userService.getUser(requested_user_id, (userObj) => {
+					res.status(200).json(userObj);
+				});
+			}
 		}
 		catch (e) {
 			res.json(toolKit.createSimpleResponse("error", e.message));
@@ -25,13 +25,15 @@ module.exports = function(toolKit, userService, keyService) {
 	function PUT(req, res, next) {
 		console.log('PUT /admin/{user_id}');
 		try {
-			var user_id = req.params.user_id;
+			var requested_user_id = req.params.user_id;
 			var password = req.query.password;
-			toolKit.validateAdminPassword(req.query.admin_password);
+			var user_id = req.session.user_id;
+			if (user_id == "admin") {
 
-			userService.updateUser(user_id, password, email, () => {
-				res.status(200).json(toolKit.createSimpleResponse("success", "user updated"))
-			});
+				userService.updateUser(requested_user_id, password, email, () => {
+					res.status(200).json(toolKit.createSimpleResponse("success", "user updated"))
+				});
+			}
 		}
 		catch (e) {
 			res.json(toolKit.createSimpleResponse("error", e.message));
@@ -41,16 +43,18 @@ module.exports = function(toolKit, userService, keyService) {
 	function POST(req, res, next) {
 		console.log('POST /admin/{user_id}');
 		try {
-			var user_id = req.params.user_id;
+			var requested_user_id = req.params.user_id;
 			var password = req.body.password;
 			var email = req.body.email;
-			toolKit.validateAdminPassword(req.query.admin_password);
+			var user_id = req.session.user_id;
+			if (user_id == "admin") {
 
-			console.log(req.body)
-			console.log("%s %s %s", user_id, password, email)
-			userService.createUser(user_id, password, email, () => {
-				res.status(200).json(toolKit.createSimpleResponse("success", "User updated"))
-			})
+				console.log(req.body)
+				console.log("%s %s %s", requested_user_id, password, email)
+				userService.createUser(requested_user_id, password, email, () => {
+					res.status(200).json(toolKit.createSimpleResponse("success", "User updated"))
+				})
+			}
 		}
 		catch (e) {
 			res.json(toolKit.createSimpleResponse("error", e.message));
@@ -60,11 +64,14 @@ module.exports = function(toolKit, userService, keyService) {
 	function DELETE(req, res, next) {
 		console.log('DELETE /admin/{user_id}');
 		try {
-			var user_id = req.params.user_id;
-			toolKit.validateAdminPassword(req.query.admin_password);
-			userService.deleteUser(user_id, () => {
-				res.status(200).json(toolKit.createSimpleResponse("success", "user deleted"))
-			})
+			var requested_user_id = req.params.user_id;
+			var user_id = req.session.user_id;
+			if (user_id == "admin") {
+
+				userService.deleteUser(requested_user_id, () => {
+					res.status(200).json(toolKit.createSimpleResponse("success", "user deleted"))
+				})
+			}
 		}
 		catch (e) {
 			res.json(toolKit.createSimpleResponse("error", e.message));

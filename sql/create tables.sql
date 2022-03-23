@@ -13,19 +13,37 @@ CREATE TABLE users (
     user_id VARCHAR(64) NOT NULL,
     user_password VARCHAR(64) NOT NULL,
     email VARCHAR(64),
+    is_active int default 1,
     PRIMARY KEY (user_id)
-);
-
-CREATE TABLE user2deaddrop (
-    user_id VARCHAR(64) NOT NULL,
-    deaddrop_id VARCHAR(64) NOT NULL,
-    CONSTRAINT PRIMARY KEY (user_id , deaddrop_id)
 );
 
 CREATE TABLE deaddrop (
     deaddrop_id VARCHAR(64) NOT NULL,
     deaddrop_key VARCHAR(64) NOT NULL,
+    title VARCHAR(64) DEFAULT NULL,    
     CONSTRAINT PRIMARY KEY (deaddrop_id , deaddrop_key)
+);
+
+CREATE TABLE user2deaddrop (
+    user_id VARCHAR(64) NOT NULL,
+    deaddrop_id VARCHAR(64) NOT NULL,
+    CONSTRAINT PRIMARY KEY (user_id , deaddrop_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (deaddrop_id) REFERENCES deaddrop(deaddrop_id)
+);
+
+CREATE TABLE permission_keys (
+    permission_key_id VARCHAR(64) NOT NULL,
+    permission_name VARCHAR(64) DEFAULT NULL,    
+    CONSTRAINT PRIMARY KEY (permission_key_id)
+);
+
+CREATE TABLE user2key (
+    user_id VARCHAR(64) NOT NULL,
+    permission_key_id VARCHAR(64) NOT NULL,
+    CONSTRAINT PRIMARY KEY (user_id , permission_key_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (permission_key_id) REFERENCES permission_keys(permission_key_id)
 );
 
 CREATE TABLE message (
@@ -35,7 +53,9 @@ CREATE TABLE message (
     publish_date DATETIME DEFAULT NOW(),
     title VARCHAR(64),
     message VARCHAR(2048),
-    CONSTRAINT PRIMARY KEY (message_id)
+    CONSTRAINT PRIMARY KEY (message_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (deaddrop_id) REFERENCES deaddrop(deaddrop_id)
 );
 
 insert into users (user_id, user_password, email) values ('admin', '0verl00k!2', 'stephenjhadley@gmail.com');

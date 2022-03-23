@@ -39,7 +39,7 @@ app.use(session({
 	secret: 'Some_Secret_Key',
     resave: true,
   	saveUninitialized: true, 
-	cookie: { maxAge: 60000 }
+	cookie: { maxAge: 1800000 }
 }))
 
 app.use(express.static(__dirname + '/public'));

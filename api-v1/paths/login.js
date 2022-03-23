@@ -72,7 +72,9 @@ module.exports = function(toolKit, userService, keyService) {
 			userService.getUser(user_id, (userObj) => {
 				if (!userObj) {
 					userService.createUser(user_id, password, email, () => {
-						res.status(200).json(toolKit.createSimpleResponse("success", "User created"))
+						keyService.addUserDeadrop(user_id,"public",  () => {
+							res.status(200).json(toolKit.createSimpleResponse("success", "User created"))
+							});
 					});
 				}
 				else {

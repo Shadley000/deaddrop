@@ -16,6 +16,7 @@ module.exports = function(toolKit,deaddropService) {
 				});
 			}
 			else {
+				console.log("attempted forgery user_id: %s deaddrop_id: %s messageObj: %j", user_id, deaddrop_id, messageObj)
 				res.status(404).json(toolKit.createSimpleResponse("error", "attempted forgery"));
 			}
 		}
