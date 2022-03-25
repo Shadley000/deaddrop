@@ -14,5 +14,4 @@ WHERE
     AND k.deaddrop_id = d.deaddrop_id
     AND k.user_id = 'admin'
 order by d.deaddrop_id, m.publish_date
-        
-
+	

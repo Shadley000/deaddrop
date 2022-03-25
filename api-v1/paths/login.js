@@ -1,4 +1,4 @@
-module.exports = function(toolKit, userService, keyService) {
+module.exports = function(toolKit, userService, user2PermissionService) {
 	let operations = {
 		GET,
 		POST,
@@ -12,16 +12,25 @@ module.exports = function(toolKit, userService, keyService) {
 			var user_password = req.query.password;
 			//console.log('GET /login %s %s ',user_id, user_password);
 			userService.getUser(user_id, (userObj) => {
-				if (userObj.password == user_password) {
+				if (!userObj) { 
+					res.status(401).json(toolKit.createSimpleResponse("error", "user not found"+user_id));
+				} else if (userObj.password == user_password) {
+					console.log('GET /login authentication passed %j ', userObj);
+
 					req.session.authentication_token = Math.random();
 					req.session.user_id = user_id;
 					userObj.authentication_token = req.session.authentication_token;
 					userObj.password = "";
-					console.log('GET /login authentication passed %j ',userObj);
-					res.status(200).json(userObj)
+
+					user2PermissionService.getUserPermissions(user_id, (permissions)=>{
+						req.session.permissions = permissions;
+						userObj.permissions = permissions;
+						res.status(200).json(userObj)
+					})
+					
 				}
 				else {
-					res.status(404).json(toolKit.createSimpleResponse("error", "password mismatch"));
+					res.status(401).json(toolKit.createSimpleResponse("error", "password mismatch"));
 				}
 			});
 		}
@@ -61,7 +70,7 @@ module.exports = function(toolKit, userService, keyService) {
 			}
 		}
 	};
-	
+
 	function POST(req, res, next) {
 		console.log('POST /login');
 		try {
@@ -72,23 +81,24 @@ module.exports = function(toolKit, userService, keyService) {
 			userService.getUser(user_id, (userObj) => {
 				if (!userObj) {
 					userService.createUser(user_id, password, email, () => {
-						keyService.addUserDeadrop(user_id,"public",  () => {
-							res.status(200).json(toolKit.createSimpleResponse("success", "User created"))
+						user2PermissionService.addUserPermission(user_id, "sys_login", "", () => {
+							user2PermissionService.addUserPermission(user_id, "public deaddrop", "", () => {
+								res.status(200).json(toolKit.createSimpleResponse("success", "User created"))
 							});
+						});
 					});
 				}
 				else {
 					res.status(403).json(toolKit.createSimpleResponse("error", "user already exists"));
 				}
 			});
-
 		}
 		catch (e) {
 			res.status(500).json(toolKit.createSimpleResponse("error", e.message));
 		}
 	};
 
-	
+
 	POST.apiDoc = {
 		"summary": "adds a new user",
 		"consumes": ["application/json"],
@@ -119,7 +129,7 @@ module.exports = function(toolKit, userService, keyService) {
 			}
 		}
 	};
-	
+
 	function DELETE(req, res, next) {
 		console.log('DELETE /logout');
 		try {
@@ -151,7 +161,7 @@ module.exports = function(toolKit, userService, keyService) {
 			}
 		}
 	};
-	
+
 	return operations;
 
 }

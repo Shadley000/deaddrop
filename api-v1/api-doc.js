@@ -9,10 +9,30 @@ const apiDoc = {
 	"consumes": ["application/json"],
 	"produces": ["application/json"],
 	"definitions": {
+		"Deaddrop": {
+			"type": 'object',
+			"properties": {
+				"deaddrop_id": {
+					"description": 'The name of the deaddrop.',
+					"type": 'string'
+				},
+				"title": {
+					"description": 'The display name of the deaddrop.',
+					"type": 'string'
+				},
+				"messages": {
+					"description": "array of messages",
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/Message"
+					}
+				}
+			}
+		},
 		"Message": {
 			"type": 'object',
 			"properties": {
-				"user": {
+				"user_id": {
 					"description": 'The name of the sender.',
 					"type": 'string'
 				},
@@ -40,19 +60,20 @@ const apiDoc = {
 				"$ref": "#/definitions/Message"
 			}
 		},
-		"Deaddrop": {
-			"type": 'object',
+		"Permission": {
+			"type": "object",
 			"properties": {
-				"deaddrop_id": {
-					"description": 'The name of the deaddrop.',
+				"permission_id": {
+					"description": 'The permission id.',
 					"type": 'string'
 				},
-				"messages": {
-					"description": "array of messages",
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/Message"
-					}
+				"permission_name": {
+					"description": 'The permission name.',
+					"type": 'string'
+				},
+				"tags": {
+					"description": 'tags',
+					"type": 'string'
 				}
 			}
 		},

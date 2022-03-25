@@ -8,7 +8,9 @@ var https = require('https');
 
 var deaddropService = require('./api-v1/services/deaddropService').deaddropService;
 var userService = require('./api-v1/services/userService').userService;
-var keyService = require('./api-v1/services/keyService').keyService;
+var permissionService = require('./api-v1/services/permissionService').permissionService;
+var user2PermissionService = require('./api-v1/services/user2PermissionService').user2PermissionService;
+var messageService = require('./api-v1/services/messageService').messageService;
 var toolKit = require('./api-v1/services/toolKit').toolKit;
 var v1ApiDoc = require('./api-v1/api-doc').apiDoc;
 
@@ -52,7 +54,9 @@ initialize({
 	dependencies: {
 		deaddropService: deaddropService,
 		userService: userService,
-		keyService: keyService,
+		permissionService: permissionService,
+		user2PermissionService: user2PermissionService,
+		messageService:messageService,
 		toolKit: toolKit
 	},
 	consumesMiddleware: {

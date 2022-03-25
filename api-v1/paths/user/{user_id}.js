@@ -1,4 +1,4 @@
-module.exports = function(toolKit, userService, keyService) {
+module.exports = function(toolKit, userService, user2PermissionService) {
 	let operations = {
 		PUT,
 		DELETE
@@ -88,7 +88,7 @@ module.exports = function(toolKit, userService, keyService) {
 			if (user_id == req.session.user_id) {
 				userService.getUser(user_id, (userObj) => {
 					if (userObj && userObj.password == password) {
-						keyService.deleteUserKeys(user_id, () => {
+						user2PermissionService.deleteUserPermissions(user_id, () => {
 							userService.deleteUser(user_id, () => {
 								res.status(200).json(toolKit.createSimpleResponse("success", "user deleted"))
 							});

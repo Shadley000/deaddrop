@@ -26,7 +26,7 @@ module.exports = function(toolKit, deaddropService) {
 				"schema": {
 					"type": "array",
 					"items": {
-						"type": "string"
+						"$ref": "#/definitions/Deaddrop"
 					}
 				}
 			},

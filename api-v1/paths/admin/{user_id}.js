@@ -1,4 +1,4 @@
-module.exports = function(toolKit, userService, keyService) {
+module.exports = function(toolKit, userService) {
 	let operations = {
 		GET,
 		PUT,

@@ -1,4 +1,4 @@
-module.exports = function(toolKit,deaddropService) {
+module.exports = function(toolKit,messageService) {
 	let operations = {
 		POST,
 		DELETE
@@ -11,7 +11,7 @@ module.exports = function(toolKit,deaddropService) {
 		var messageObj = req.body;
 		try {
 			if (messageObj.user_id == user_id && messageObj.deaddrop_id == deaddrop_id) {
-				deaddropService.addMessage(messageObj, () => {
+				messageService.addMessage(messageObj, () => {
 					res.status(200).json(toolKit.createSimpleResponse("Success", "message added"));
 				});
 			}
@@ -74,12 +74,12 @@ module.exports = function(toolKit,deaddropService) {
 		var user_id = req.session.user_id;
 
 		try {
-			deaddropService.deleteMessage(user_id, deaddrop_id, message_id, () => {
+			messageService.deleteMessage(user_id, deaddrop_id, message_id, () => {
 				res.status(200).json(toolKit.createSimpleResponse("Success", "message deleted"));
 			});
 		}
 		catch (e) {
-			res.status(500).json(deaddropService.createSimpleResponse("error", e.message));
+			res.status(500).json(toolKit.createSimpleResponse("error", e.message));
 		}
 	};
 

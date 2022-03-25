@@ -13,37 +13,31 @@ CREATE TABLE users (
     user_id VARCHAR(64) NOT NULL,
     user_password VARCHAR(64) NOT NULL,
     email VARCHAR(64),
-    is_active int default 1,
+    is_verified int,
     PRIMARY KEY (user_id)
+);
+
+CREATE TABLE permissions (
+	permission_id VARCHAR(64) NOT NULL,
+    permission_name VARCHAR(64) NOT NULL,
+    tags VARCHAR(256) default NULL,
+    CONSTRAINT PRIMARY KEY (permission_id)
+);
+
+CREATE TABLE user_id2permission_id (
+    user_id VARCHAR(64) NOT NULL,
+    permission_id VARCHAR(64) NOT NULL,
+    details VARCHAR(64) NOT NULL,
+    CONSTRAINT PRIMARY KEY (user_id , permission_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE deaddrop (
     deaddrop_id VARCHAR(64) NOT NULL,
-    deaddrop_key VARCHAR(64) NOT NULL,
+    permission_id VARCHAR(64) NOT NULL,
     title VARCHAR(64) DEFAULT NULL,    
-    CONSTRAINT PRIMARY KEY (deaddrop_id , deaddrop_key)
-);
-
-CREATE TABLE user2deaddrop (
-    user_id VARCHAR(64) NOT NULL,
-    deaddrop_id VARCHAR(64) NOT NULL,
-    CONSTRAINT PRIMARY KEY (user_id , deaddrop_id),
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (deaddrop_id) REFERENCES deaddrop(deaddrop_id)
-);
-
-CREATE TABLE permission_keys (
-    permission_key_id VARCHAR(64) NOT NULL,
-    permission_name VARCHAR(64) DEFAULT NULL,    
-    CONSTRAINT PRIMARY KEY (permission_key_id)
-);
-
-CREATE TABLE user2key (
-    user_id VARCHAR(64) NOT NULL,
-    permission_key_id VARCHAR(64) NOT NULL,
-    CONSTRAINT PRIMARY KEY (user_id , permission_key_id),
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (permission_key_id) REFERENCES permission_keys(permission_key_id)
+    CONSTRAINT PRIMARY KEY (deaddrop_id),
+     FOREIGN KEY (permission_id) REFERENCES permissions(permission_id)
 );
 
 CREATE TABLE message (
@@ -58,15 +52,42 @@ CREATE TABLE message (
     FOREIGN KEY (deaddrop_id) REFERENCES deaddrop(deaddrop_id)
 );
 
-insert into users (user_id, user_password, email) values ('admin', '0verl00k!2', 'stephenjhadley@gmail.com');
-insert into user2deaddrop(user_id, deaddrop_id) values ('admin', 'public');
-insert into user2deaddrop(user_id, deaddrop_id) values ('admin', 'adminbox');
+insert into users (user_id, user_password, email) values ('admin', 'password', 'stephenjhadley@gmail.com');
+insert into users (user_id, user_password, email) values ('guest', 'password', '');
+insert into users (user_id, user_password, email) values ('testuser', 'password', '');
 
-insert into deaddrop (deaddrop_id, deaddrop_key) values ('adminbox', '3.1415926');
-insert into message(deaddrop_id, user_id,publish_date,title,message) values ('adminbox', 'admin', now(),'Admin Only', 'Welcome Admin');
+INSERT INTO permissions (permission_id,permission_name,tags) values ('sys_administrator','System adminstration','SYSTEM');
+INSERT INTO permissions (permission_id,permission_name,tags) values ('sys_login','is the user allowed to login','SYSTEM');
+INSERT INTO permissions (permission_id,permission_name,tags) values ('sys_create_deaddrop','is the user allowed to create a deaddrop','SYSTEM');
 
-insert into deaddrop (deaddrop_id, deaddrop_key) values ('public', 'password');
-insert into message(deaddrop_id, user_id,publish_date,title,message) values ('public', 'admin', now(),'Welcome to Deaddrop', 'Messages posted here are visible to all users');
+INSERT INTO permissions (permission_id,permission_name) values ('administration deaddrop','access to admin deaddrop');
+INSERT INTO permissions (permission_id,permission_name) values ('public deaddrop','access to public deaddrop');
+INSERT INTO permissions (permission_id,permission_name) values ('some random deaddrop','access to some random deaddrop');
 
-insert into users (user_id, user_password, email) values ('anonymous', 'password', '');
-insert into user2deaddrop(user_id, deaddrop_id) values ('anonymous', 'public');
+insert into deaddrop (deaddrop_id, title, permission_id) values ('administration deaddrop', 'administration deaddrop', 'administration deaddrop');
+insert into deaddrop (deaddrop_id, title, permission_id) values ('public deaddrop', 'public deaddrop', 'public deaddrop');
+insert into deaddrop (deaddrop_id, title, permission_id) values ('some random deaddrop', 'some random deaddrop','some random deaddrop');
+
+insert into message(deaddrop_id, user_id,publish_date,title,message) values ('administration deaddrop', 'admin', now(),'Admin Only', 'Welcome Admin');
+insert into message(deaddrop_id, user_id,publish_date,title,message) values ('public deaddrop', 'admin', now(),'Welcome to Public Deaddrop', 'This deaddrop is open to all users. Messages posted here are visible to all users');
+insert into message(deaddrop_id, user_id,publish_date,title,message) values ('some random deaddrop', 'admin', now(),'Welcome to Random Deaddrop', 'play nice');
+
+
+insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'administrator','');
+insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'login','');
+insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'public deaddrop','');
+insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'adminbox','');
+
+insert into user_id2permission_id(user_id, permission_id, details) values ('guest', 'login','');
+insert into user_id2permission_id(user_id, permission_id, details) values ('guest', 'public deaddrop','');
+
+insert into user_id2permission_id(user_id, permission_id, details) values ('testuser', 'login','');
+insert into user_id2permission_id(user_id, permission_id, details) values ('testuser', 'public deaddrop','');
+insert into user_id2permission_id(user_id, permission_id, details) values ('testuser', 'some random deaddrop','');
+
+
+
+
+
+
+

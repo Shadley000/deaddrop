@@ -12,23 +12,16 @@ module.exports = function(toolKit, userService) {
 				userService.getUsers((users) => {
 					res.status(200).json(users)
 				});
-
 			}
 		}
 		catch (e) {
-			res.json(toolKit.createSimpleResponse("error", e.message));
+			res.status(500).json(toolKit.createSimpleResponse("error", e.message));
 		}
 	};
 
 	GET.apiDoc = {
 		"summary": "Administrator Only: Get all users",
 		"parameters": [
-			{
-				"in": 'query',
-				"name": 'admin_password',
-				"type": 'string',
-				"required": true
-			}
 		],
 		"responses": {
 			"200": {
