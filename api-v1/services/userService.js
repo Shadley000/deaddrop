@@ -50,8 +50,8 @@ const userService = {
 		connection.query(sql, [], function(error, results, fields) {
 			if (error) throw error;
 			console.log('getusers');
+			var list = [];
 			if (results) {
-				var list = [];
 				results.forEach((item, index) => {
 					list.push({
 						"user_id": item.user_id,
@@ -62,7 +62,7 @@ const userService = {
 				});
 				callback(list);
 			}
-			else callback();
+			else callback(list);
 		});
 		connection.end();
 	},

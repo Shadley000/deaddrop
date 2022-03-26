@@ -57,7 +57,7 @@ const messageService = {
 				});
 				callback(messages);
 			}
-			else callback();
+			else callback([]);
 		});
 		connection.end();
 	},	

@@ -17,8 +17,8 @@ const user2PermissionService = {
 		var connection = toolKit.getConnection();
 		connection.query(sql, [user_id], function(error, results, fields) {
 			if (error) throw error;
+			var permissions = [];
 			if (results) {
-				var permissions = [];
 				for (let i = 0; i < results.length; i++) {
 					permissions.push( {
 						'permission_id': results[i].permission_id, 
@@ -29,7 +29,7 @@ const user2PermissionService = {
 				}				
 				callback(permissions);
 			}
-			else callback();
+			else callback(permissions);
 		});
 		connection.end();
 	},

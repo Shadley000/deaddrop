@@ -64,7 +64,7 @@ const permissionService = {
 				}
 				callback(permissions);
 			}
-			else callback();
+			else callback([]);
 		});
 		connection.end();
 	},
