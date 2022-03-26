@@ -56,7 +56,7 @@ function displayArticle() {
 			} else if (data.articleState == "account") {
 				displayAccount()
 			} else if (data.articleState == "useradmin") {
-				adminLoadUserObjs(displayUserAdmin);
+				displayUserAdmin();
 			}
 		}
 		else {

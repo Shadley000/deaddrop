@@ -40,11 +40,13 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 app.use(session({
-	secret: 'Some_Secret_Key',
+	secret: 'Some_Super_Secret_Key',
 	resave: true,
 	saveUninitialized: true,
 	cookie: { maxAge: 1800000 }
 }));
+
+sessionService.deleteAllSessions();
 
 app.use(express.static(__dirname + '/public'));
 
@@ -91,7 +93,12 @@ async function ensureAuthenticated(req, res, next) {
 			req.session.user_id = req.headers.user_id;
 			sessionService.updateSession();
 			sessionService.deleteExpiredSessions();
-			next();
+			
+			user2PermissionService.getUserPermissions(req.headers.user_id, (permissions) => {
+				req.session.permissions = permissions;
+				next();
+			})
+			
 		} else {
 			console.log("ensureAuthenticated failed, token mismatch ",authentication_token, req.headers.authentication_token);
 

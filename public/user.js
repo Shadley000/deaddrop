@@ -9,14 +9,12 @@ function displayLogout() {
 function logout() {
 	console.log('logout ');
 	initData();
-	initAdminData();
 	displayNav();
 	displayArticle();
 
 	deleteUrl("/v1/logout?t=" + Math.random())
 		.then(data => {
 			initData();
-			initAdminData();
 			displayNav();
 			displayArticle();
 		})
@@ -55,7 +53,6 @@ function login() {
 		.catch(function(err) {
 			console.log('error: ' + err);
 			initData();
-			initAdminData();
 			displayNav();
 			displayArticle();
 		});

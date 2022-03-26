@@ -3,19 +3,13 @@ function initData() {
 		articleState: "login",
 		permissions: [],
 		selected_deaddrop_id: undefined,
-		userObj: undefined
+		userObj: undefined,
+		selected_user_id: undefined,
+		userObjs: [],
+		selectedUserObj: undefined
 	};
 }
 
 var data;
 initData();
 
-function initAdminData() {
-	adminData = {
-		selected_user_id: undefined,
-		userObjs: [],
-		selectedUserObj: undefined
-	};
-}
-var adminData;
-initAdminData();

@@ -68,6 +68,22 @@ const sessionService = {
 			connection.end();
 		})
 	},
+	
+	deleteAllSessions() {
+		return new Promise(function(resolve, reject) {
+			var sql = `DELETE FROM session_store `;
+			var connection = toolKit.getConnection();
+			connection.query(sql, [], function(error, results, fields) {
+				if (error) {
+					return reject(err);
+				}
+				else {
+					resolve();
+				}
+			});
+			connection.end();
+		})
+	},
 
 	deleteExpiredSessions() {
 		return new Promise(function(resolve, reject) {
