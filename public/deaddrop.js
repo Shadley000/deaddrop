@@ -34,8 +34,8 @@ function createDeadDrop() {
 				getUrl("/v1/user/"+data.userObj.user_id)
 					.then(function(userObj) {
 						data.userObj = userObj;
-						//console.log("got new userObj: ",userObj)
 						data.articleState = "deaddrops";
+						data.selected_deaddrop_id = undefined;
 						displayArticle();
 					})
 					.catch(function(err) {

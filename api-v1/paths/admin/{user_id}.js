@@ -8,7 +8,7 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 
 	function GET(req, res, next) {
 		console.log('GET /admin/{user_id}');
-		if (user2PermissionService.validatePermission('sys_administration', req.session.permissions)) {
+		if (user2PermissionService.validatePermission('sys_administrator', req.session.permissions)) {
 			try {
 				var requested_user_id = req.params.user_id;
 				var user_id = req.session.user_id;
@@ -29,7 +29,7 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 
 	function PUT(req, res, next) {
 		console.log('PUT /admin/{user_id}');
-		if (user2PermissionService.validatePermission('sys_administration', req.session.permissions)) {
+		if (user2PermissionService.validatePermission('sys_administrator', req.session.permissions)) {
 			try {
 				var requested_user_id = req.params.user_id;
 				var password = req.query.password;
@@ -51,7 +51,7 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 
 	function POST(req, res, next) {
 		console.log('POST /admin/{user_id}');
-		if (user2PermissionService.validatePermission('sys_administration', req.session.permissions)) {
+		if (user2PermissionService.validatePermission('sys_administrator', req.session.permissions)) {
 			try {
 				var requested_user_id = req.params.user_id;
 				var password = req.body.password;
@@ -75,7 +75,7 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 	};
 
 	function DELETE(req, res, next) {
-		if (user2PermissionService.validatePermission('sys_administration', req.session.permissions)) {
+		if (user2PermissionService.validatePermission('sys_administrator', req.session.permissions)) {
 			console.log('DELETE /admin/{user_id}');
 			try {
 				var requested_user_id = req.params.user_id;

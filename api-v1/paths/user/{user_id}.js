@@ -136,8 +136,11 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 			var user_id = req.params.user_id;
 			var password = req.params.password;
 			console.log('DELETE /user/', user_id);
-
-			if (user_id == req.session.user_id) {
+			
+			if(user_id == 'admin') {
+				res.status(401).json(toolKit.createSimpleResponse("error", "cannot delete admin user"));
+			}
+			else if (user_id == req.session.user_id) {
 				userService.getUser(user_id, (userObj) => {
 					if (userObj && userObj.password == password) {
 						user2PermissionService.deleteUserPermissions(user_id, () => {

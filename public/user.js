@@ -42,10 +42,12 @@ function login() {
 	//console.log('login %s', user_id);
 	initData();
 
-	getUrl("/v1/login?user_id=" + user_id + "&password=" + password + "&t=" + Math.random())
+	let url = `/v1/login?user_id=${user_id}&password=${password}&t=` + Math.random();
+
+	getUrl(url)
 		.then(function(userObj) {
 			data.userObj = userObj;
-			console.log("userObj: ",userObj)
+			console.log("userObj: ", userObj)
 			data.articleState = "deaddrops";
 			displayNav();
 			displayArticle();
@@ -101,15 +103,14 @@ function createAccount() {
 		});
 }
 
-
 function displayAccount() {
 	var html = "";
 	html += "<h3>account</h3>"
 	html += '<label for="user_id">user_id:</label>'
-	html += '<input type="text" id="user_id" name="user_id" value="'+data.userObj.user_id+'"><br>'
-	
+	html += '<input type="text" id="user_id" name="user_id" value="' + data.userObj.user_id + '"><br>'
+
 	html += '<label for="email">email:</label>'
-	html += '<input type="text" id="email" name="email" value="'+data.userObj.email+'"><br>'
+	html += '<input type="text" id="email" name="email" value="' + data.userObj.email + '"><br>'
 	html += '<label for="password">password:</label>'
 	html += '<input type="text" id="password" name="password" value="password"><br>'
 
@@ -121,8 +122,8 @@ function displayAccount() {
 				html += '<li>' + permissionObj.permission_id + '<BR>'
 					+ permissionObj.permission_name + '<BR>'
 					+ permissionObj.tags + '<BR>'
-					+ permissionObj.details;
-				html += "<button onclick='deletePermission(" + permissionObj.permission_id + ")'>delete</button>"
+					+ permissionObj.details + '<BR>';
+				html += "<button onclick='deletePermission(`" + permissionObj.permission_id + "`)'>delete</button>"
 				html += '</li>';
 			}
 		} else {
@@ -137,8 +138,8 @@ function displayAccount() {
 function deleteAccount() {
 	var user_id = data.userObj.user_id;
 	var password = document.getElementById("password").value;
-
-	deleteUrl("/v1/user/" + user_id + "?password=" + password + "&t=" + Math.random())
+	let url = `/v1/user/${user_id}?password=${password}`;
+	deleteUrl(url)
 		.then(data => {
 			initData();
 			displayNav();
@@ -149,10 +150,35 @@ function deleteAccount() {
 		});
 }
 
+function deletePermission(permission_id) {
+	var user_id = data.userObj.user_id;
+	console.log("deletePermission %s %s", permission_id, user_id);
+
+	let url = `/v1/user/${user_id}/${permission_id}`;
+	console.log(url);
+	deleteUrl(url)
+		.then(deletedata => {
+			getUrl("/v1/user/" + data.userObj.user_id)
+				.then(function(userObj) {
+					data.userObj = userObj;
+					//console.log("got new userObj: ",userObj)
+					data.articleState = "deaddrops";
+					displayNav();
+					displayArticle();
+				})
+				.catch(function(err) {
+					console.log('error: ' + err);
+				});
+
+		})
+		.catch(function(err) {
+			console.log('error: ' + err);
+		});
+}
 
 function validatePermission(permission, permissions) {
 	if (!permissions || permissions.length == 0) {
-		return false;
+		return undefined;
 	}
 	return (permissions.find(o => o.permission_id === permission))
 }
