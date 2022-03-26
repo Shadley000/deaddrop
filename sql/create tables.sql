@@ -46,6 +46,7 @@ CREATE TABLE user_id2permission_id (
 CREATE TABLE deaddrop (
     deaddrop_id VARCHAR(64) NOT NULL,
     title VARCHAR(64) DEFAULT NULL,    
+    deaddrop_key VARCHAR(64) DEFAULT NULL, 
     CONSTRAINT PRIMARY KEY (deaddrop_id)
 );
 
@@ -74,9 +75,9 @@ INSERT INTO permissions (permission_id,permission_name,tags) values ('administra
 INSERT INTO permissions (permission_id,permission_name,tags) values ('public deaddrop','access to public deaddrop','DEADDROP');
 INSERT INTO permissions (permission_id,permission_name,tags) values ('some random deaddrop','access to some random deaddrop','DEADDROP');
 
-insert into deaddrop (deaddrop_id, title) values ('administration deaddrop', 'title administration deaddrop');
-insert into deaddrop (deaddrop_id, title) values ('public deaddrop', 'title public deaddrop');
-insert into deaddrop (deaddrop_id, title) values ('some random deaddrop', 'title some random deaddrop');
+insert into deaddrop (deaddrop_id, title,deaddrop_key) values ('administration deaddrop', 'title administration deaddrop', 'supersecretpassword');
+insert into deaddrop (deaddrop_id, title,deaddrop_key) values ('public deaddrop', 'title public deaddrop', 'password');
+insert into deaddrop (deaddrop_id, title,deaddrop_key) values ('some random deaddrop', 'title some random deaddrop', 'password');
 
 insert into message(deaddrop_id, user_id,publish_date,title,message) values ('administration deaddrop', 'admin', now(),'Admin Only', 'Welcome Admin');
 insert into message(deaddrop_id, user_id,publish_date,title,message) values ('public deaddrop', 'admin', now(),'Welcome to Public Deaddrop', 'This deaddrop is open to all users. Messages posted here are visible to all users');

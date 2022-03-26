@@ -6,6 +6,8 @@ function displayCreateDeaddrop() {
 		html += "<h3>Create New DeadDrop</h3>"
 		html += "<label for='deaddrop_id'>DeadDrop:</label> "
 		html += "<input	type='text' id='deaddrop_id' name='deaddrop_id'	value='16 digit minimum name'><br> "
+		html += "<label for='title'>Title:</label> "
+		html += "<input	type='text' id='title' name='title'	value='16 digit minimum title'><br> "
 		html += "<label for='deaddrop_key'>Key:</label>"
 		html += "<input type='text' id='deaddrop_key' name='deaddrop_key' value='16 digit minimum key'><br>"
 		html += "<button onclick='createDeadDrop()'>Create</button>"
@@ -17,15 +19,28 @@ function displayCreateDeaddrop() {
 
 function createDeadDrop() {
 	if (validatePermission('sys_create_deaddrop', data.userObj.permissions)) {
-		html += '<li><button onclick="navigate(`createdeaddrop`)">Create DeadDrop</button></li>'
-		var deaddrop = {
+		//html += '<li><button onclick="navigate(`createdeaddrop`)">Create DeadDrop</button></li>'
+		var deaddropObj = {
 			"deaddrop_id": document.getElementById("deaddrop_id").value,
-			"deaddrop_key": document.getElementById("deaddrop_key").value
+			"deaddrop_key": document.getElementById("deaddrop_key").value,
+			"title": document.getElementById("title").value
 		};
-		console.log("createDeadDrop")
-		postUrl("/v1/deaddrop/" + deaddrop.deaddrop_id + "?deaddrop_key=" + deaddrop.deaddrop_key, deaddrop)
-			.then(data => {
-				displayDeaddrop()
+		//console.log("createDeadDrop")
+		postUrl("/v1/deaddrop/" + deaddropObj.deaddrop_id, deaddropObj)
+			.then(postdata => {
+				data.selected_deaddrop_id = deaddropObj.deaddrop_id;
+				//console.log("deaddrop created: ",data.selected_deaddrop_id)
+				//reload the user object to refresh permissions			
+				getUrl("/v1/user/"+data.userObj.user_id)
+					.then(function(userObj) {
+						data.userObj = userObj;
+						//console.log("got new userObj: ",userObj)
+						data.articleState = "deaddrops";
+						displayArticle();
+					})
+					.catch(function(err) {
+						console.log('error: ' + err);				
+					});			
 			})
 			.catch(function(err) {
 				console.log('error: ' + err);
@@ -44,7 +59,8 @@ function displayDeaddrop() {
 		if (!data.selected_deaddrop_id) {
 			const aDeaddropPermissionObj = data.userObj.permissions.find(permission => permission.tags.includes("DEADDROP"));
 			if (aDeaddropPermissionObj) {
-				data.selected_deaddrop_id = aDeaddropPermissionObj.permission_id.trim();	
+				data.selected_deaddrop_id = aDeaddropPermissionObj.permission_id.trim();
+				console.log("defaulting deaddrop_id:",data.selected_deaddrop_id)	
 			}
 		}
 		//console.log("data.selected_deaddrop_id:",data.selected_deaddrop_id)
@@ -55,14 +71,16 @@ function displayDeaddrop() {
 		var permissions = data.userObj.permissions;
 		for (var i = 0; i < permissions.length; i++) {
 			var permission = permissions[i];
-			//console.log("permission", permission)
+			
 			var selected = "";
-			if (permission.tags.includes("DEADDROP")){
-				if( data.selected_deaddrop_id && data.selected_deaddrop_id == permission.permissions_id) {
-					selected = 'selected';
-				}
-				html += "<option value='" + permission.permission_id + "'' " + selected + "'>" + permission.permission_name + "</option>";
+			if( data.selected_deaddrop_id && data.selected_deaddrop_id == permission.permission_id) {
+				selected = 'selected';
 			}
+			if (permission.tags.includes("DEADDROP")){	
+				html += "<option value='" + permission.permission_id + "' " + selected + ">" + permission.permission_name + "</option>";
+			}
+			
+			//console.log("selected_deaddrop_id:'%s' selected:'%s' permission_id:'%s'",data.selected_deaddrop_id, selected, permission.permission_id)
 		}
 		html += "</select>";
 		html += "<div id=div_messages></div>"

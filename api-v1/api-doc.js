@@ -20,6 +20,10 @@ const apiDoc = {
 					"description": 'The display name of the deaddrop.',
 					"type": 'string'
 				},
+				"deaddrop_key": {
+					"description": 'The secret key of the deaddrop.',
+					"type": 'string'
+				},
 				"messages": {
 					"description": "array of messages",
 					"type": "array",

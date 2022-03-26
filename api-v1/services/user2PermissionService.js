@@ -34,7 +34,7 @@ const user2PermissionService = {
 		connection.end();
 	},
 
-	addUserPermission(user_id,permission_id, details, callback) {
+	addUserPermission(user_id, permission_id, details, callback) {
 		var sql = `INSERT INTO user_id2permission_id (user_id, permission_id, details) VALUES (?,?,? )`;
 		var connection = toolKit.getConnection();
 		connection.query(sql, [user_id, permission_id, details], function(error, results, fields) {

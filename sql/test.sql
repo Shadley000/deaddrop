@@ -9,15 +9,8 @@ select * from session_store;
 
 select * from message;
 
-SELECT    d.deaddrop_id, m.user_id, m.message_id, m.title, m.message, m.publish_date
-FROM    user2deaddrop k,    deaddrop d,    message m
-WHERE
-    k.deaddrop_id = m.deaddrop_id
-    AND k.deaddrop_id = d.deaddrop_id
-    AND k.user_id = 'admin'
-order by d.deaddrop_id, m.publish_date;
-
-DELETE FROM session_store 
-	WHERE touch_date < (NOW() - INTERVAL 30 MINUTE) 
-    AND session_id=1;
-	
+SELECT    d.deaddrop_id, d.title
+ FROM    user_id2permission_id p,    deaddrop d
+			 WHERE   p.permission_id = d.deaddrop_id
+			 AND p.user_id = 'admin'
+			 AND d.deaddrop_id = 'administration deaddrop'
