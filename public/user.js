@@ -5,6 +5,7 @@ function displayLogout() {
 	html += '<button onclick="logout()">Logout</button>'
 	document.getElementById("article").innerHTML = html;
 }
+
 function logout() {
 	console.log('logout ');
 	initData();
@@ -44,6 +45,7 @@ function login() {
 	getUrl("/v1/login?user_id=" + user_id + "&password=" + password + "&t=" + Math.random())
 		.then(function(userObj) {
 			data.userObj = userObj;
+			console.log("userObj: ",userObj)
 			data.articleState = "deaddrops";
 			displayNav();
 			displayArticle();
@@ -103,10 +105,31 @@ function createAccount() {
 function displayAccount() {
 	var html = "";
 	html += "<h3>account</h3>"
+	html += '<label for="user_id">user_id:</label>'
+	html += '<input type="text" id="user_id" name="user_id" value="'+data.userObj.user_id+'"><br>'
+	
 	html += '<label for="email">email:</label>'
-	html += '<input type="text" id="email" name="email" value="Anonymous@anywhere.com"><br>'
+	html += '<input type="text" id="email" name="email" value="'+data.userObj.email+'"><br>'
 	html += '<label for="password">password:</label>'
 	html += '<input type="text" id="password" name="password" value="password"><br>'
+
+	if (data.userObj.permissions) {
+		html += "<ul>"
+		if (data.userObj.permissions.length > 0) {
+			for (var j = 0; j < data.userObj.permissions.length; j++) {
+				var permissionObj = data.userObj.permissions[j];
+				html += '<li>' + permissionObj.permission_id + '<BR>'
+					+ permissionObj.permission_name + '<BR>'
+					+ permissionObj.tags + '<BR>'
+					+ permissionObj.details;
+				html += "<button onclick='deletePermission(" + permissionObj.permission_id + ")'>delete</button>"
+				html += '</li>';
+			}
+		} else {
+			html += '<li>no messages</li>';
+		}
+		html += "</ul>"
+	}
 	html += "<button onclick='deleteAccount()'>Delete this account</button>"
 	document.getElementById("article").innerHTML = html;
 }
@@ -124,4 +147,12 @@ function deleteAccount() {
 		.catch(function(err) {
 			console.log('error: ' + err);
 		});
+}
+
+
+function validatePermission(permission, permissions) {
+	if (!permissions || permissions.length == 0) {
+		return false;
+	}
+	return (permissions.find(o => o.permission_id === permission))
 }

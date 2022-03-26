@@ -2,7 +2,7 @@ function initData() {
 	data =  {
 		articleState: "login",
 		permissions: [],
-		selectedDeaddropObj: undefined,
+		selected_deaddrop_id: undefined,
 		userObj: undefined
 	};
 }

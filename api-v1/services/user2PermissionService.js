@@ -26,7 +26,7 @@ const user2PermissionService = {
 						'tags': results[i].tags, 
 						'details': results[i].details
 					});
-				}
+				}				
 				callback(permissions);
 			}
 			else callback();
@@ -73,6 +73,13 @@ const user2PermissionService = {
 		});
 		connection.end();
 	},
+	
+	validatePermission(permission,permissions){
+		if(!permissions || permissions.length == 0) {
+			return false;
+		}
+		return(permissions.find(o => o.permission_id === permission))
+	}
 };
 
 

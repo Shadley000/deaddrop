@@ -1,4 +1,4 @@
-module.exports = function(toolKit, userService, user2PermissionService) {
+module.exports = function(toolKit, userService, user2PermissionService, sessionService) {
 	let operations = {
 		GET,
 		POST,
@@ -6,28 +6,34 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 	};
 
 	function GET(req, res, next) {
-		console.log('GET /login');
 		try {
 			var user_id = req.query.user_id;
 			var user_password = req.query.password;
-			//console.log('GET /login %s %s ',user_id, user_password);
+			console.log('GET /login ',user_id);
 			userService.getUser(user_id, (userObj) => {
-				if (!userObj) { 
-					res.status(401).json(toolKit.createSimpleResponse("error", "user not found"+user_id));
+				if (!userObj) {
+					res.status(401).json(toolKit.createSimpleResponse("error", "user not found: " + user_id));
 				} else if (userObj.password == user_password) {
 					console.log('GET /login authentication passed %j ', userObj);
+					sessionService.deleteSession(user_id).then(function() {
+						var authentication_token = Math.random();
+						sessionService.createSession(user_id, authentication_token).then(function() {
+							userObj.authentication_token = authentication_token;
+							userObj.password = "";
 
-					req.session.authentication_token = Math.random();
-					req.session.user_id = user_id;
-					userObj.authentication_token = req.session.authentication_token;
-					userObj.password = "";
+							user2PermissionService.getUserPermissions(user_id, (permissions) => {
+								userObj.permissions = permissions;
 
-					user2PermissionService.getUserPermissions(user_id, (permissions)=>{
-						req.session.permissions = permissions;
-						userObj.permissions = permissions;
-						res.status(200).json(userObj)
-					})
-					
+								if (user2PermissionService.validatePermission('sys_login', permissions)) {
+									res.status(200).json(userObj)
+								}
+								else {
+									res.status(401).json(toolKit.createSimpleResponse("error", "this users login privileges have been revoked"));
+								}
+
+							});
+						});
+					});					
 				}
 				else {
 					res.status(401).json(toolKit.createSimpleResponse("error", "password mismatch"));
@@ -72,12 +78,12 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 	};
 
 	function POST(req, res, next) {
-		console.log('POST /login');
 		try {
 			var user_id = req.body.user_id;
 			var password = req.body.password;
 			var email = req.body.email;
-
+			console.log('POST /login ',user_id);
+		
 			userService.getUser(user_id, (userObj) => {
 				if (!userObj) {
 					userService.createUser(user_id, password, email, () => {
@@ -133,6 +139,9 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 	function DELETE(req, res, next) {
 		console.log('DELETE /logout');
 		try {
+			if (req.headers && req.headers.user_id) {
+				sessionService.deleteSession(req.headers.user_id, authentication_token)
+			}
 			req.session.destroy(function(error) {
 				console.log("Session Destroyed")
 			});

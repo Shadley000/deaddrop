@@ -6,11 +6,11 @@ module.exports = function(toolKit, deaddropService, messageService, permissionSe
 	};
 
 	function GET(req, res, next) {
-		console.log('GET /deaddrop/{deaddrop_id}');
 		try {
 			var user_id = req.session.user_id;
 			var deaddrop_id = req.params.deaddrop_id;
-
+			console.log('GET /deaddrop/ "%s"',deaddrop_id);
+		
 			deaddropService.getDeadDrop(user_id, deaddrop_id, (deaddropObj) => {
 				if (deaddropObj) { 
 					messageService.getDeadDropMessages(user_id, deaddrop_id, (messages) => {
@@ -54,12 +54,12 @@ GET.apiDoc = {
 };
 
 function POST(req, res, next) {
-	console.log('POST /deaddrop/{deaddrop_id}');
 	try {
 		var user_id = req.session.user_id;
 		var deaddrop_id = req.params.deaddrop_id;
 		var deaddrop_key = req.query.deaddrop_key;
-
+		console.log('POST /deaddrop/',deaddrop_id);
+		
 		deaddropService.createNewDeadDrop(deaddrop_id, deaddrop_key, () => {
 			console.log('POST /deaddrop/{deaddrop_id} created');
 			permissionService.addUserPermission(user_id, deaddrop_id, "", () => {
@@ -108,10 +108,10 @@ POST.apiDoc = {
 };
 
 function DELETE(req, res, next) {
-	console.log('DELETE /deaddrop/{deaddrop_id}');
 	try {
 		var user_id = req.session.user_id;
 		var deaddrop_id = req.params.deaddrop_id;
+		console.log('DELETE /deaddrop/',deaddrop_id);
 		deaddropService.deleteDeadDrop(user_id, deaddrop_id, () => {
 			res.status(200).json(toolKit.createSimpleResponse("success", "deaddrop removed"));
 		})

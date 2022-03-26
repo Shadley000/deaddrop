@@ -78,6 +78,7 @@ const userService = {
 					"user_id": user_id,
 					"password": results[0].user_password,
 					"email": results[0].email,
+					"permissions": []
 				});
 			}
 			else callback();

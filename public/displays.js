@@ -25,11 +25,13 @@ function displayNav() {
 	//console.log("displayNav ");
 	if (data && data.userObj && data.userObj.authentication_token) {
 		html += '<li><button onclick="navigate(`deaddrops`)">DeadDrops</button></li>'
-		html += '<li><button onclick="navigate(`createdeaddrop`)">Create DeadDrop</button></li>'
+		if (validatePermission('sys_create_deaddrop', data.userObj.permissions)) {
+			html += '<li><button onclick="navigate(`createdeaddrop`)">Create DeadDrop</button></li>'
+		}
 		html += '<li><button onclick="navigate(`account`)">Account</button></li>'
 		html += '<li><button onclick="navigate(`about`)">About</button></li>'
 		html += '<li><button onclick="navigate(`logout`)">Logout</button></li>'
-		if (data.userObj.user_id == "admin") {
+		if (validatePermission('sys_administrator', data.userObj.permissions)) {
 			html += '<li><button onclick="navigate(`useradmin`)">User Administration</button></li>'
 		}
 	} else {
@@ -48,9 +50,9 @@ function displayArticle() {
 			if (data.articleState == "logout") {
 				displayLogout()
 			} else if (data.articleState == "deaddrops") {
-				loadDeadDrops(displayDeaddrop);
+				displayDeaddrop();
 			} else if (data.articleState == "createdeaddrop") {
-				displayCreateDeaddrop()
+				displayCreateDeaddrop();
 			} else if (data.articleState == "account") {
 				displayAccount()
 			} else if (data.articleState == "useradmin") {

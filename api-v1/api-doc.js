@@ -108,7 +108,15 @@ const apiDoc = {
 				"authentication_token": {
 					"description": 'authentication_token',
 					"type": 'string'
+				},
+				"permissions":{
+					"description": 'list of permission objects',
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/Permission"
+					}
 				}
+				
 			}
 		},
 		"Error": {

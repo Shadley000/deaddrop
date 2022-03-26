@@ -5,9 +5,9 @@ const deaddropService = {
 	
 	getDeadDrop(user_id, deaddrop_id, callback) {
 		var sql = "SELECT    d.deaddrop_id, d.title"
-			+ " FROM    user_id2permission_id k,    deaddrop d"
-			+ " WHERE   k.permission_id = d.deaddrop_id"
-			+ " AND k.user_id = ?"
+			+ " FROM    user_id2permission_id p,    deaddrop d"
+			+ " WHERE   p.permission_id = d.deaddrop_id"
+			+ " AND p.user_id = ?"
 			+ " AND d.deaddrop_id = ?";
 
 		var connection = toolKit.getConnection();
@@ -24,13 +24,13 @@ const deaddropService = {
 		});
 		connection.end();
 	},
-	
+/*	
 	getDeadDrops(user_id, callback) {
 		var sql = "SELECT    d.deaddrop_id, d.title"
 			+ " FROM    user_id2permission_id k,    deaddrop d"
 			+ " WHERE   k.permission_id = d.deaddrop_id"
 			+ " AND k.user_id = ?"
-			+ "order by d.deaddrop_id";
+			+ " order by d.deaddrop_id";
 
 		var connection = toolKit.getConnection();
 		connection.query(sql, [user_id], function(error, results, fields) {
@@ -46,7 +46,7 @@ const deaddropService = {
 			else callback();
 		});
 		connection.end();
-	},
+	},*/
 	
 	createNewDeadDrop(deaddrop_id, deaddrop_key, callback) {
 

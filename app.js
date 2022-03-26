@@ -3,6 +3,7 @@ const session = require('express-session')
 var initialize = require('express-openapi').initialize;
 var swaggerUi = require("swagger-ui-express");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 var fs = require('fs');
 var https = require('https');
 
@@ -11,6 +12,7 @@ var userService = require('./api-v1/services/userService').userService;
 var permissionService = require('./api-v1/services/permissionService').permissionService;
 var user2PermissionService = require('./api-v1/services/user2PermissionService').user2PermissionService;
 var messageService = require('./api-v1/services/messageService').messageService;
+var sessionService = require('./api-v1/services/sessionService').sessionService;
 var toolKit = require('./api-v1/services/toolKit').toolKit;
 var v1ApiDoc = require('./api-v1/api-doc').apiDoc;
 
@@ -25,7 +27,7 @@ const app = express();
 
 app.use((req, res, next) => {
 	var origin = req.headers.origin;
-	
+
 	if (origin != null && origin.length > 0) {
 		res.setHeader("Access-Control-Allow-Origin", origin); // allows response
 	}
@@ -39,10 +41,10 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 app.use(session({
 	secret: 'Some_Secret_Key',
-    resave: true,
-  	saveUninitialized: true, 
+	resave: true,
+	saveUninitialized: true,
 	cookie: { maxAge: 1800000 }
-}))
+}));
 
 app.use(express.static(__dirname + '/public'));
 
@@ -56,7 +58,8 @@ initialize({
 		userService: userService,
 		permissionService: permissionService,
 		user2PermissionService: user2PermissionService,
-		messageService:messageService,
+		messageService: messageService,
+		sessionService: sessionService,
 		toolKit: toolKit
 	},
 	consumesMiddleware: {
@@ -74,25 +77,36 @@ httpsServer.listen(PORT, function() {
 });
 
 
-function ensureAuthenticated(req, res, next) {
-	if (req.url.startsWith('/index.html') 
+async function ensureAuthenticated(req, res, next) {
+	if (req.url.startsWith('/index.html')
 		|| req.url.startsWith('/v1/login')
 		|| req.method === 'OPTIONS' // skip the preflight checks
 	) {
-		//console.log("ensureAuthenticated: Unprotected url %s %s",req.method,req.url);
 		next();
-	} else if (req.headers && req.headers.authentication_token 
-			&& req.session.authentication_token == req.headers.authentication_token
-			&& req.session.user_id == req.headers.user_id) {
-		//console.log("ensureAuthenticated passed");
-		next();
+	} else if (req.headers && req.headers.authentication_token && req.headers.user_id) {
+		var authentication_token = await sessionService.getSession(req.headers.user_id);
+
+		if ( authentication_token && authentication_token == req.headers.authentication_token) {
+			//console.log("ensureAuthenticated passed");
+			sessionService.updateSession();
+			sessionService.deleteExpiredSessions();
+			next();
+		} else {
+			console.log("ensureAuthenticated failed, token mismatch ",authentication_token, req.headers.authentication_token);
+
+			//console.log("ensureAuthenticated failed: %s %s %s",req.url, req.headers.user_id,req.headers.authentication_token,);
+			req.session.authentication_token = undefined;
+			req.session.user_id = undefined;
+			return res.json({ "status": "error", "message": "authentication error" })
+		}
+
 	} else {
-		console.log("ensureAuthenticated failed: Redirecting to Login page:");
-		
+		console.log("ensureAuthenticated failed, no headers");
+
 		//console.log("ensureAuthenticated failed: %s %s %s",req.url, req.headers.user_id,req.headers.authentication_token,);
 		req.session.authentication_token = undefined;
 		req.session.user_id = undefined;
-		return res.json({"status":"error", "message":"authentication error"})
-		//return res.redirect('/index.html');
+		return res.json({ "status": "error", "message": "authentication error" })
+
 	}
 }

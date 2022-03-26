@@ -5,6 +5,8 @@ select * from user2deaddrop;
 
 select * from deaddrop;
 
+select * from session_store;
+
 select * from message;
 
 SELECT    d.deaddrop_id, m.user_id, m.message_id, m.title, m.message, m.publish_date
@@ -13,5 +15,9 @@ WHERE
     k.deaddrop_id = m.deaddrop_id
     AND k.deaddrop_id = d.deaddrop_id
     AND k.user_id = 'admin'
-order by d.deaddrop_id, m.publish_date
+order by d.deaddrop_id, m.publish_date;
+
+DELETE FROM session_store 
+	WHERE touch_date < (NOW() - INTERVAL 30 MINUTE) 
+    AND session_id=1;
 	

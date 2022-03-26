@@ -5,13 +5,13 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 	};
 
 	function PUT(req, res, next) {
-		console.log('PUT /user/{user_id}');
 		try {
 			var user_id = req.params.user_id;
 			var password = req.query.password;
 			var new_password = req.query.new_password;
 			var new_email = req.query.email;
-
+			console.log('PUT /user/',user_id);
+		
 			if (user_id == req.session.user_id) {
 
 				userService.getUser(user_id, (userObj) => {
@@ -81,10 +81,11 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 	};
 
 	function DELETE(req, res, next) {
-		console.log('DELETE /user/{user_id}');
 		try {
 			var user_id = req.params.user_id;
 			var password = req.params.password;
+			console.log('DELETE /user/',user_id);
+		
 			if (user_id == req.session.user_id) {
 				userService.getUser(user_id, (userObj) => {
 					if (userObj && userObj.password == password) {

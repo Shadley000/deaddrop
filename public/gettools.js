@@ -32,7 +32,6 @@ async function getUrl(url) {
 	const string = await response.text();
 	const json = string === "" ? {} : JSON.parse(string);
 	return json;
-	//return response.json(); // parses JSON response into native JavaScript objects
 }
 
 async function postUrl(url, postData = {}) {
@@ -41,7 +40,6 @@ async function postUrl(url, postData = {}) {
 	const string = await response.text();
 	const json = string === "" ? {} : JSON.parse(string);
 	return json;
-	//return response.json(); // parses JSON response into native JavaScript objects
 }
 
 async function putUrl(url, postData = {}) {
@@ -50,7 +48,6 @@ async function putUrl(url, postData = {}) {
 	const string = await response.text();
 	const json = string === "" ? {} : JSON.parse(string);
 	return json;
-	//return response.json(); // parses JSON response into native JavaScript objects
 }
 
 async function deleteUrl(url, postData = {}) {
@@ -59,5 +56,4 @@ async function deleteUrl(url, postData = {}) {
 	const string = await response.text();
 	const json = string === "" ? {} : JSON.parse(string);
 	return json;
-	//return response.json(); // parses JSON response into native JavaScript objects
 }
