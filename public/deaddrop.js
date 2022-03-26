@@ -47,7 +47,7 @@ function displayDeaddrop() {
 				data.selected_deaddrop_id = aDeaddropPermissionObj.permission_id.trim();	
 			}
 		}
-		console.log("data.selected_deaddrop_id:",data.selected_deaddrop_id)
+		//console.log("data.selected_deaddrop_id:",data.selected_deaddrop_id)
 		
 		var html = ""
 		html += '<label for="deaddrops">Deaddrop:</label>'

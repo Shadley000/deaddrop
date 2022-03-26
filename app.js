@@ -88,6 +88,7 @@ async function ensureAuthenticated(req, res, next) {
 
 		if ( authentication_token && authentication_token == req.headers.authentication_token) {
 			//console.log("ensureAuthenticated passed");
+			req.session.user_id = req.headers.user_id;
 			sessionService.updateSession();
 			sessionService.deleteExpiredSessions();
 			next();

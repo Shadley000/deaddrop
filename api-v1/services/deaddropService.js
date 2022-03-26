@@ -4,7 +4,7 @@ var permissionService = require('./permissionService').permissionService;
 const deaddropService = {
 	
 	getDeadDrop(user_id, deaddrop_id, callback) {
-		var sql = "SELECT    d.deaddrop_id, d.title"
+		var sql = "SELECT d.deaddrop_id, d.title"
 			+ " FROM    user_id2permission_id p,    deaddrop d"
 			+ " WHERE   p.permission_id = d.deaddrop_id"
 			+ " AND p.user_id = ?"
