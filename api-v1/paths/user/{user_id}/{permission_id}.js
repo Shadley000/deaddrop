@@ -7,8 +7,7 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 		try {
 			var user_id = req.params.user_id;
 			var permission_id = req.params.permission_id;
-			console.log('DELETE /user/%s/%s', user_id,permission_id);
-
+			
 			if(user_id == 'admin'){
 				res.status(401).json(toolKit.createSimpleResponse("error", "administrator is blocked from deleting its own permissions"));
 			}

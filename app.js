@@ -80,6 +80,7 @@ httpsServer.listen(PORT, function() {
 
 
 async function ensureAuthenticated(req, res, next) {
+	console.log(req.method+" "+req.url);
 	if (req.url.startsWith('/index.html')
 		|| req.url.startsWith('/v1/login')
 		|| req.method === 'OPTIONS' // skip the preflight checks

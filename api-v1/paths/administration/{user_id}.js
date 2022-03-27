@@ -7,11 +7,9 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 	};
 
 	function GET(req, res, next) {
-		console.log('GET /administration/{user_id}');
 		if (user2PermissionService.validatePermission('sys_administrator', req.session.permissions)) {
 			try {
 				var requested_user_id = req.params.user_id;
-				console.log(`GET /administration/${requested_user_id}`);
 				userService.getUser(requested_user_id, (userObj) => {
 					user2PermissionService.getUserPermissions(requested_user_id, (permissions) => {
 						userObj.permissions = permissions;
@@ -55,7 +53,6 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 	};
 
 	function PUT(req, res, next) {
-		console.log('PUT /administration/{user_id}');
 		if (user2PermissionService.validatePermission('sys_administrator', req.session.permissions)) {
 			try {
 				var requested_user_id = req.params.user_id;
@@ -109,7 +106,6 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 	};
 
 	function POST(req, res, next) {
-		console.log('POST /administration/{user_id}');
 		if (user2PermissionService.validatePermission('sys_administrator', req.session.permissions)) {
 			try {
 				var requested_user_id = req.params.user_id;
@@ -118,8 +114,8 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 				var user_id = req.session.user_id;
 				if (user_id == "admin") {
 
-					console.log(req.body)
-					console.log("%s %s %s", requested_user_id, password, email)
+					//console.log(req.body)
+					//console.log("%s %s %s", requested_user_id, password, email)
 					userService.createUser(requested_user_id, password, email, () => {
 						res.status(200).json(toolKit.createSimpleResponse("success", "User updated"))
 					})
@@ -166,7 +162,6 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 
 	function DELETE(req, res, next) {
 		if (user2PermissionService.validatePermission('sys_administrator', req.session.permissions)) {
-			console.log('DELETE /administration/{user_id}');
 			try {
 				var requested_user_id = req.params.user_id;
 				var user_id = req.session.user_id;

@@ -6,6 +6,9 @@ function displayUserAdmin() {
 			.then(function(userObjs) {
 				console.log("displayUserAdmin", userObjs);
 				if (userObjs) {
+					if(!data.selected_user_id){
+						data.selected_user_id = userObjs[0].user_id
+					}
 					var selectedUserObj = userObjs.find(o => o.user_id === data.selected_user_id);
 
 					var html = "<h3>User Administration</h3>"
@@ -16,13 +19,13 @@ function displayUserAdmin() {
 						if (data.selected_user_id && userObjs[i].user_id == data.selected_user_id) {
 							selected = "selected";
 						}
-						html += "<option value='" + userObjs[i].user_id + "'  " + selected + ">" + userObjs[i].user_id + "</option>";
+						html += `<option value='${userObjs[i].user_id}'  ${selected}>${userObjs[i].user_id}</option>`;
 					}
 					html += "</select>";
 					if (selectedUserObj) {
 						html += "</ul>";
-						html += "<li>User: " + selectedUserObj.user_id + "</li>";
-						html += "<li>Email: " + selectedUserObj.email + "</li>";
+						html += `<li>User: ${selectedUserObj.user_id}</li>`;
+						html += `<li>Email: ${selectedUserObj.email}</li>`;
 						html += '<button onclick="adminDeactivateUser()">Deactivate User</button>'
 						html += '<button onclick="adminDeleteUser()">Delete User</button>'
 						html += '<button onclick="adminResetUserPassword()">Reset User password</button>'
@@ -43,7 +46,7 @@ function displayUserAdmin() {
 			})
 			.catch(function(err) {
 				console.log('error: ' + err);
-				var html = "<h4>Error</h4><P>" + err + "</P>"
+				var html = `<h4>Error</h4><P>${err}</P>`
 				document.getElementById("article").innerHTML = html;
 			});
 	} else {
@@ -62,10 +65,9 @@ function displayUserPermissions(user_id) {
 			html += "<ul>"
 			for (var j = 0; j < selectedUserObj.permissions.length; j++) {
 				var permissionObj = selectedUserObj.permissions[j];
-				html += '<li>' + permissionObj.permission_id + '<BR>'
-					+ permissionObj.permission_name + '<BR>'
-					+ permissionObj.tags + '<BR>'
-					+ permissionObj.details;
+				html += `<li>${permissionObj.permission_id }<BR>${permissionObj.permission_name}<BR>${permissionObj.tags}<BR>`;
+				html += `<input type="text" id="detail_${permissionObj.permission_id }" name="detail_${permissionObj.permission_id }" value="${permissionObj.details}"><br>`
+				html += `<button onclick='updateUserPermission("${selectedUserObj.user_id}", "${permissionObj.permission_id}")'>update</button>`				
 				html += `<button onclick='deleteUserPermission("${selectedUserObj.user_id}", "${permissionObj.permission_id}")'>delete</button>`
 				html += '</li>';
 			}
@@ -84,9 +86,7 @@ function displayUserPermissions(user_id) {
 
 						}
 						else {
-							html += '<li>' + permission.permission_id + '<BR>'
-								+ permission.permission_name + '<BR>'
-								+ permission.tags
+							html += `<li>${permission.permission_id}<BR>${permission.permission_name}<BR>${permission.tags}<BR>`
 							html += `<button onclick='addUserPermission("${selectedUserObj.user_id}", "${permission.permission_id}")'>add</button>`
 							html += '</li>';
 						}
@@ -111,7 +111,14 @@ function addUserPermission(user_id, permission_id, details ="") {
 			displayUserPermissions(user_id) 
 		})
 }
-
+function updateUserPermission(user_id, permission_id) {
+	console.log("updateUserPermission");
+	var details = document.getElementById(`detail_${permission_id }`).value;
+	putUrl(`/v1/administration/${user_id}/${permission_id}?details=${details}`)
+		.then(function() {
+			displayUserPermissions(user_id) 
+		})
+}
 
 function selectUser() {
 	var user_id = document.getElementById("users").value;

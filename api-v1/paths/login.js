@@ -9,7 +9,6 @@ module.exports = function(toolKit, userService, user2PermissionService, sessionS
 		try {
 			var user_id = req.query.user_id;
 			var user_password = req.query.password;
-			console.log('GET /login ',user_id);
 			userService.getUser(user_id, (userObj) => {
 				if (!userObj) {
 					res.status(401).json(toolKit.createSimpleResponse("error", "user not found: " + user_id));
@@ -82,8 +81,7 @@ module.exports = function(toolKit, userService, user2PermissionService, sessionS
 			var user_id = req.body.user_id;
 			var password = req.body.password;
 			var email = req.body.email;
-			console.log('POST /login ',user_id);
-		
+			
 			userService.getUser(user_id, (userObj) => {
 				if (!userObj) {
 					userService.createUser(user_id, password, email, () => {
@@ -137,7 +135,6 @@ module.exports = function(toolKit, userService, user2PermissionService, sessionS
 	};
 
 	function DELETE(req, res, next) {
-		console.log('DELETE /logout');
 		try {
 			if (req.headers && req.headers.user_id) {
 				sessionService.deleteSession(req.headers.user_id, authentication_token)

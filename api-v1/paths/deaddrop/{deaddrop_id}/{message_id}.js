@@ -5,7 +5,6 @@ module.exports = function(toolKit,messageService) {
 	};
 
 	function POST(req, res, next) {
-		console.log('POST v1/deaddrop/:deaddrop_id/:message_id');
 		var user_id = req.session.user_id;
 		var deaddrop_id = req.params.deaddrop_id;
 		var messageObj = req.body;
@@ -68,7 +67,6 @@ module.exports = function(toolKit,messageService) {
 	};
 
 	function DELETE(req, res, next) {
-		console.log('POST v1/deaddrop/:deaddrop_id/:message_id');
 		var deaddrop_id = req.params.deaddrop_id;
 		var message_id = req.params.message_id;
 		var user_id = req.session.user_id;

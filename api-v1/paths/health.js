@@ -3,7 +3,6 @@ module.exports = function(toolKit) {
 		GET
 	};
 	function GET(req, res, next) {
-		console.log('GET /health');
 		try {
 			var connection = toolKit.getConnection();
 

@@ -4,7 +4,6 @@ module.exports = function(toolKit, user2PermissionService, permissionService) {
 	};
 
 	function GET(req, res, next) {
-		console.log('GET /administration/permissions');
 		if (user2PermissionService.validatePermission('sys_administrator', req.session.permissions)) {
 			try {
 				permissionService.getPermissions((permissions) => {

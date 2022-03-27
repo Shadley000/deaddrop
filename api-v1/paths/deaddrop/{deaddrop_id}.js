@@ -9,8 +9,7 @@ module.exports = function(toolKit, deaddropService, messageService, permissionSe
 		try {
 			var user_id = req.session.user_id;
 			var deaddrop_id = req.params.deaddrop_id;
-			console.log('GET /deaddrop/ "%s"', deaddrop_id);
-
+			
 			deaddropService.getDeadDrop(user_id, deaddrop_id, (deaddropObj) => {
 				if (deaddropObj) {
 					messageService.getDeadDropMessages(user_id, deaddrop_id, (messages) => {
@@ -61,8 +60,7 @@ module.exports = function(toolKit, deaddropService, messageService, permissionSe
 			var title = req.body.title;
 			var details = "CREATE READ UPDATE DELETE";
 			var tags = "DEADDROP";
-			console.log('POST /deaddrop/', deaddrop_id);
-
+			
 			permissionService.getPermission(deaddrop_id, (permissionObj) => {
 				if(permissionObj) {
 					res.status(401).json(toolKit.createSimpleResponse("error", "This deaddrop name is alread taken"));
