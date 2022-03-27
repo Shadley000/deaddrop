@@ -11,10 +11,11 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 			try {
 				var requested_user_id = req.params.user_id;
 				userService.getUser(requested_user_id, (userObj) => {
-					user2PermissionService.getUserPermissions(requested_user_id, (permissions) => {
-						userObj.permissions = permissions;
-						res.status(200).json(userObj);
-					});
+					user2PermissionService.getUserPermissions(requested_user_id)
+						.then((permissions) => {
+							userObj.permissions = permissions;
+							res.status(200).json(userObj);
+						});
 				});
 			}
 			catch (e) {

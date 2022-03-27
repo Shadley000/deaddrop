@@ -114,33 +114,34 @@ function displayAccount() {
 	//html += '<input type="password" id="password" name="password" value="password"><br>'
 
 	if (data.userObj.permissions) {
-		html += "<ul>"
 		if (data.userObj.permissions.length > 0) {
+			html += "<table>"
 			for (var j = 0; j < data.userObj.permissions.length; j++) {
 				var permissionObj = data.userObj.permissions[j];
-				if(permissionObj.tags == 'DEADDROP'){
-					html += `<li>${permissionObj.permission_id}<BR>${permissionObj.permission_name}<BR>${permissionObj.tags}<BR>${permissionObj.details}<BR>`;
-					if(data.userObj.user_id =="admin" && permissionObj.permission_id =="public deaddrop"){
-						
+				if (permissionObj.tags == 'DEADDROP') {
+					html += `<TR><TD>${permissionObj.permission_id}</TD><TD>${permissionObj.permission_name}</TD>`
+					html += `<TD>${permissionObj.tags}</TD><TD>${permissionObj.details}</TD>`;
+					if (data.userObj.user_id == "admin" && permissionObj.permission_id == "public deaddrop") {
+						html += `<TD></TD>`
 					} else {
-						html += `<button onclick='deletePermission("${permissionObj.permission_id}")'>delete</button>`
+						html += `<TD><button onclick='deletePermission("${permissionObj.permission_id}")'>delete</button></TD>`
 					}
-					html += '</li>';
+					html += '</TR>';
 				}
-			}
+			} html += "</table>"
 		} else {
-			html += '<li>no messages</li>';
+			html += '<h4>no messages</h4>';
 		}
-		html += "</ul>"
+
 	}
-	if(data.userObj.user_id !="admin"){html += "<button onclick='deleteAccount()'>Delete this account</button>"}
-	
+	if (data.userObj.user_id != "admin") { html += "<button onclick='deleteAccount()'>Delete this account</button>" }
+
 	document.getElementById("article").innerHTML = html;
 }
 
 function deleteAccount() {
-	let password = window.prompt("Are you sure you want to delete your account? Enter password to continue","")
-	if(password){
+	let password = window.prompt("Are you sure you want to delete your account? Enter password to continue", "")
+	if (password) {
 		var user_id = data.userObj.user_id;
 		let url = `/v1/user/${user_id}?password=${password}`;
 		deleteUrl(url)

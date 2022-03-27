@@ -67,21 +67,22 @@ module.exports = function(toolKit, deaddropService, messageService, permissionSe
 						res.status(401).json(toolKit.createSimpleResponse("error", "This deaddrop name is alread taken"));
 					} else {
 						permissionService.createPermission(deaddrop_id, deaddrop_id, tags)
-							.then( () => {
-							user2PermissionService.addUserPermission(user_id, deaddrop_id, details, () => {
-								deaddropService.createNewDeadDrop(deaddrop_id, title, deaddrop_key, () => {
-									messageObj = {
-										"deaddrop_id": deaddrop_id,
-										"user_id": user_id,
-										"title": "Welcome to " + deaddrop_id,
-										"message": "This is " + deaddrop_id
-									}
-									messageService.addMessage(messageObj, () => {
-										res.status(200).json(toolKit.createSimpleResponse("success", "deaddrop added"));
-									});
-								})
+							.then(() => {
+								user2PermissionService.addUserPermission(user_id, deaddrop_id, details)
+									.then(() => {
+										deaddropService.createNewDeadDrop(deaddrop_id, title, deaddrop_key, () => {
+											messageObj = {
+												"deaddrop_id": deaddrop_id,
+												"user_id": user_id,
+												"title": "Welcome to " + deaddrop_id,
+												"message": "This is " + deaddrop_id
+											}
+											messageService.addMessage(messageObj, () => {
+												res.status(200).json(toolKit.createSimpleResponse("success", "deaddrop added"));
+											});
+										})
+									})
 							})
-						})
 					}
 				});
 		}

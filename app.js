@@ -80,7 +80,7 @@ httpsServer.listen(PORT, function() {
 
 
 async function ensureAuthenticated(req, res, next) {
-	console.log(req.method+" "+req.url);
+	console.log(req.method + " " + req.url);
 	if (req.url.startsWith('/index.html')
 		|| req.url.startsWith('/v1/login')
 		|| req.method === 'OPTIONS' // skip the preflight checks
@@ -89,19 +89,20 @@ async function ensureAuthenticated(req, res, next) {
 	} else if (req.headers && req.headers.authentication_token && req.headers.user_id) {
 		var authentication_token = await sessionService.getSession(req.headers.user_id);
 
-		if ( authentication_token && authentication_token == req.headers.authentication_token) {
+		if (authentication_token && authentication_token == req.headers.authentication_token) {
 			//console.log("ensureAuthenticated passed");
 			req.session.user_id = req.headers.user_id;
 			sessionService.updateSession();
 			sessionService.deleteExpiredSessions();
-			
-			user2PermissionService.getUserPermissions(req.headers.user_id, (permissions) => {
-				req.session.permissions = permissions;
-				next();
-			})
-			
+
+			user2PermissionService.getUserPermissions(req.headers.user_id)
+				.then( (permissions) => {
+					req.session.permissions = permissions;
+					next();
+				})
+
 		} else {
-			console.log("ensureAuthenticated failed, token mismatch ",authentication_token, req.headers.authentication_token);
+			console.log("ensureAuthenticated failed, token mismatch ", authentication_token, req.headers.authentication_token);
 
 			//console.log("ensureAuthenticated failed: %s %s %s",req.url, req.headers.user_id,req.headers.authentication_token,);
 			req.session.authentication_token = undefined;

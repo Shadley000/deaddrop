@@ -13,14 +13,15 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 					res.status(401).json(toolKit.createSimpleResponse("error", "user not found: " + user_id));
 				}
 				userObj.password = "";
-				
+
 				if (user_id == req.headers.user_id) {
 					userObj.authentication_token = req.headers.authentication_token;
-				
-					user2PermissionService.getUserPermissions(user_id, (permissions) => {
-						userObj.permissions = permissions;
-						res.status(200).json(userObj);
-					});
+
+					user2PermissionService.getUserPermissions(user_id)
+						.then((permissions) => {
+							userObj.permissions = permissions;
+							res.status(200).json(userObj);
+						});
 				}
 				else {
 					userObj.authentication_token = "";
@@ -59,13 +60,13 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 			}
 		}
 	};
-	
+
 	function PUT(req, res, next) {
 		try {
 			var user_id = req.params.user_id;
 			var password = req.query.password;
 			var new_password = req.body.new_password;
-			var email = req.body.email ;
+			var email = req.body.email;
 			var display_name = req.body.display_name;
 
 			if (user_id == req.session.user_id) {
@@ -143,11 +144,12 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 			else if (user_id == req.session.user_id) {
 				userService.getUser(user_id, (userObj) => {
 					if (userObj && userObj.password == password) {
-						user2PermissionService.deleteUserPermissions(user_id, () => {
-							/*userService.deleteUser(user_id, () => {
-								res.status(200).json(toolKit.createSimpleResponse("success", "user deleted"))
-							});*/
-						})
+						user2PermissionService.deleteUserPermissions(user_id)
+							.then(() => {
+								/*userService.deleteUser(user_id, () => {
+									res.status(200).json(toolKit.createSimpleResponse("success", "user deleted"))
+								});*/
+							})
 					}
 					else {
 						res.status(403).json(toolKit.createSimpleResponse("error", "user does not exist"));

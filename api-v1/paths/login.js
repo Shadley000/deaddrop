@@ -20,17 +20,18 @@ module.exports = function(toolKit, userService, user2PermissionService, permissi
 							userObj.authentication_token = authentication_token;
 							userObj.password = "";
 
-							user2PermissionService.getUserPermissions(user_id, (permissions) => {
-								userObj.permissions = permissions;
+							user2PermissionService.getUserPermissions(user_id)
+								.then((permissions) => {
+									userObj.permissions = permissions;
 
-								if (user2PermissionService.validatePermission('sys_login', permissions)) {
-									res.status(200).json(userObj)
-								}
-								else {
-									res.status(401).json(toolKit.createSimpleResponse("error", "this users login privileges have been revoked"));
-								}
+									if (user2PermissionService.validatePermission('sys_login', permissions)) {
+										res.status(200).json(userObj)
+									}
+									else {
+										res.status(401).json(toolKit.createSimpleResponse("error", "this users login privileges have been revoked"));
+									}
 
-							});
+								});
 						});
 					});
 				}
@@ -87,15 +88,17 @@ module.exports = function(toolKit, userService, user2PermissionService, permissi
 			userService.getUser(user_id, (userObj) => {
 				if (!userObj) {
 					userService.createUser(user_id, password, email, display_name, () => {
-						user2PermissionService.addUserPermission(user_id, "sys_login", "", () => {
-							console.log(`${user_id} public sys_login permission added`);
-							res.status(200).json(toolKit.createSimpleResponse("success", "User created"))
-						});
+						user2PermissionService.addUserPermission(user_id, "sys_login", "")
+							.then(() => {
+								console.log(`${user_id} public sys_login permission added`);
+								res.status(200).json(toolKit.createSimpleResponse("success", "User created"))
+							});
 
 						var details = "CREATE READ";
-						user2PermissionService.addUserPermission(user_id, "public deaddrop", details, () => {
-							console.log(`${user_id} public deaddrop permission added`);
-						});
+						user2PermissionService.addUserPermission(user_id, "public deaddrop", details)
+							.then(() => {
+								console.log(`${user_id} public deaddrop permission added`);
+							});
 
 						details = "CREATE READ UPDATE DELETE";
 						var maildrop_id = user_id + " maildrop";
@@ -103,9 +106,10 @@ module.exports = function(toolKit, userService, user2PermissionService, permissi
 						permissionService.createPermission(maildrop_id, maildrop_id, tags)
 							.then(() => {
 								console.log(`${user_id} ${maildrop_id} permission created`);
-								user2PermissionService.addUserPermission(user_id, maildrop_id, details, () => {
-									console.log(`${user_id} ${maildrop_id} permission added`);
-								});
+								user2PermissionService.addUserPermission(user_id, maildrop_id, details)
+									.then(() => {
+										console.log(`${user_id} ${maildrop_id} permission added`);
+									});
 								var deaddrop_key = password;
 								deaddropService.createNewDeadDrop(maildrop_id, maildrop_id, deaddrop_key, () => {
 									console.log(`${maildrop_id} deaddrop created`);

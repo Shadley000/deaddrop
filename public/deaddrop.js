@@ -1,57 +1,5 @@
 
 
-function displayCreateDeaddrop() {
-	var html = "";
-	if (validatePermission('sys_create_deaddrop', data.userObj.permissions)) {
-		html += "<h3>Create New DeadDrop</h3>"
-		html += "<label for='deaddrop_id'>DeadDrop:</label> "
-		html += "<input	type='text' id='deaddrop_id' name='deaddrop_id'	value='16 digit minimum name'><br> "
-		html += "<label for='title'>Title:</label> "
-		html += "<input	type='text' id='title' name='title'	value='16 digit minimum title'><br> "
-		html += "<label for='deaddrop_key'>Key:</label>"
-		html += "<input type='text' id='deaddrop_key' name='deaddrop_key' value='16 digit minimum key'><br>"
-		html += "<button onclick='createDeadDrop()'>Create</button>"
-	} else {
-		html += "<h3>You do not have permission to be here</h3>"
-	}
-	document.getElementById("article").innerHTML = html;
-}
-
-function createDeadDrop() {
-	if (validatePermission('sys_create_deaddrop', data.userObj.permissions)) {
-		//html += '<li><button onclick="navigate(`createdeaddrop`)">Create DeadDrop</button></li>'
-		var deaddropObj = {
-			"deaddrop_id": document.getElementById("deaddrop_id").value,
-			"deaddrop_key": document.getElementById("deaddrop_key").value,
-			"title": document.getElementById("title").value
-		};
-		//console.log("createDeadDrop")
-		postUrl("/v1/deaddrop/" + deaddropObj.deaddrop_id, deaddropObj)
-			.then(postdata => {
-				data.selected_deaddrop_id = deaddropObj.deaddrop_id;
-				//console.log("deaddrop created: ",data.selected_deaddrop_id)
-				//reload the user object to refresh permissions			
-				getUrl("/v1/user/"+data.userObj.user_id)
-					.then(function(userObj) {
-						data.userObj = userObj;
-						data.articleState = "deaddrops";
-						data.selected_deaddrop_id = undefined;
-						displayArticle();
-					})
-					.catch(function(err) {
-						console.log('error: ' + err);				
-					});			
-			})
-			.catch(function(err) {
-				console.log('error: ' + err);
-				html = "<h3>Error</H3>";
-				html += "<p>" + err + "</p>";
-				document.getElementById("article").innerHTML = html;
-			});
-	}
-}
-
-// ************************************************************* 
 
 function displayDeaddrop() {
 	if (data && data.userObj && data.userObj.permissions) {
@@ -92,24 +40,28 @@ function displayDeaddrop() {
 					if (deaddropObj) {
 						var html = ""
 						if (deaddropObj.messages) {
-							html += "<ul>"
+							html += "<table>"
 							for (var j = 0; j < deaddropObj.messages.length; j++) {
 								var messageObj = deaddropObj.messages[j];
-								html += '<li>' + messageObj.user_id + '<BR>'
-									+ messageObj.publish_date + '<BR>'
-									+ messageObj.title + '<BR>'
-									+ messageObj.message;
+								html += `<TR><TH>${messageObj.user_id}</TH><TH>${messageObj.publish_date}</TH>` 
 								if (messageObj.user_id == data.userObj.user_id)
-									html += "<button onclick='deleteMessage(" + messageObj.message_id + ")'>delete</button>"
-								html += '</li>';
+									html += "<TD><button onclick='deleteMessage(" + messageObj.message_id + ")'>delete</button></TD>"
+								else
+									html += `<TD></TD>`
+								html += `</TR><TR>`
+								html += `<TH colspan="3">${messageObj.title}</TH>`
+								html += `</TR><TR>`
+								html += `<TD colspan="3">${messageObj.message}</TD>`;
+								html += `</TR>`;
 							}
-							html += "</ul>"
+							html += "</table>"
 						}
 						html += "<button onclick='displayDeaddrop()'>refresh</button><BR>"
 						html += '<label for="title">Title:</label>'
 						html += '<input type="text" id="title" name="title" value=""><br>'
-						html += '<label for="message">Message:</label>'
-						html += '<input type="text" id="message" name="message" value=""><br>'
+						//html += '<label for="message">Message:</label>'
+						//html += '<input type="text" id="message" name="message" value=""><br>'
+						html += `<textarea id="message" name="message" rows ="10" cols="50" maxlength="2048"></textarea>`
 						html += "<button onclick='addMessage()'>Send</button>"
 						document.getElementById("div_messages").innerHTML = html;
 					} else {
