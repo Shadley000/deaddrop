@@ -1,4 +1,4 @@
-module.exports = function(toolKit, userService, user2PermissionService) {
+module.exports = function(toolKit, userService, user2PermissionService, permissionService) {
 	let operations = {
 		POST,
 		DELETE
@@ -8,14 +8,25 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 		try {
 			var user_id = req.params.user_id;
 			var permission_id = req.params.permission_id;
-			var details = req.body.details;
-			var authorization_key = req.body.authorization_key;
+			var details = req.query.details;
+			var permission_key = req.query.permission_key;
 
 			if (user_id == req.session.user_id) {
-				user2PermissionService.addUserPermission(user_id, permission_id, details)
-					.then(() => {
-						res.status(200).json(toolKit.createSimpleResponse("success", "permission deleted"))
-					});
+				permissionService.getPermission(permission_id)
+					.then((permissionObj) => {
+						if (permissionObj) {
+							if (permissionObj.permission_key == permission_key) {
+								user2PermissionService.addUserPermission(user_id, permission_id, details)
+									.then(() => {
+										res.status(200).json(toolKit.createSimpleResponse("success", "${permission_id} permission deleted"))
+									});
+							} else {
+								res.status(401).json(toolKit.createSimpleResponse("error", `${permission_id} permission invalid permission_key`));
+							}
+						} else {
+							res.status(404).json(toolKit.createSimpleResponse("error", `${permission_id} permission not found`));
+						}
+					})
 			}
 			else {
 				res.status(401).json(toolKit.createSimpleResponse("error", "cannot modify other user"));
@@ -81,8 +92,8 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 			else if (user_id == req.session.user_id) {
 				user2PermissionService.deleteUserPermission(user_id, permission_id)
 					.then(() => {
-					res.status(200).json(toolKit.createSimpleResponse("success", "permission deleted"))
-				});
+						res.status(200).json(toolKit.createSimpleResponse("success", "permission deleted"))
+					});
 			}
 			else {
 				res.status(401).json(toolKit.createSimpleResponse("error", "cannot delete other user"));

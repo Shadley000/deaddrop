@@ -105,6 +105,8 @@ function deleteUserPermission(user_id, permission_id) {
 	console.log("deleteUserPermission");
 	deleteUrl(`/v1/administration/${user_id}/${permission_id}`)
 		.then(function() {
+			if(user_id == data.userObj.user_id) {refreshPermissions()}
+			
 			displayUserPermissions(user_id) 
 		})
 }
@@ -115,6 +117,8 @@ function addUserPermission(user_id, permission_id) {
 		details = "";
 	postUrl(`/v1/administration/${user_id}/${permission_id}?details=${details}`)
 		.then(function() {
+			if(user_id == data.userObj.user_id) {refreshPermissions()}
+			
 			displayUserPermissions(user_id) 
 		})
 }
@@ -125,6 +129,8 @@ function updateUserPermission(user_id, permission_id, details) {
 		newdetails = "";
 	putUrl(`/v1/administration/${user_id}/${permission_id}?details=${newdetails}`)
 		.then(function() {
+			if(user_id == data.userObj.user_id) {refreshPermissions()}
+			
 			displayUserPermissions(user_id) 
 		})
 }

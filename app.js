@@ -40,7 +40,7 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 app.use(session({
-	secret: 'Some_Super_Secret_Key',
+	secret: '97b95gbffbgfjSome_Super_Secret_Key',
 	resave: true,
 	saveUninitialized: true,
 	cookie: { maxAge: 1800000 }

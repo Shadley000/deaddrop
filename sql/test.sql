@@ -9,6 +9,8 @@ select * from session_store;
 
 select * from message;
 
+select * from permissions;
+
 SELECT    d.deaddrop_id, d.title
  FROM    user_id2permission_id p,    deaddrop d
 			 WHERE   p.permission_id = d.deaddrop_id

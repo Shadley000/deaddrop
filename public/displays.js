@@ -29,6 +29,7 @@ function displayNav() {
 			html += '<li><button onclick="navigate(`createdeaddrop`)">Create DeadDrop</button></li>'
 		}
 		html += '<li><button onclick="navigate(`account`)">Account</button></li>'
+		html += '<li><button onclick="navigate(`addpermission`)">Add Permission</button></li>'
 		html += '<li><button onclick="navigate(`about`)">About</button></li>'
 		html += '<li><button onclick="navigate(`logout`)">Logout</button></li>'
 		if (validatePermission(SYS_ADMINISTRATOR, data.userObj.permissions)) {
@@ -57,7 +58,9 @@ function displayArticle() {
 				displayAccount()
 			} else if (data.articleState == "useradmin") {
 				displayUserAdmin();
-			}
+			}else if (data.articleState == "addpermission") {
+				displayManualAddPermission();
+			}			
 		}
 		else {
 			if (data.articleState == "login") {

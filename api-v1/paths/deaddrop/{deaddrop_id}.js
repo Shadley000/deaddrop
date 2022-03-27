@@ -10,8 +10,6 @@ module.exports = function(toolKit, deaddropService, messageService, permissionSe
 			var user_id = req.session.user_id;
 			var deaddrop_id = req.params.deaddrop_id;
 			
-			console.log(req.session);
-
 			//verify the user has permission to create a deaddrop
 			if (user2PermissionService.isCacheUserPermission(req, deaddrop_id,toolKit.getConstants().SYS_DETAILS_READ)) {
 

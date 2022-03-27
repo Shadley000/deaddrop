@@ -118,7 +118,7 @@ function displayAccount() {
 			html += "<table>"
 			for (var j = 0; j < data.userObj.permissions.length; j++) {
 				var permissionObj = data.userObj.permissions[j];
-				if (permissionObj.tags.indexOf(SYS_TAGS_DEADDROP)>-1) {
+				if (permissionObj.tags.indexOf(SYS_TAGS_DEADDROP) > -1) {
 					html += `<TR><TD>${permissionObj.permission_id}</TD><TD>${permissionObj.permission_name}</TD>`
 					html += `<TD>${permissionObj.tags}</TD><TD>${permissionObj.details}</TD>`;
 					if (data.userObj.user_id == "admin" && permissionObj.permission_id == "public deaddrop") {
@@ -164,11 +164,8 @@ function deletePermission(permission_id) {
 	console.log(url);
 	deleteUrl(url)
 		.then(deletedata => {
-			getUrl("/v1/user/" + data.userObj.user_id)
-				.then(function(userObj) {
-					data.userObj = userObj;
-					//console.log("got new userObj: ",userObj)
-					//data.articleState = "deaddrops";
+			refreshPermissions()
+				.then(function() {
 					displayNav();
 					displayArticle();
 				})
@@ -181,6 +178,20 @@ function deletePermission(permission_id) {
 			console.log('error: ' + err);
 		});
 }
+function refreshPermissions() 	{
+	return new Promise(function(resolve, reject) {
+		getUrl("/v1/user/" + data.userObj.user_id)
+			.then(function(userObj) {
+				data.userObj = userObj;
+				resolve()
+			})
+			.catch(function(err) {
+				console.log('error: ' + err);
+				reject(err)
+			});
+	})
+}
+
 
 function validatePermission(permission, permissions) {
 	if (!permissions || permissions.length == 0) {

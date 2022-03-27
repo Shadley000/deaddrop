@@ -89,10 +89,10 @@ const user2PermissionService = {
 	isCacheUserPermission(req, permission_id, action)
 	{	if(req.session && req.session.permissions )
 		{	var permissionsObj =  req.session.permissions.find(o => o.permission_id == permission_id)
-			console.log(permissionsObj)
+			//console.log(permissionsObj)
 			return (permissionsObj.details.indexOf(action)>-1)
 		}
-		console.log(permissionsObj)
+		//console.log(permissionsObj)
 		return false;
 	},
 	getCacheUserPermissionObj(req, permission_id){
