@@ -10,7 +10,7 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 			var user_id = req.params.user_id;
 			var permission_id = req.params.permission_id;
 			var details = req.query.details ? req.query.details : "";
-			if (user2PermissionService.validatePermission('sys_administrator', req.session.permissions)) {
+			if (user2PermissionService.validatePermission(toolKit.getConstants().SYS_ADMINISTRATOR, req.session.permissions)) {
 				user2PermissionService.updateUserPermission(user_id, permission_id, details)
 					.then(() => {
 						res.status(200).json(toolKit.createSimpleResponse("success", "permission updated"))
@@ -67,7 +67,7 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 			var permission_id = req.params.permission_id;
 			var details = req.query.details ? req.query.details : "";
 
-			if (user2PermissionService.validatePermission('sys_administrator', req.session.permissions)) {
+			if (user2PermissionService.validatePermission(toolKit.getConstants().SYS_ADMINISTRATOR, req.session.permissions)) {
 				user2PermissionService.addUserPermission(user_id, permission_id, details)
 					.then(() => {
 						res.status(200).json(toolKit.createSimpleResponse("success", "permission deleted"))
@@ -127,7 +127,7 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 			var permission_id = req.params.permission_id;
 
 
-			if (user2PermissionService.validatePermission('sys_administrator', req.session.permissions)) {
+			if (user2PermissionService.validatePermission(toolKit.getConstants().SYS_ADMINISTRATOR, req.session.permissions)) {
 				if (user_id == 'admin') {
 					var permissionObj = req.session.permissions.find(o => o.permission_id === permission_id)
 					if (permissionObj.tags.indexOf("SYSTEM") > -1) {

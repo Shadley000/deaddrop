@@ -4,7 +4,7 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 	};
 
 	function GET(req, res, next) {
-		if (user2PermissionService.validatePermission('sys_administrator', req.session.permissions)) {
+		if (user2PermissionService.isCacheUserPermission(req,  toolKit.getConstants().SYS_ADMINISTRATOR,toolKit.getConstants().SYS_DETAILS_READ)) {
 			try {
 				var user_id = req.session.user_id;
 

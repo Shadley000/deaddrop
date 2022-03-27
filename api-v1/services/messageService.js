@@ -18,11 +18,11 @@ const messageService = {
 					resolve();
 				});
 			connection.end()
-					
-			})
-		},
 
-	deleteMessage(user_id,  deaddrop_id, message_id) {
+		})
+	},
+
+	deleteMessage(user_id, deaddrop_id, message_id) {
 		return new Promise(function(resolve, reject) {
 			var sql = `DELETE FROM message WHERE message_id =? AND user_id = ? AND deaddrop_id = ? `;
 			var connection = toolKit.getConnection();
@@ -69,23 +69,15 @@ const messageService = {
 		})
 	},
 
-	emptyDeadDrop(user_id, deaddrop_id) {
+	deleteDeadDropMessages(deaddrop_id) {
 		return new Promise(function(resolve, reject) {
-			/*var sql_GetUserPermission = "SELECT deaddrop_id from user_id2permission_id where user_id = ? and permission_id = ?"
 			var sql_deleteMessages = "DELETE FROM messages WHERE deaddrop_id =?"
 			var connection = toolKit.getConnection();
-			connection.query(sql_GetUserPermission, [deaddrop_id, deaddrop_key], function(error, results, fields) {
-
+			connection.query(sql_deleteMessages, [deaddrop_id], function(error, results, fields) {
 				if (error) reject(error);
-				if (results.length > 0) {
-					connection.query(sql_deleteMessages, [deaddrop_id], function(error, results, fields) {
-						if (error) throw error;
-					});
-
-				}
 				resolve();
 			});
-			connection.end();*/
+			connection.end();
 		})
 	}
 };

@@ -25,13 +25,13 @@ function displayNav() {
 	//console.log("displayNav ");
 	if (data && data.userObj && data.userObj.authentication_token) {
 		html += '<li><button onclick="navigate(`deaddrops`)">DeadDrops</button></li>'
-		if (validatePermission('sys_create_deaddrop', data.userObj.permissions)) {
+		if (validatePermission(DEADDROP_ADMIN, data.userObj.permissions)) {
 			html += '<li><button onclick="navigate(`createdeaddrop`)">Create DeadDrop</button></li>'
 		}
 		html += '<li><button onclick="navigate(`account`)">Account</button></li>'
 		html += '<li><button onclick="navigate(`about`)">About</button></li>'
 		html += '<li><button onclick="navigate(`logout`)">Logout</button></li>'
-		if (validatePermission('sys_administrator', data.userObj.permissions)) {
+		if (validatePermission(SYS_ADMINISTRATOR, data.userObj.permissions)) {
 			html += '<li><button onclick="navigate(`useradmin`)">User Administration</button></li>'
 		}
 	} else {

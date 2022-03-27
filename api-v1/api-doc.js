@@ -19,12 +19,7 @@ const apiDoc = {
 				"title": {
 					"description": 'The display name of the deaddrop.',
 					"type": 'string'
-				},
-				"deaddrop_key": {
-					"description": 'The secret key of the deaddrop.',
-					"type": 'string'
-				},
-				"messages": {
+				},"messages": {
 					"description": "array of messages",
 					"type": "array",
 					"items": {
@@ -73,6 +68,10 @@ const apiDoc = {
 				},
 				"permission_name": {
 					"description": 'The permission name.',
+					"type": 'string'
+				},
+				"permission_key": {
+					"description": 'The permission key.',
 					"type": 'string'
 				},
 				"tags": {

@@ -118,7 +118,7 @@ function displayAccount() {
 			html += "<table>"
 			for (var j = 0; j < data.userObj.permissions.length; j++) {
 				var permissionObj = data.userObj.permissions[j];
-				if (permissionObj.tags == 'DEADDROP') {
+				if (permissionObj.tags.indexOf(SYS_TAGS_DEADDROP)>-1) {
 					html += `<TR><TD>${permissionObj.permission_id}</TD><TD>${permissionObj.permission_name}</TD>`
 					html += `<TD>${permissionObj.tags}</TD><TD>${permissionObj.details}</TD>`;
 					if (data.userObj.user_id == "admin" && permissionObj.permission_id == "public deaddrop") {
@@ -168,7 +168,7 @@ function deletePermission(permission_id) {
 				.then(function(userObj) {
 					data.userObj = userObj;
 					//console.log("got new userObj: ",userObj)
-					data.articleState = "deaddrops";
+					//data.articleState = "deaddrops";
 					displayNav();
 					displayArticle();
 				})

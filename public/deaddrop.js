@@ -5,7 +5,7 @@ function displayDeaddrop() {
 	if (data && data.userObj && data.userObj.permissions) {
 
 		if (!data.selected_deaddrop_id) {
-			const aDeaddropPermissionObj = data.userObj.permissions.find(permission => permission.tags.includes("DEADDROP"));
+			const aDeaddropPermissionObj = data.userObj.permissions.find(permission => permission.tags.includes(SYS_TAGS_DEADDROP));
 			if (aDeaddropPermissionObj) {
 				data.selected_deaddrop_id = aDeaddropPermissionObj.permission_id.trim();
 				console.log("defaulting deaddrop_id:",data.selected_deaddrop_id)	
@@ -24,7 +24,7 @@ function displayDeaddrop() {
 			if( data.selected_deaddrop_id && data.selected_deaddrop_id == permission.permission_id) {
 				selected = 'selected';
 			}
-			if (permission.tags.includes("DEADDROP")){	
+			if (permission.tags.includes(SYS_TAGS_DEADDROP)){	
 				html += "<option value='" + permission.permission_id + "' " + selected + ">" + permission.permission_name + "</option>";
 			}
 			

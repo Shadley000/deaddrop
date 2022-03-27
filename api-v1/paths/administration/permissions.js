@@ -4,7 +4,7 @@ module.exports = function(toolKit, user2PermissionService, permissionService) {
 	};
 
 	function GET(req, res, next) {
-		if (user2PermissionService.validatePermission('sys_administrator', req.session.permissions)) {
+		if (user2PermissionService.validatePermission(toolKit.getConstants().SYS_ADMINISTRATOR, req.session.permissions)) {
 			try {
 				permissionService.getPermissions()
 					.then(function(permissions) {

@@ -1,12 +1,12 @@
 var toolKit = require('./toolKit').toolKit;
 
 const permissionService = {
-	createPermission(permission_id, permission_name, tags) {
+	createPermission(permission_id, permission_name, tags, permission_key) {
 		return new Promise(function(resolve, reject) {
 
-			var sql = `INSERT INTO permissions ( permission_id, permission_name, tags) VALUES (?,?,?)`;
+			var sql = `INSERT INTO permissions ( permission_id, permission_name, tags, permission_key) VALUES (?,?,?,?)`;
 			var connection = toolKit.getConnection();
-			connection.query(sql, [permission_id, permission_name, tags], function(error, results, fields) {
+			connection.query(sql, [permission_id, permission_name, tags, permission_key], function(error, results, fields) {
 				if (error) return reject(error);
 				resolve();
 			});
@@ -41,7 +41,7 @@ const permissionService = {
 
 	getPermission(permission_id) {
 		return new Promise(function(resolve, reject) {
-			var sql = `SELECT permission_id, permission_name, tags FROM permissions WHERE permission_id = ?`;
+			var sql = `SELECT permission_id, permission_name, tags, permission_key FROM permissions WHERE permission_id = ?`;
 			var connection = toolKit.getConnection();
 			connection.query(sql, [permission_id], function(error, results, fields) {
 				if (error) return reject(error);
@@ -49,7 +49,8 @@ const permissionService = {
 					resolve({
 						'permission_id': results[0].permission_id,
 						'permission_name': results[0].permission_name,
-						'tags': results[0].tags
+						'tags': results[0].tags,
+						'permission_key': results[0].permission_key
 					});
 				}
 				else resolve(undefined);;
@@ -60,7 +61,7 @@ const permissionService = {
 
 	getPermissions() {
 		return new Promise(function(resolve, reject) {
-			var sql = `SELECT permission_id, permission_name, tags FROM permissions ORDER BY permission_id `;
+			var sql = `SELECT permission_id, permission_name, tags, permission_key FROM permissions ORDER BY permission_id `;
 			var connection = toolKit.getConnection();
 			connection.query(sql, [], function(error, results, fields) {
 				if (error) return reject(error);
@@ -70,7 +71,8 @@ const permissionService = {
 						permissions.push({
 							'permission_id': results[i].permission_id,
 							'permission_name': results[i].permission_name,
-							'tags': results[i].tags
+							'tags': results[i].tags,
+							'permission_key': results[i].permission_key
 						});
 					}
 					resolve(permissions);

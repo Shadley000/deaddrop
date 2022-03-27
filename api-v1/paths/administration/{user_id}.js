@@ -7,7 +7,7 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 	};
 
 	function GET(req, res, next) {
-		if (user2PermissionService.validatePermission('sys_administrator', req.session.permissions)) {
+		if (user2PermissionService.validatePermission(toolKit.getConstants().SYS_ADMINISTRATOR, req.session.permissions)) {
 			try {
 				var requested_user_id = req.params.user_id;
 				userService.getUser(requested_user_id)
@@ -54,7 +54,7 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 	};
 
 	function PUT(req, res, next) {
-		if (user2PermissionService.validatePermission('sys_administrator', req.session.permissions)) {
+		if (user2PermissionService.validatePermission(toolKit.getConstants().SYS_ADMINISTRATOR, req.session.permissions)) {
 			try {
 				var requested_user_id = req.params.user_id;
 				var password = req.body.password; /// todo this is likely to be a problem
@@ -110,7 +110,7 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 	};
 
 	function POST(req, res, next) {
-		if (user2PermissionService.validatePermission('sys_administrator', req.session.permissions)) {
+		if (user2PermissionService.validatePermission(toolKit.getConstants().SYS_ADMINISTRATOR, req.session.permissions)) {
 			try {
 				var requested_user_id = req.params.user_id;
 				var password = req.body.password;
@@ -161,7 +161,7 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 	};
 
 	function DELETE(req, res, next) {
-		if (user2PermissionService.validatePermission('sys_administrator', req.session.permissions)) {
+		if (user2PermissionService.validatePermission(toolKit.getConstants().SYS_ADMINISTRATOR, req.session.permissions)) {
 			try {
 				var requested_user_id = req.params.user_id;
 				if (requested_user_id != "admin") {

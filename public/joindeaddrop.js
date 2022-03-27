@@ -1,7 +1,7 @@
 
 function displayCreateDeaddrop() {
 	var html = "";
-	if (validatePermission('sys_create_deaddrop', data.userObj.permissions)) {
+	if (validatePermission(DEADDROP_ADMIN, data.userObj.permissions)) {
 		html += "<h3>Create New DeadDrop</h3>"
 		html += "<label for='deaddrop_id'>DeadDrop:</label> "
 		html += "<input	type='text' id='deaddrop_id' name='deaddrop_id'	value='16 digit minimum name'><br> "
@@ -17,7 +17,7 @@ function displayCreateDeaddrop() {
 }
 
 function createDeadDrop() {
-	if (validatePermission('sys_create_deaddrop', data.userObj.permissions)) {
+	if (validatePermission(DEADDROP_ADMIN, data.userObj.permissions)) {
 		//html += '<li><button onclick="navigate(`createdeaddrop`)">Create DeadDrop</button></li>'
 		var deaddropObj = {
 			"deaddrop_id": document.getElementById("deaddrop_id").value,

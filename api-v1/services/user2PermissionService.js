@@ -86,11 +86,21 @@ const user2PermissionService = {
 		})
 	},
 
-	validatePermission(permission, permissions) {
-		if (!permissions || permissions.length == 0) {
-			return false;
+	isCacheUserPermission(req, permission_id, action)
+	{	if(req.session && req.session.permissions )
+		{	var permissionsObj =  req.session.permissions.find(o => o.permission_id == permission_id)
+			console.log(permissionsObj)
+			return (permissionsObj.details.indexOf(action)>-1)
 		}
-		return (permissions.find(o => o.permission_id === permission))
+		console.log(permissionsObj)
+		return false;
+	},
+	getCacheUserPermissionObj(req, permission_id){
+		return req.session && req.session.permissions && req.session.permissions.find(o => o.permission_id === permission_id)
+	},
+
+	validatePermission(permission_id, permissions) {
+		return (permissions && permissions.find(o => o.permission_id == permission_id))
 	}
 };
 

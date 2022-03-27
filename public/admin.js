@@ -1,7 +1,7 @@
 console.log("loadding admin.js")
 
 function displayUserAdmin() {
-	if (validatePermission('sys_administrator', data.userObj.permissions)) {
+	if (validatePermission(SYS_ADMINISTRATOR, data.userObj.permissions)) {
 		getUrl("/v1/administration?" + "&t=" + Math.random())
 			.then(function(userObjs) {
 				console.log("displayUserAdmin", userObjs);
@@ -137,21 +137,21 @@ function selectUser() {
 }
 
 function adminResetUserPassword() {
-	if (validatePermission('sys_administrator', data.userObj.permissions)) {
+	if (validatePermission(SYS_ADMINISTRATOR, data.userObj.permissions)) {
 	} else {
 		console.log("user does not have permission");
 	}
 }
 
 function adminDeactivateUser() {
-	if (validatePermission('sys_administrator', data.userObj.permissions)) {
+	if (validatePermission(SYS_ADMINISTRATOR, data.userObj.permissions)) {
 	} else {
 		console.log("user does not have permission");
 	}
 }
 
 function adminDeleteUser() {
-	if (validatePermission('sys_administrator', data.userObj.permissions)) {
+	if (validatePermission(SYS_ADMINISTRATOR, data.userObj.permissions)) {
 	} else {
 		console.log("user does not have permission");
 	}

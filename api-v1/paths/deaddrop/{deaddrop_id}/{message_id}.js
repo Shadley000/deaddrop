@@ -1,4 +1,4 @@
-module.exports = function(toolKit, messageService) {
+module.exports = function(toolKit, messageService, user2PermissionService) {
 	let operations = {
 		POST,
 		DELETE
@@ -9,15 +9,17 @@ module.exports = function(toolKit, messageService) {
 		var deaddrop_id = req.params.deaddrop_id;
 		var messageObj = req.body;
 		try {
-			if (messageObj.user_id == user_id && messageObj.deaddrop_id == deaddrop_id) {
-				messageService.addMessage(messageObj)
-					.then(() => {
-						res.status(200).json(toolKit.createSimpleResponse("Success", "message added"));
-					});
-			}
-			else {
-				console.log("attempted forgery user_id: %s deaddrop_id: %s messageObj: %j", user_id, deaddrop_id, messageObj)
-				res.status(404).json(toolKit.createSimpleResponse("error", "attempted forgery"));
+			if (user2PermissionService.isCacheUserPermission(req,  deaddrop_id,toolKit.getConstants().SYS_DETAILS_CREATE)) {
+				if (messageObj.user_id == user_id && messageObj.deaddrop_id == deaddrop_id) {
+					messageService.addMessage(messageObj)
+						.then(() => {
+							res.status(200).json(toolKit.createSimpleResponse("Success", "message added"));
+						});
+				}
+				else {
+					console.log("attempted forgery user_id: %s deaddrop_id: %s messageObj: %j", user_id, deaddrop_id, messageObj)
+					res.status(404).json(toolKit.createSimpleResponse("error", "attempted forgery"));
+				}
 			}
 		}
 		catch (e) {
@@ -73,10 +75,12 @@ module.exports = function(toolKit, messageService) {
 		var user_id = req.session.user_id;
 
 		try {
-			messageService.deleteMessage(user_id, deaddrop_id, message_id)
-				.then(() => {
-					res.status(200).json(toolKit.createSimpleResponse("Success", "message deleted"));
-				});
+			if (user2PermissionService.isCacheUserPermission(req,  deaddrop_id,toolKit.getConstants().SYS_DETAILS_DELETE)) {
+				messageService.deleteMessage(user_id, deaddrop_id, message_id)
+					.then(() => {
+						res.status(200).json(toolKit.createSimpleResponse("Success", "message deleted"));
+					});
+			}
 		}
 		catch (e) {
 			res.status(500).json(toolKit.createSimpleResponse("error", e.message));

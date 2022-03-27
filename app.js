@@ -83,6 +83,7 @@ async function ensureAuthenticated(req, res, next) {
 	console.log(req.method + " " + req.url);
 	if (req.url.startsWith('/index.html')
 		|| req.url.startsWith('/v1/login')
+		|| req.url.startsWith('/v1/health')
 		|| req.method === 'OPTIONS' // skip the preflight checks
 	) {
 		next();

@@ -24,8 +24,8 @@ module.exports = function(toolKit, userService, user2PermissionService, permissi
 								user2PermissionService.getUserPermissions(user_id)
 									.then((permissions) => {
 										userObj.permissions = permissions;
-
-										if (user2PermissionService.validatePermission('sys_login', permissions)) {
+										console.log(userObj);
+										if(permissions && permissions.find(o => o.permission_id == toolKit.getConstants().SYS_LOGIN)){
 											res.status(200).json(userObj)
 										}
 										else {
@@ -91,30 +91,29 @@ module.exports = function(toolKit, userService, user2PermissionService, permissi
 					if (!userObj) {
 						userService.createUser(user_id, password, email, display_name)
 							.then(() => {
-								user2PermissionService.addUserPermission(user_id, "sys_login", "")
+								user2PermissionService.addUserPermission(user_id, toolKit.getConstants().SYS_LOGIN, toolKit.getConstants().SYS_DETAILS_ALL)
 									.then(() => {
-										console.log(`${user_id} public sys_login permission added`);
+										console.log(`${user_id} ${toolKit.getConstants().SYS_LOGIN} permission added`);
 										res.status(200).json(toolKit.createSimpleResponse("success", "User created"))
 									});
 
-								var details = "CREATE READ";
+								var details = toolKit.getConstants().SYS_DETAILS_ALL;
 								user2PermissionService.addUserPermission(user_id, "public deaddrop", details)
 									.then(() => {
 										console.log(`${user_id} public deaddrop permission added`);
 									});
 
-								details = "CREATE READ UPDATE DELETE";
+								details = toolKit.getConstants().SYS_DETAILS_ALL;
 								var maildrop_id = user_id + " maildrop";
 								var tags = "DEADDROP MAILBOX";
-								permissionService.createPermission(maildrop_id, maildrop_id, tags)
+								permissionService.createPermission(maildrop_id, maildrop_id, tags, password)
 									.then(() => {
 										console.log(`${user_id} ${maildrop_id} permission created`);
 										user2PermissionService.addUserPermission(user_id, maildrop_id, details)
 											.then(() => {
 												console.log(`${user_id} ${maildrop_id} permission added`);
 											});
-										var deaddrop_key = password;
-										deaddropService.createNewDeadDrop(maildrop_id, maildrop_id, deaddrop_key)
+										deaddropService.createNewDeadDrop(maildrop_id, maildrop_id)
 											.then(() => {
 												console.log(`${maildrop_id} deaddrop created`);
 												messageObj = {
