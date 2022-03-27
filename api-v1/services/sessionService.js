@@ -8,7 +8,7 @@ const sessionService = {
 			var connection = toolKit.getConnection();
 			connection.query(sql, [user_id], function(error, results, fields) {
 				if (error) {
-					return reject(err);
+					return reject(error);
 				}
 				else if (results && results.length > 0) {
 					resolve(results[0].authentication_token)
@@ -27,7 +27,7 @@ const sessionService = {
 			var connection = toolKit.getConnection();
 			connection.query(sql, [user_id, authentication_token], function(error, results, fields) {
 				if (error) {
-					return reject(err);
+					return reject(error);
 				}
 				else {
 					resolve();
@@ -43,7 +43,7 @@ const sessionService = {
 			var connection = toolKit.getConnection();
 			connection.query(sql, [user_id], function(error, results, fields) {
 				if (error) {
-					return reject(err);
+					return reject(error);
 				}
 				else {
 					resolve();
@@ -59,7 +59,7 @@ const sessionService = {
 			var connection = toolKit.getConnection();
 			connection.query(sql, [user_id], function(error, results, fields) {
 				if (error) {
-					return reject(err);
+					return reject(error);
 				}
 				else {
 					resolve();
@@ -75,7 +75,7 @@ const sessionService = {
 			var connection = toolKit.getConnection();
 			connection.query(sql, [], function(error, results, fields) {
 				if (error) {
-					return reject(err);
+					return reject(error);
 				}
 				else {
 					resolve();
@@ -91,7 +91,7 @@ const sessionService = {
 			var connection = toolKit.getConnection();
 			connection.query(sql, [], function(error, results, fields) {
 				if (error) {
-					return reject(err);
+					return reject(error);
 				}
 				else {
 					resolve();

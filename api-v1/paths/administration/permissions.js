@@ -6,9 +6,10 @@ module.exports = function(toolKit, user2PermissionService, permissionService) {
 	function GET(req, res, next) {
 		if (user2PermissionService.validatePermission('sys_administrator', req.session.permissions)) {
 			try {
-				permissionService.getPermissions((permissions) => {
-					res.status(200).json(permissions);
-				});
+				permissionService.getPermissions()
+					.then(function(permissions) {
+						res.status(200).json(permissions);
+					});
 			}
 			catch (e) {
 				res.status(401).json(toolKit.createSimpleResponse("error", e.message));

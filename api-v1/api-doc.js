@@ -109,6 +109,10 @@ const apiDoc = {
 					"description": 'email',
 					"type": 'string'
 				},
+				"display_name": {
+					"description": 'display_name',
+					"type": 'string'
+				},
 				"authentication_token": {
 					"description": 'authentication_token',
 					"type": 'string'

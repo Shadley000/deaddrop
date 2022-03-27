@@ -1,4 +1,4 @@
-module.exports = function(toolKit, userService, user2PermissionService, sessionService) {
+module.exports = function(toolKit, userService, user2PermissionService, permissionService, sessionService, deaddropService, messageService) {
 	let operations = {
 		GET,
 		POST,
@@ -32,7 +32,7 @@ module.exports = function(toolKit, userService, user2PermissionService, sessionS
 
 							});
 						});
-					});					
+					});
 				}
 				else {
 					res.status(401).json(toolKit.createSimpleResponse("error", "password mismatch"));
@@ -81,15 +81,43 @@ module.exports = function(toolKit, userService, user2PermissionService, sessionS
 			var user_id = req.body.user_id;
 			var password = req.body.password;
 			var email = req.body.email;
-			
+			var display_name = req.body.display_name ? req.body.display_name : user_id;
+
+
 			userService.getUser(user_id, (userObj) => {
 				if (!userObj) {
-					userService.createUser(user_id, password, email, () => {
+					userService.createUser(user_id, password, email, display_name, () => {
 						user2PermissionService.addUserPermission(user_id, "sys_login", "", () => {
-							user2PermissionService.addUserPermission(user_id, "public deaddrop", "", () => {
-								res.status(200).json(toolKit.createSimpleResponse("success", "User created"))
-							});
+							console.log(`${user_id} public sys_login permission added`);
+							res.status(200).json(toolKit.createSimpleResponse("success", "User created"))
 						});
+
+						var details = "CREATE READ";
+						user2PermissionService.addUserPermission(user_id, "public deaddrop", details, () => {
+							console.log(`${user_id} public deaddrop permission added`);
+						});
+
+						details = "CREATE READ UPDATE DELETE";
+						var maildrop_id = user_id + " maildrop";
+						var tags = "DEADDROP MAILBOX";
+						permissionService.createPermission(maildrop_id, maildrop_id, tags)
+							.then(() => {
+								console.log(`${user_id} ${maildrop_id} permission created`);
+								user2PermissionService.addUserPermission(user_id, maildrop_id, details, () => {
+									console.log(`${user_id} ${maildrop_id} permission added`);
+								});
+								var deaddrop_key = password;
+								deaddropService.createNewDeadDrop(maildrop_id, maildrop_id, deaddrop_key, () => {
+									console.log(`${maildrop_id} deaddrop created`);
+									messageObj = {
+										"deaddrop_id": maildrop_id,
+										"user_id": user_id,
+										"title": "Welcome to your private mailbox",
+										"message": "This is your private mailbox for reading messages sent to only you"
+									}
+									messageService.addMessage(messageObj);
+								})
+							})
 					});
 				}
 				else {

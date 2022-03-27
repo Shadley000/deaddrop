@@ -9,11 +9,10 @@ FLUSH PRIVILEGES;
 
 show grants for 'deaddrop'@'localhost';
 
-
-
 CREATE TABLE users (
     user_id VARCHAR(64) NOT NULL,
     user_password VARCHAR(64) NOT NULL,
+    display_name VARCHAR(64) default null,
     email VARCHAR(64),
     is_verified int,
     PRIMARY KEY (user_id)
@@ -62,10 +61,10 @@ CREATE TABLE message (
     FOREIGN KEY (deaddrop_id) REFERENCES deaddrop(deaddrop_id)
 );
 
-insert into users (user_id, user_password, email) values ('admin', 'password', 'stephenjhadley@gmail.com');
-insert into users (user_id, user_password, email) values ('guest', 'password', 'guest@anywhere.com');
-insert into users (user_id, user_password, email) values ('testuser', 'password', 'somewhere@nowhere.com');
-insert into users (user_id, user_password, email) values ('banneduser', 'password', 'cubical666@inferno.com');
+insert into users (user_id, user_password, email, display_name) values ('admin', 'password', 'stephenjhadley@gmail.com', 'Administrator');
+insert into users (user_id, user_password, email, display_name) values ('guest', 'password', 'guest@anywhere.com', 'A Guest');
+insert into users (user_id, user_password, email, display_name) values ('testuser', 'password', 'somewhere@nowhere.com', 'TestUser');
+insert into users (user_id, user_password, email, display_name) values ('banneduser', 'password', 'cubical666@inferno.com', 'Spanked');
 
 INSERT INTO permissions (permission_id,permission_name,tags) values ('sys_administrator','System adminstration','SYSTEM');
 INSERT INTO permissions (permission_id,permission_name,tags) values ('sys_login','is the user allowed to login','SYSTEM');
@@ -87,15 +86,15 @@ insert into message(deaddrop_id, user_id,publish_date,title,message) values ('so
 insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'sys_administrator','');
 insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'sys_login','');
 insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'sys_create_deaddrop','');
-insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'public deaddrop','');
-insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'administration deaddrop','');
+insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'public deaddrop','CREATE READ UPDATE DELETE');
+insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'administration deaddrop','CREATE READ UPDATE DELETE');
 
 insert into user_id2permission_id(user_id, permission_id, details) values ('guest', 'sys_login','');
-insert into user_id2permission_id(user_id, permission_id, details) values ('guest', 'public deaddrop','');
+insert into user_id2permission_id(user_id, permission_id, details) values ('guest', 'public deaddrop','READ');
 
 insert into user_id2permission_id(user_id, permission_id, details) values ('testuser', 'sys_login','');
-insert into user_id2permission_id(user_id, permission_id, details) values ('testuser', 'public deaddrop','');
-insert into user_id2permission_id(user_id, permission_id, details) values ('testuser', 'some random deaddrop','');
+insert into user_id2permission_id(user_id, permission_id, details) values ('testuser', 'public deaddrop','READ');
+insert into user_id2permission_id(user_id, permission_id, details) values ('testuser', 'some random deaddrop','READ');
 
 
 

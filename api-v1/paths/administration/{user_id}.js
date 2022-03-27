@@ -16,7 +16,6 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 						res.status(200).json(userObj);
 					});
 				});
-
 			}
 			catch (e) {
 				res.status(401).json(toolKit.createSimpleResponse("error", e.message));
@@ -56,17 +55,16 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 		if (user2PermissionService.validatePermission('sys_administrator', req.session.permissions)) {
 			try {
 				var requested_user_id = req.params.user_id;
-				var password = req.query.password;
-				var user_id = req.session.user_id;
-				if (user_id == "admin") {
+				var password = req.body.password; /// todo this is likely to be a problem
+				var email = req.body.email;
+				var display_name = req.body.display_name;
 
-					userService.updateUser(requested_user_id, password, email, () => {
-						res.status(200).json(toolKit.createSimpleResponse("success", "user updated"))
-					});
-				}
+				userService.updateUser(requested_user_id, password, email, display_name, () => {
+					res.status(200).json(toolKit.createSimpleResponse("success", "user updated"))
+				});
 			}
 			catch (e) {
-				res.json(toolKit.createSimpleResponse("error", e.message));
+				res.status(500).json(toolKit.createSimpleResponse("error", e.message));
 			}
 		} else {
 			res.status(401).json(toolKit.createSimpleResponse("error", 'user does not have administrative privileges'));
@@ -83,10 +81,13 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 				"required": true
 			},
 			{
-				"in": 'query',
-				"name": 'password',
-				"type": 'string',
-				"required": true
+				"in": "body",
+				"name": "body",
+				"description": "user object containing update information",
+				"required": true,
+				"schema": {
+					"$ref": "#/definitions/User"
+				}
 			}
 		],
 		"responses": {
@@ -111,18 +112,13 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 				var requested_user_id = req.params.user_id;
 				var password = req.body.password;
 				var email = req.body.email;
-				var user_id = req.session.user_id;
-				if (user_id == "admin") {
-
-					//console.log(req.body)
-					//console.log("%s %s %s", requested_user_id, password, email)
-					userService.createUser(requested_user_id, password, email, () => {
-						res.status(200).json(toolKit.createSimpleResponse("success", "User updated"))
-					})
-				}
+				var display_name = req.body.display_name;
+				userService.createUser(requested_user_id, password, email, display_name, () => {
+					res.status(200).json(toolKit.createSimpleResponse("success", "User updated"))
+				})
 			}
 			catch (e) {
-				res.json(toolKit.createSimpleResponse("error", e.message));
+				res.status(500).json(toolKit.createSimpleResponse("error", e.message));
 			}
 		} else {
 			res.status(401).json(toolKit.createSimpleResponse("error", 'user does not have administrative privileges'));
@@ -164,16 +160,18 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 		if (user2PermissionService.validatePermission('sys_administrator', req.session.permissions)) {
 			try {
 				var requested_user_id = req.params.user_id;
-				var user_id = req.session.user_id;
-				if (user_id == "admin") {
+				if (requested_user_id != "admin") {
 
 					userService.deleteUser(requested_user_id, () => {
 						res.status(200).json(toolKit.createSimpleResponse("success", "user deleted"))
 					})
 				}
+				else {
+					res.status(401).json(toolKit.createSimpleResponse("error", 'admin user cannot be deleted'));
+				}
 			}
 			catch (e) {
-				res.json(toolKit.createSimpleResponse("error", e.message));
+				res.status(500).json(toolKit.createSimpleResponse("error", e.message));
 			}
 		} else {
 			res.status(401).json(toolKit.createSimpleResponse("error", 'user does not have administrative privileges'));

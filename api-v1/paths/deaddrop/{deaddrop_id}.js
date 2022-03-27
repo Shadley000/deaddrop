@@ -9,7 +9,7 @@ module.exports = function(toolKit, deaddropService, messageService, permissionSe
 		try {
 			var user_id = req.session.user_id;
 			var deaddrop_id = req.params.deaddrop_id;
-			
+
 			deaddropService.getDeadDrop(user_id, deaddrop_id, (deaddropObj) => {
 				if (deaddropObj) {
 					messageService.getDeadDropMessages(user_id, deaddrop_id, (messages) => {
@@ -60,23 +60,30 @@ module.exports = function(toolKit, deaddropService, messageService, permissionSe
 			var title = req.body.title;
 			var details = "CREATE READ UPDATE DELETE";
 			var tags = "DEADDROP";
-			
-			permissionService.getPermission(deaddrop_id, (permissionObj) => {
-				if(permissionObj) {
-					res.status(401).json(toolKit.createSimpleResponse("error", "This deaddrop name is alread taken"));
-				} else {
-					permissionService.createPermission(deaddrop_id, deaddrop_id, tags, () => {
-						//console.log('POST /deaddrop/{deaddrop_id} permission created');
-						deaddropService.createNewDeadDrop(deaddrop_id, title, deaddrop_key, () => {
-							//console.log('POST /deaddrop/{deaddrop_id} deaddrop created');
+
+			permissionService.getPermission(deaddrop_id)
+				.then(function(permissionObj) {
+					if (permissionObj) {
+						res.status(401).json(toolKit.createSimpleResponse("error", "This deaddrop name is alread taken"));
+					} else {
+						permissionService.createPermission(deaddrop_id, deaddrop_id, tags)
+							.then( () => {
 							user2PermissionService.addUserPermission(user_id, deaddrop_id, details, () => {
-								//console.log('POST /deaddrop/{deaddrop_id} user permission added');
-								res.status(200).json(toolKit.createSimpleResponse("success", "deaddrop added"));
+								deaddropService.createNewDeadDrop(deaddrop_id, title, deaddrop_key, () => {
+									messageObj = {
+										"deaddrop_id": deaddrop_id,
+										"user_id": user_id,
+										"title": "Welcome to " + deaddrop_id,
+										"message": "This is " + deaddrop_id
+									}
+									messageService.addMessage(messageObj, () => {
+										res.status(200).json(toolKit.createSimpleResponse("success", "deaddrop added"));
+									});
+								})
 							})
 						})
-					})
-				}
-			})
+					}
+				});
 		}
 		catch (e) {
 			res.status(500).json(toolKit.createSimpleResponse("error", e.message));
@@ -124,7 +131,7 @@ module.exports = function(toolKit, deaddropService, messageService, permissionSe
 		try {
 			var user_id = req.session.user_id;
 			var deaddrop_id = req.params.deaddrop_id;
-			console.log('DELETE /deaddrop/',  deaddrop_id);
+			console.log('DELETE /deaddrop/', deaddrop_id);
 			deaddropService.deleteDeadDrop(user_id, deaddrop_id, () => {
 				res.status(200).json(toolKit.createSimpleResponse("success", "deaddrop removed"));
 			})

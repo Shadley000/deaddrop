@@ -8,21 +8,26 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 	function GET(req, res, next) {
 		try {
 			var user_id = req.params.user_id;
-			if (user_id == req.headers.user_id) {
-				userService.getUser(user_id, (userObj) => {
-					if (!userObj) {
-						res.status(401).json(toolKit.createSimpleResponse("error", "user not found: " + user_id));
-					}
+			userService.getUser(user_id, (userObj) => {
+				if (!userObj) {
+					res.status(401).json(toolKit.createSimpleResponse("error", "user not found: " + user_id));
+				}
+				userObj.password = "";
+				
+				if (user_id == req.headers.user_id) {
 					userObj.authentication_token = req.headers.authentication_token;
-					userObj.password = "";
-
+				
 					user2PermissionService.getUserPermissions(user_id, (permissions) => {
 						userObj.permissions = permissions;
 						res.status(200).json(userObj);
 					});
-
-				});
-			}
+				}
+				else {
+					userObj.authentication_token = "";
+					userObj.permissions = [];
+					userObj.email = "";
+				}
+			});
 		}
 		catch (e) {
 			res.status(500).json(toolKit.createSimpleResponse("error", e.message));
@@ -54,20 +59,21 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 			}
 		}
 	};
+	
 	function PUT(req, res, next) {
 		try {
 			var user_id = req.params.user_id;
 			var password = req.query.password;
-			var new_password = req.query.new_password;
-			var new_email = req.query.email;
-			
+			var new_password = req.body.new_password;
+			var email = req.body.email ;
+			var display_name = req.body.display_name;
+
 			if (user_id == req.session.user_id) {
 
 				userService.getUser(user_id, (userObj) => {
-					if (userObj.password == user_password) {
-						if (!new_password) new_password = password;
-						if (!new_email) new_email = userObj.email;
-						userService.updateUser(user_id, new_password, new_email, () => {
+					if (userObj.password == password) {
+						if (!new_password) new_password = userObj.password;
+						userService.updateUser(user_id, new_password, email, display_name, () => {
 							res.status(200).json(toolKit.createSimpleResponse("success", "user updated"));
 						});
 					}
@@ -101,16 +107,13 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 				"required": true
 			},
 			{
-				"in": 'query',
-				"name": 'new_password',
-				"type": 'string',
-				"required": true
-			},
-			{
-				"in": 'query',
-				"name": 'email',
-				"type": 'string',
-				"required": true
+				"in": "body",
+				"name": "body",
+				"description": "user object containing update information",
+				"required": true,
+				"schema": {
+					"$ref": "#/definitions/User"
+				}
 			}
 		],
 		"responses": {
@@ -133,17 +136,17 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 		try {
 			var user_id = req.params.user_id;
 			var password = req.params.password;
-			
-			if(user_id == 'admin') {
+
+			if (user_id == 'admin') {
 				res.status(401).json(toolKit.createSimpleResponse("error", "cannot delete admin user"));
 			}
 			else if (user_id == req.session.user_id) {
 				userService.getUser(user_id, (userObj) => {
 					if (userObj && userObj.password == password) {
 						user2PermissionService.deleteUserPermissions(user_id, () => {
-							userService.deleteUser(user_id, () => {
+							/*userService.deleteUser(user_id, () => {
 								res.status(200).json(toolKit.createSimpleResponse("success", "user deleted"))
-							});
+							});*/
 						})
 					}
 					else {

@@ -3,12 +3,12 @@ var toolKit = require('./toolKit').toolKit;
 
 const userService = {
 
-	createUser(user_id, password, email, callback) {
+	createUser(user_id, password, email, display_name, callback) {
 
-		var sql = `INSERT INTO users (user_id, user_password, email) VALUES (?,?,?)`;
+		var sql = `INSERT INTO users (user_id, user_password, email, display_name) VALUES (?,?,?,?)`;
 		var connection = toolKit.getConnection();
 
-		connection.query(sql, [user_id, password, email], function(error, results, fields) {
+		connection.query(sql, [user_id, password, email, display_name], function(error, results, fields) {
 			if (error) throw error;
 			console.log('user created');
 			callback();
@@ -16,11 +16,11 @@ const userService = {
 		connection.end();
 	},
 
-	updateUser(user_id, password, email, callback) {
-		var sql = `UPDATE users SET user_password = ?,  email = ? WHERE user_id =?`;
+	updateUser(user_id, password, email, display_name, callback) {
+		var sql = `UPDATE users SET user_password = ?,  email = ?, display_name = ? WHERE user_id =?`;
 		var connection = toolKit.getConnection();
 
-		connection.query(sql, [password, email, user_id], function(error, results, fields) {
+		connection.query(sql, [password, email, display_name, user_id], function(error, results, fields) {
 			if (error) throw error;
 			console.log('user updated');
 			callback();
@@ -45,7 +45,7 @@ const userService = {
 	},
 
 	getUsers(callback) {
-		var sql = `SELECT user_id, user_password, email FROM users`;
+		var sql = `SELECT user_id, email, display_name FROM users`;
 		var connection = toolKit.getConnection();
 		connection.query(sql, [], function(error, results, fields) {
 			if (error) throw error;
@@ -57,7 +57,8 @@ const userService = {
 						"user_id": item.user_id,
 						"password": "",
 						"email": item.email,
-						"authentication_token": ""
+						"authentication_token": "",
+						"display_name": item.display_name
 					});
 				});
 				callback(list);
@@ -68,7 +69,7 @@ const userService = {
 	},
 
 	getUser(user_id, callback) {
-		var sql = `SELECT user_id, user_password, email FROM users WHERE user_id =?`;
+		var sql = `SELECT user_id, user_password, email, display_name FROM users WHERE user_id =?`;
 		var connection = toolKit.getConnection();
 		connection.query(sql, [user_id], function(error, results, fields) {
 			if (error) throw error;
@@ -78,7 +79,8 @@ const userService = {
 					"user_id": user_id,
 					"password": results[0].user_password,
 					"email": results[0].email,
-					"permissions": []
+					"permissions": [],
+					"display_name": results[0].display_name
 				});
 			}
 			else callback();

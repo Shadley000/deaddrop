@@ -56,22 +56,23 @@ function displayUserAdmin() {
 	}
 }
 
-
 function displayUserPermissions(user_id) {
 	getUrl(`/v1/administration/${user_id}?t=` + Math.random())
 		.then(function(selectedUserObj) {
 			console.log("displayUserPermissions selectedUserObj", selectedUserObj);
 			var html = "<h4>Permissions</h4>"
-			html += "<ul>"
+			html += "<table>"
 			for (var j = 0; j < selectedUserObj.permissions.length; j++) {
 				var permissionObj = selectedUserObj.permissions[j];
-				html += `<li>${permissionObj.permission_id }<BR>${permissionObj.permission_name}<BR>${permissionObj.tags}<BR>`;
-				html += `<input type="text" id="detail_${permissionObj.permission_id }" name="detail_${permissionObj.permission_id }" value="${permissionObj.details}"><br>`
-				html += `<button onclick='updateUserPermission("${selectedUserObj.user_id}", "${permissionObj.permission_id}")'>update</button>`				
-				html += `<button onclick='deleteUserPermission("${selectedUserObj.user_id}", "${permissionObj.permission_id}")'>delete</button>`
-				html += '</li>';
+				html += `<TR>`
+				html += `<TD><button onclick='deleteUserPermission("${selectedUserObj.user_id}", "${permissionObj.permission_id}")'>delete</button></TD>`;
+				html += `<TD>${permissionObj.tags}</TD>`
+				html += `<TD>${permissionObj.permission_id }</TD>`
+				html += `<TD>${permissionObj.permission_name}</TD>`
+				html += `<TD>${permissionObj.details}<button onclick='updateUserPermission("${selectedUserObj.user_id}", "${permissionObj.permission_id}", "${permissionObj.details}")'>update</button></TD>`;				
+				html += '</TR>';
 			}
-			html += "</ul>"
+			html += "</table>"
 			document.getElementById("div_user_permissions").innerHTML = html;
 
 			getUrl(`/v1/administration/permissions?t=` + Math.random())
@@ -79,19 +80,22 @@ function displayUserPermissions(user_id) {
 
 					var existingPermissions = selectedUserObj.permissions;
 					var html = "<h4>All Permissions</h4>"
-					html += "<ul>"
+					html += "<table>"
 					for (var j = 0; j < availablePermissions.length; j++) {
 						var permission = availablePermissions[j]
 						if (existingPermissions && existingPermissions.find(o => o.permission_id === permission.permission_id))  {
 
 						}
 						else {
-							html += `<li>${permission.permission_id}<BR>${permission.permission_name}<BR>${permission.tags}<BR>`
-							html += `<button onclick='addUserPermission("${selectedUserObj.user_id}", "${permission.permission_id}")'>add</button>`
+							html += `<TR>`
+							html += `<TD><button onclick='addUserPermission("${selectedUserObj.user_id}", "${permission.permission_id}")'>add</button></TD>`
+							html += `<TD>${permission.tags}</TD>`
+							html += `<TD>${permission.permission_id}</TD>`
+							html += `<TD>${permission.permission_name}</TD>`
 							html += '</li>';
 						}
 					}
-					html += "</ul>"
+					html += "</table>"
 					document.getElementById("div_availible_permissions").innerHTML = html;
 				});
 		});
@@ -104,17 +108,22 @@ function deleteUserPermission(user_id, permission_id) {
 			displayUserPermissions(user_id) 
 		})
 }
-function addUserPermission(user_id, permission_id, details ="") {
+function addUserPermission(user_id, permission_id) {
 	console.log("addUserPermission")
+	let details = window.prompt("Enter permission details to continue","")
+	if(!details)
+		details = "";
 	postUrl(`/v1/administration/${user_id}/${permission_id}?details=${details}`)
 		.then(function() {
 			displayUserPermissions(user_id) 
 		})
 }
-function updateUserPermission(user_id, permission_id) {
+function updateUserPermission(user_id, permission_id, details) {
 	console.log("updateUserPermission");
-	var details = document.getElementById(`detail_${permission_id }`).value;
-	putUrl(`/v1/administration/${user_id}/${permission_id}?details=${details}`)
+	let newdetails = window.prompt("Enter permission details to continue",details)
+	if(!newdetails)
+		newdetails = "";
+	putUrl(`/v1/administration/${user_id}/${permission_id}?details=${newdetails}`)
 		.then(function() {
 			displayUserPermissions(user_id) 
 		})

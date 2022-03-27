@@ -14,7 +14,7 @@ const messageService = {
 			function(error, results, fields) {
 
 				if (error) throw error;
-				callback();
+				if(callback) callback();
 			});
 		connection.end();
 	},
@@ -25,7 +25,7 @@ const messageService = {
 		connection.query(sql, [message_id,user_id,deaddrop_id], function(error, results, fields) {
 
 			if (error) throw error;
-			callback();
+			if(callback) callback();
 		});
 		connection.end();
 	},

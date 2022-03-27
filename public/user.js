@@ -29,7 +29,7 @@ function displayLogin() {
 	html += '<label for="user_id">user:</label>'
 	html += '<input type="text" id="user_id" name="user_id" value="admin"><br>'
 	html += '<label for="password">password:</label>'
-	html += '<input type="text" id="password" name="password" value="password"><br>'
+	html += '<input type="password" id="password" name="password" value="password"><br>'
 	html += '<button onclick="login()">Login</button>'
 	document.getElementById("article").innerHTML = html;
 }
@@ -63,29 +63,34 @@ function displayCreateAccount() {
 	html += '<label for="user_id">user:</label>'
 	html += '<input type="text" id="user_id" name="user_id" value="Anonymous"><br>'
 	html += '<label for="password">password:</label>'
-	html += '<input type="text" id="password" name="password" value="password"><br>'
+	html += '<input type="password" id="password" name="password" value="password"><br>'
 	html += '<label for="confirm_password">confirm password:</label>'
-	html += '<input type="text" id="confirm_password" name="confirm_password" value="password"><br>'
+	html += '<input type="password" id="confirm_password" name="confirm_password" value="password"><br>'
 	html += '<label for="email">email:</label>'
 	html += '<input type="text" id="email" name="email" value="Anonymous@anywhere.com"><br>'
+	html += '<label for="display_name">display name:</label>'
+	html += '<input type="text" id="display_name" name="display_name" value="timidtiger"><br>'
 	html += '<button onclick="createAccount()">Create Account</button>'
 	document.getElementById("article").innerHTML = html;
 }
 
 function createAccount() {
-	var password = document.getElementById("password").value;
-	var confirm_password = document.getElementById("confirm_password").value;
-	var user_id = document.getElementById("user_id").value;
-	var email = document.getElementById("email").value;
+	var password = document.getElementById("password").value.trim();
+	var confirm_password = document.getElementById("confirm_password").value.trim();
+	var user_id = document.getElementById("user_id").value.trim();
+	var email = document.getElementById("email").value.trim();
+	var display_name = document.getElementById("display_name").value.trim();
 
 	if (password != confirm_password) { alert("passwords do not match"); }
-	if (password.trim().length < 8) { alert("password must be at least 8 characters"); }
-	if (user_id.trim().length < 8) { alert("user_id must be at least 8 characters"); }
+	if (password.length < 8) { alert("password must be at least 8 characters"); }
+	if (user_id.length < 8) { alert("user_id must be at least 8 characters"); }
+	if (display_name.length < 8) { alert("display_name must be at least 8 characters"); }
 
 	var userObj = {
-		"user_id": user_id.trim(),
-		"password": password.trim(),
-		"email": email.trim(),
+		"user_id": user_id,
+		"password": password,
+		"email": email,
+		"display_name": display_name,
 		"authentication_token": ""
 	};
 	console.log("createAccount")
@@ -102,49 +107,52 @@ function createAccount() {
 
 function displayAccount() {
 	var html = "";
-	html += "<h3>account</h3>"
-	html += '<label for="user_id">user_id:</label>'
-	html += '<input type="text" id="user_id" name="user_id" value="' + data.userObj.user_id + '"><br>'
-
+	html += `<h3>${data.userObj.user_id}</h3>`
 	html += '<label for="email">email:</label>'
-	html += '<input type="text" id="email" name="email" value="' + data.userObj.email + '"><br>'
-	html += '<label for="password">password:</label>'
-	html += '<input type="text" id="password" name="password" value="password"><br>'
+	html += `<input type="text" id="email" name="email" value="${data.userObj.email}"><br>`
+	//html += '<label for="password">password:</label>'
+	//html += '<input type="password" id="password" name="password" value="password"><br>'
 
 	if (data.userObj.permissions) {
 		html += "<ul>"
 		if (data.userObj.permissions.length > 0) {
 			for (var j = 0; j < data.userObj.permissions.length; j++) {
 				var permissionObj = data.userObj.permissions[j];
-				html += '<li>' + permissionObj.permission_id + '<BR>'
-					+ permissionObj.permission_name + '<BR>'
-					+ permissionObj.tags + '<BR>'
-					+ permissionObj.details + '<BR>';
-				html += "<button onclick='deletePermission(`" + permissionObj.permission_id + "`)'>delete</button>"
-				html += '</li>';
+				if(permissionObj.tags == 'DEADDROP'){
+					html += `<li>${permissionObj.permission_id}<BR>${permissionObj.permission_name}<BR>${permissionObj.tags}<BR>${permissionObj.details}<BR>`;
+					if(data.userObj.user_id =="admin" && permissionObj.permission_id =="public deaddrop"){
+						
+					} else {
+						html += `<button onclick='deletePermission("${permissionObj.permission_id}")'>delete</button>`
+					}
+					html += '</li>';
+				}
 			}
 		} else {
 			html += '<li>no messages</li>';
 		}
 		html += "</ul>"
 	}
-	html += "<button onclick='deleteAccount()'>Delete this account</button>"
+	if(data.userObj.user_id !="admin"){html += "<button onclick='deleteAccount()'>Delete this account</button>"}
+	
 	document.getElementById("article").innerHTML = html;
 }
 
 function deleteAccount() {
-	var user_id = data.userObj.user_id;
-	var password = document.getElementById("password").value;
-	let url = `/v1/user/${user_id}?password=${password}`;
-	deleteUrl(url)
-		.then(data => {
-			initData();
-			displayNav();
-			displayArticle();
-		})
-		.catch(function(err) {
-			console.log('error: ' + err);
-		});
+	let password = window.prompt("Are you sure you want to delete your account? Enter password to continue","")
+	if(password){
+		var user_id = data.userObj.user_id;
+		let url = `/v1/user/${user_id}?password=${password}`;
+		deleteUrl(url)
+			.then(data => {
+				initData();
+				displayNav();
+				displayArticle();
+			})
+			.catch(function(err) {
+				console.log('error: ' + err);
+			});
+	}
 }
 
 function deletePermission(permission_id) {
