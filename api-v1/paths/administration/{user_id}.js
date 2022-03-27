@@ -10,13 +10,14 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 		if (user2PermissionService.validatePermission('sys_administrator', req.session.permissions)) {
 			try {
 				var requested_user_id = req.params.user_id;
-				userService.getUser(requested_user_id, (userObj) => {
-					user2PermissionService.getUserPermissions(requested_user_id)
-						.then((permissions) => {
-							userObj.permissions = permissions;
-							res.status(200).json(userObj);
-						});
-				});
+				userService.getUser(requested_user_id)
+					.then((userObj) => {
+						user2PermissionService.getUserPermissions(requested_user_id)
+							.then((permissions) => {
+								userObj.permissions = permissions;
+								res.status(200).json(userObj);
+							});
+					});
 			}
 			catch (e) {
 				res.status(401).json(toolKit.createSimpleResponse("error", e.message));
@@ -60,9 +61,10 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 				var email = req.body.email;
 				var display_name = req.body.display_name;
 
-				userService.updateUser(requested_user_id, password, email, display_name, () => {
-					res.status(200).json(toolKit.createSimpleResponse("success", "user updated"))
-				});
+				userService.updateUser(requested_user_id, password, email, display_name)
+					.then(() => {
+						res.status(200).json(toolKit.createSimpleResponse("success", "user updated"))
+					});
 			}
 			catch (e) {
 				res.status(500).json(toolKit.createSimpleResponse("error", e.message));
@@ -114,9 +116,10 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 				var password = req.body.password;
 				var email = req.body.email;
 				var display_name = req.body.display_name;
-				userService.createUser(requested_user_id, password, email, display_name, () => {
-					res.status(200).json(toolKit.createSimpleResponse("success", "User updated"))
-				})
+				userService.createUser(requested_user_id, password, email, display_name)
+					.then(() => {
+						res.status(200).json(toolKit.createSimpleResponse("success", "User updated"))
+					})
 			}
 			catch (e) {
 				res.status(500).json(toolKit.createSimpleResponse("error", e.message));
@@ -163,9 +166,10 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 				var requested_user_id = req.params.user_id;
 				if (requested_user_id != "admin") {
 
-					userService.deleteUser(requested_user_id, () => {
-						res.status(200).json(toolKit.createSimpleResponse("success", "user deleted"))
-					})
+					userService.deleteUser(requested_user_id)
+						.then(() => {
+							res.status(200).json(toolKit.createSimpleResponse("success", "user deleted"))
+						})
 				}
 				else {
 					res.status(401).json(toolKit.createSimpleResponse("error", 'admin user cannot be deleted'));

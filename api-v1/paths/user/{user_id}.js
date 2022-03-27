@@ -8,27 +8,28 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 	function GET(req, res, next) {
 		try {
 			var user_id = req.params.user_id;
-			userService.getUser(user_id, (userObj) => {
-				if (!userObj) {
-					res.status(401).json(toolKit.createSimpleResponse("error", "user not found: " + user_id));
-				}
-				userObj.password = "";
+			userService.getUser(user_id)
+				.then((userObj) => {
+					if (!userObj) {
+						res.status(401).json(toolKit.createSimpleResponse("error", "user not found: " + user_id));
+					}
+					userObj.password = "";
 
-				if (user_id == req.headers.user_id) {
-					userObj.authentication_token = req.headers.authentication_token;
+					if (user_id == req.headers.user_id) {
+						userObj.authentication_token = req.headers.authentication_token;
 
-					user2PermissionService.getUserPermissions(user_id)
-						.then((permissions) => {
-							userObj.permissions = permissions;
-							res.status(200).json(userObj);
-						});
-				}
-				else {
-					userObj.authentication_token = "";
-					userObj.permissions = [];
-					userObj.email = "";
-				}
-			});
+						user2PermissionService.getUserPermissions(user_id)
+							.then((permissions) => {
+								userObj.permissions = permissions;
+								res.status(200).json(userObj);
+							});
+					}
+					else {
+						userObj.authentication_token = "";
+						userObj.permissions = [];
+						userObj.email = "";
+					}
+				});
 		}
 		catch (e) {
 			res.status(500).json(toolKit.createSimpleResponse("error", e.message));
@@ -71,17 +72,19 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 
 			if (user_id == req.session.user_id) {
 
-				userService.getUser(user_id, (userObj) => {
-					if (userObj.password == password) {
-						if (!new_password) new_password = userObj.password;
-						userService.updateUser(user_id, new_password, email, display_name, () => {
-							res.status(200).json(toolKit.createSimpleResponse("success", "user updated"));
-						});
-					}
-					else {
-						res.status(403).json(toolKit.createSimpleResponse("error", "password mismatch"));
-					}
-				});
+				userService.getUser(user_id)
+					.then((userObj) => {
+						if (userObj.password == password) {
+							if (!new_password) new_password = userObj.password;
+							userService.updateUser(user_id, new_password, email, display_name)
+								.then(() => {
+									res.status(200).json(toolKit.createSimpleResponse("success", "user updated"));
+								});
+						}
+						else {
+							res.status(403).json(toolKit.createSimpleResponse("error", "password mismatch"));
+						}
+					});
 			}
 			else {
 				res.status(403).json(toolKit.createSimpleResponse("error", "cannot update other user"));
@@ -142,20 +145,21 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 				res.status(401).json(toolKit.createSimpleResponse("error", "cannot delete admin user"));
 			}
 			else if (user_id == req.session.user_id) {
-				userService.getUser(user_id, (userObj) => {
-					if (userObj && userObj.password == password) {
-						user2PermissionService.deleteUserPermissions(user_id)
-							.then(() => {
-								/*userService.deleteUser(user_id, () => {
-									res.status(200).json(toolKit.createSimpleResponse("success", "user deleted"))
-								});*/
-							})
-					}
-					else {
-						res.status(403).json(toolKit.createSimpleResponse("error", "user does not exist"));
-					}
+				userService.getUser(user_id)
+					.then((userObj) => {
+						if (userObj && userObj.password == password) {
+							user2PermissionService.deleteUserPermissions(user_id)
+								.then(() => {
+									/*userService.deleteUser(user_id, () => {
+										res.status(200).json(toolKit.createSimpleResponse("success", "user deleted"))
+									});*/
+								})
+						}
+						else {
+							res.status(403).json(toolKit.createSimpleResponse("error", "user does not exist"));
+						}
 
-				});
+					});
 			}
 			else {
 				res.status(403).json(toolKit.createSimpleResponse("error", "cannot delete other user"));

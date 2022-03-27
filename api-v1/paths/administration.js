@@ -1,4 +1,4 @@
-module.exports = function(toolKit, userService,user2PermissionService) {
+module.exports = function(toolKit, userService, user2PermissionService) {
 	let operations = {
 		GET
 	};
@@ -9,9 +9,10 @@ module.exports = function(toolKit, userService,user2PermissionService) {
 				var user_id = req.session.user_id;
 
 				if (user_id == "admin") {
-					userService.getUsers((users) => {
-						res.status(200).json(users)
-					});
+					userService.getUsers()
+						.then((users) => {
+							res.status(200).json(users)
+						});
 				}
 			}
 			catch (e) {
