@@ -1,4 +1,4 @@
-module.exports = function(toolKit,messageService) {
+module.exports = function(toolKit, messageService) {
 	let operations = {
 		POST,
 		DELETE
@@ -10,9 +10,10 @@ module.exports = function(toolKit,messageService) {
 		var messageObj = req.body;
 		try {
 			if (messageObj.user_id == user_id && messageObj.deaddrop_id == deaddrop_id) {
-				messageService.addMessage(messageObj, () => {
-					res.status(200).json(toolKit.createSimpleResponse("Success", "message added"));
-				});
+				messageService.addMessage(messageObj)
+					.then(() => {
+						res.status(200).json(toolKit.createSimpleResponse("Success", "message added"));
+					});
 			}
 			else {
 				console.log("attempted forgery user_id: %s deaddrop_id: %s messageObj: %j", user_id, deaddrop_id, messageObj)
@@ -72,9 +73,10 @@ module.exports = function(toolKit,messageService) {
 		var user_id = req.session.user_id;
 
 		try {
-			messageService.deleteMessage(user_id, deaddrop_id, message_id, () => {
-				res.status(200).json(toolKit.createSimpleResponse("Success", "message deleted"));
-			});
+			messageService.deleteMessage(user_id, deaddrop_id, message_id)
+				.then(() => {
+					res.status(200).json(toolKit.createSimpleResponse("Success", "message deleted"));
+				});
 		}
 		catch (e) {
 			res.status(500).json(toolKit.createSimpleResponse("error", e.message));

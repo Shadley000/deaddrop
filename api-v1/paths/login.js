@@ -114,16 +114,17 @@ module.exports = function(toolKit, userService, user2PermissionService, permissi
 												console.log(`${user_id} ${maildrop_id} permission added`);
 											});
 										var deaddrop_key = password;
-										deaddropService.createNewDeadDrop(maildrop_id, maildrop_id, deaddrop_key, () => {
-											console.log(`${maildrop_id} deaddrop created`);
-											messageObj = {
-												"deaddrop_id": maildrop_id,
-												"user_id": user_id,
-												"title": "Welcome to your private mailbox",
-												"message": "This is your private mailbox for reading messages sent to only you"
-											}
-											messageService.addMessage(messageObj);
-										})
+										deaddropService.createNewDeadDrop(maildrop_id, maildrop_id, deaddrop_key)
+											.then(() => {
+												console.log(`${maildrop_id} deaddrop created`);
+												messageObj = {
+													"deaddrop_id": maildrop_id,
+													"user_id": user_id,
+													"title": "Welcome to your private mailbox",
+													"message": "This is your private mailbox for reading messages sent to only you"
+												}
+												messageService.addMessage(messageObj);
+											})
 									})
 							});
 					}
