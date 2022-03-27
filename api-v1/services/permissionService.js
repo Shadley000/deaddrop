@@ -49,9 +49,9 @@ const permissionService = {
 	},
 	
 	getPermissions(callback) {
-		var sql = `SELECT permission_id, permission_name, tags FROM permissions `;
+		var sql = `SELECT permission_id, permission_name, tags FROM permissions ORDER BY permission_id `;
 		var connection = toolKit.getConnection();
-		connection.query(sql, [user_id], function(error, results, fields) {
+		connection.query(sql, [], function(error, results, fields) {
 			if (error) throw error;
 			if (results) {
 				var permissions = [];

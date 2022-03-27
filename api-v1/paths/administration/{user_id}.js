@@ -90,12 +90,6 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 				"name": 'password',
 				"type": 'string',
 				"required": true
-			},
-			{
-				"in": 'query',
-				"name": 'admin_password',
-				"type": 'string',
-				"required": true
 			}
 		],
 		"responses": {
@@ -152,12 +146,6 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 				"schema": {
 					"$ref": "#/definitions/User"
 				}
-			},
-			{
-				"in": 'query',
-				"name": 'admin_password',
-				"type": 'string',
-				"required": true
 			}
 		],
 		"responses": {
@@ -206,12 +194,6 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 			{
 				"in": 'path',
 				"name": 'user_id',
-				"type": 'string',
-				"required": true
-			},
-			{
-				"in": 'query',
-				"name": 'admin_password',
 				"type": 'string',
 				"required": true
 			}

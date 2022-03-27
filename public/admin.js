@@ -29,8 +29,11 @@ function displayUserAdmin() {
 						html += "</ul>";
 						html += "<DIV id='div_user_permissions'>";
 						html += "</DIV>";
+						html += "<DIV id='div_availible_permissions'>";
+						html += "</DIV>";
 
-						displayUserPermissions(selectedUserObj.user_id)
+
+						displayUserPermissions(selectedUserObj.user_id);
 					}
 					document.getElementById("article").innerHTML = html;
 				} else {
@@ -52,7 +55,7 @@ function displayUserAdmin() {
 
 
 function displayUserPermissions(user_id) {
-	getUrl(`/v1/administration/${user_id}?&t=` + Math.random())
+	getUrl(`/v1/administration/${user_id}?t=` + Math.random())
 		.then(function(selectedUserObj) {
 			console.log("displayUserPermissions selectedUserObj", selectedUserObj);
 			var html = "<h4>Permissions</h4>"
@@ -63,14 +66,52 @@ function displayUserPermissions(user_id) {
 					+ permissionObj.permission_name + '<BR>'
 					+ permissionObj.tags + '<BR>'
 					+ permissionObj.details;
-				html += "<button onclick='deleteUserPermission(" + selectedUserObj.user_id + ", " + permissionObj.permission_id + ")'>delete</button>"
+				html += `<button onclick='deleteUserPermission("${selectedUserObj.user_id}", "${permissionObj.permission_id}")'>delete</button>`
 				html += '</li>';
 			}
 			html += "</ul>"
 			document.getElementById("div_user_permissions").innerHTML = html;
-		});
 
+			getUrl(`/v1/administration/permissions?t=` + Math.random())
+				.then(function(availablePermissions) {
+
+					var existingPermissions = selectedUserObj.permissions;
+					var html = "<h4>All Permissions</h4>"
+					html += "<ul>"
+					for (var j = 0; j < availablePermissions.length; j++) {
+						var permission = availablePermissions[j]
+						if (existingPermissions && existingPermissions.find(o => o.permission_id === permission.permission_id))  {
+
+						}
+						else {
+							html += '<li>' + permission.permission_id + '<BR>'
+								+ permission.permission_name + '<BR>'
+								+ permission.tags
+							html += `<button onclick='addUserPermission("${selectedUserObj.user_id}", "${permission.permission_id}")'>add</button>`
+							html += '</li>';
+						}
+					}
+					html += "</ul>"
+					document.getElementById("div_availible_permissions").innerHTML = html;
+				});
+		});
 }
+
+function deleteUserPermission(user_id, permission_id) {
+	console.log("deleteUserPermission");
+	deleteUrl(`/v1/administration/${user_id}/${permission_id}`)
+		.then(function() {
+			displayUserPermissions(user_id) 
+		})
+}
+function addUserPermission(user_id, permission_id, details ="") {
+	console.log("addUserPermission")
+	postUrl(`/v1/administration/${user_id}/${permission_id}?details=${details}`)
+		.then(function() {
+			displayUserPermissions(user_id) 
+		})
+}
+
 
 function selectUser() {
 	var user_id = document.getElementById("users").value;

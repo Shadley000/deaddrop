@@ -27,7 +27,7 @@ function logout() {
 function displayLogin() {
 	var html = "<h3>Login</h3>"
 	html += '<label for="user_id">user:</label>'
-	html += '<input type="text" id="user_id" name="user_id" value="Anonymous"><br>'
+	html += '<input type="text" id="user_id" name="user_id" value="admin"><br>'
 	html += '<label for="password">password:</label>'
 	html += '<input type="text" id="password" name="password" value="password"><br>'
 	html += '<button onclick="login()">Login</button>'
