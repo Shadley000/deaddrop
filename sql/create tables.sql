@@ -61,10 +61,22 @@ CREATE TABLE message (
     FOREIGN KEY (deaddrop_id) REFERENCES deaddrop(deaddrop_id)
 );
 
+CREATE TABLE contacts (
+	user_id VARCHAR(64) NOT NULL,
+	contact_user_id VARCHAR(64) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (contact_user_id) REFERENCES users(user_id),
+    PRIMARY KEY (user_id, contact_user_id)
+);
+
 insert into users (user_id, user_password, email, display_name) values ('admin', 'password', 'stephenjhadley@gmail.com', 'Administrator');
 insert into users (user_id, user_password, email, display_name) values ('guest', 'password', 'guest@anywhere.com', 'A Guest');
 insert into users (user_id, user_password, email, display_name) values ('testuser', 'password', 'somewhere@nowhere.com', 'TestUser');
 insert into users (user_id, user_password, email, display_name) values ('banneduser', 'password', 'cubical666@inferno.com', 'Spanked');
+
+insert into contacts (user_id, contact_user_id) values ('admin', 'testuser');
+insert into contacts (user_id, contact_user_id) values ('admin', 'banneduser');
+insert into contacts (user_id, contact_user_id) values ('testuser', 'banneduser');
 
 INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('SYS_ADMINISTRATOR','System adminstration','SYSTEM','password');
 INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('SYS_LOGIN','the most basic login priviledge','SYSTEM','password');

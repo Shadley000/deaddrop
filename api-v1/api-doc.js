@@ -9,6 +9,19 @@ const apiDoc = {
 	"consumes": ["application/json"],
 	"produces": ["application/json"],
 	"definitions": {
+		"Contact": {
+			"type": 'object',
+			"properties": {
+				"contact_user_id": {
+					"description": 'The user_id for the contact',
+					"type": 'string'
+				},
+				"user_id": {
+					"description": 'The user_id.',
+					"type": 'string'
+				}
+			}
+		},
 		"Deaddrop": {
 			"type": 'object',
 			"properties": {

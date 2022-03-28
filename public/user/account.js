@@ -7,6 +7,7 @@ function displayAccount() {
 	html += `<input type="text" id="email" name="email" value="${data.userObj.email}"><br>`
 	//html += '<label for="password">password:</label>'
 	//html += '<input type="password" id="password" name="password" value="password"><br>'
+	html += `<button onclick='navigate("${NAV_CONTACTS}")'>Contact List</button>`
 
 	if (data.userObj.permissions) {
 		if (data.userObj.permissions.length > 0) {
@@ -32,7 +33,7 @@ function displayAccount() {
 	if (data.userObj.user_id != "admin") { html += "<button onclick='deleteAccount()'>Delete this account</button>" }
 
 	html += `<button onclick='navigate("${NAV_ADD_PERMISSON}")'>Manually Add a Permission</button>`
-
+	
 	document.getElementById("article").innerHTML = html;
 }
 

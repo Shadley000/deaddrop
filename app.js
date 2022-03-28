@@ -13,6 +13,7 @@ var permissionService = require('./api-v1/services/permissionService').permissio
 var user2PermissionService = require('./api-v1/services/user2PermissionService').user2PermissionService;
 var messageService = require('./api-v1/services/messageService').messageService;
 var sessionService = require('./api-v1/services/sessionService').sessionService;
+var contactsService  = require('./api-v1/services/contactsService').contactsService;
 var toolKit = require('./api-v1/services/toolKit').toolKit;
 var v1ApiDoc = require('./api-v1/api-doc').apiDoc;
 
@@ -62,6 +63,7 @@ initialize({
 		user2PermissionService: user2PermissionService,
 		messageService: messageService,
 		sessionService: sessionService,
+		contactsService: contactsService,
 		toolKit: toolKit
 	},
 	consumesMiddleware: {

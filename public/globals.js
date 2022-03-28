@@ -12,9 +12,8 @@ const SYS_DETAILS_UPDATE = "UPDATE";
 const SYS_DETAILS_DELETE = "DELETE";
 
 const NAV_LOGOUT = "logout"
-const NAV_DEADDROPS = "deaddrops"
-const NAV_CREATE_DEADDROP = "createdeaddrop"
 const NAV_ACCOUNT = "account"
+const NAV_CONTACTS = "contacts"
 const NAV_USER_ADMIN = "useradmin"
 const NAV_ADD_PERMISSON = "addpermission"
 const NAV_LOGIN = "login"
@@ -22,6 +21,9 @@ const NAV_CREATE_ACCOUNT = "createaccount"
 const NAV_ABOUT = "about"
 const NAV_ERROR = "ERROR"
 const NAV_BLANK = "BLANK"
+
+const NAV_DEADDROPS = "deaddrops"
+const NAV_CREATE_DEADDROP = "createdeaddrop"
 
 function initData() {
 	data = {
@@ -45,14 +47,15 @@ function buildDisplayData() {
 	{ "name": NAV_LOGOUT, 			"action": displayLogout, 				"audience":'private', 'permission_required': SYS_LOGIN,			'title': 'Logout', 'Navbar':true },
 	
 	{ "name": NAV_CREATE_DEADDROP, 	"action": displayCreateDeaddrop,		"audience":'private', 'permission_required': DEADDROP_ADMIN,	'title': 'Create Deaddrop', 'Navbar':false   },
+	{ "name": NAV_CONTACTS,		 	"action": displayContacts,				"audience":'private', 'permission_required': SYS_LOGIN,			'title': 'Contacts', 'Navbar':false   },
 	{ "name": NAV_ADD_PERMISSON, 	"action": displayManualAddPermission, 	"audience":'private', 'permission_required': SYS_LOGIN,			'title': 'Add Permission', 'Navbar':false   },
 	
-	{ "name": NAV_LOGIN, 			"action": displayLogin,					"audience":'public_only', 'permission_required': undefined,		'title': 'Login', 'Navbar':true  },
-	{ "name": NAV_ABOUT, 			"action": displayAbout,					"audience":'public', 'permission_required': undefined,		'title': 'About', 'Navbar':true  },
-	{ "name": NAV_CREATE_ACCOUNT, 	"action": displayCreateAccount,			"audience":'public_only', 'permission_required': undefined,		'title': 'Create Account', 'Navbar':false  },
+	{ "name": NAV_LOGIN, 			"action": displayLogin,					"audience":'public_only', 	'permission_required': undefined,		'title': 'Login', 'Navbar':true  },
+	{ "name": NAV_ABOUT, 			"action": displayAbout,					"audience":'public', 		'permission_required': undefined,		'title': 'About', 'Navbar':true  },
+	{ "name": NAV_CREATE_ACCOUNT, 	"action": displayCreateAccount,			"audience":'public_only', 	'permission_required': undefined,		'title': 'Create Account', 'Navbar':false  },
 	
-	{ "name": NAV_ERROR, 			"action": displayError,					"audience":'public_only', 'permission_required': undefined,		'title': 'Error', 'Navbar':false  },
-	{ "name": NAV_BLANK, 			"action": displayBlank,					"audience":'public_only', 'permission_required': undefined,		'title': 'Blank', 'Navbar':false  },
+	{ "name": NAV_ERROR, 			"action": displayError,					"audience":'public_only', 	'permission_required': undefined,		'title': 'Error', 'Navbar':false  },
+	{ "name": NAV_BLANK, 			"action": displayBlank,					"audience":'public_only', 	'permission_required': undefined,		'title': 'Blank', 'Navbar':false  },
 	]
 }
 
