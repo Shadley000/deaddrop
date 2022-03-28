@@ -36,6 +36,25 @@ function initData() {
 var data;
 initData();
 
+
+var displayList = [];
+function buildDisplayData() {
+	displayList = [
+	{ "name": NAV_LOGOUT, 			"action": displayLogout, 				"audience":'private', 'permission_required': SYS_LOGIN,			'title': 'Logout', 'Navbar':true },
+	{ "name": NAV_ACCOUNT, 			"action": displayAccount, 				"audience":'private', 'permission_required': SYS_LOGIN,			'title': 'Account Management', 'Navbar':true   },
+	{ "name": NAV_ADD_PERMISSON, 	"action": displayManualAddPermission, 	"audience":'private', 'permission_required': SYS_LOGIN,			'title': 'Add Permission', 'Navbar':false   },
+	{ "name": NAV_USER_ADMIN, 		"action": displayUserAdmin,				"audience":'private', 'permission_required': SYS_ADMINISTRATOR,	'title': 'User Administration', 'Navbar':true  },
+	{ "name": NAV_LOGIN, 			"action": displayLogin,					"audience":'public_only', 'permission_required': undefined,		'title': 'Login', 'Navbar':true  },
+	{ "name": NAV_CREATE_ACCOUNT, 	"action": displayCreateAccount,			"audience":'public_only', 'permission_required': undefined,		'title': 'Create Account', 'Navbar':false  },
+	{ "name": NAV_ABOUT, 			"action": displayAbout,					"audience":'public', 'permission_required': undefined,		'title': 'About', 'Navbar':true  },
+	{ "name": NAV_ERROR, 			"action": displayError,					"audience":'public_only', 'permission_required': undefined,		'title': 'Error', 'Navbar':false  },
+	{ "name": NAV_BLANK, 			"action": displayBlank,					"audience":'public_only', 'permission_required': undefined,		'title': 'Blank', 'Navbar':false  },
+	{ "name": NAV_DEADDROPS, 		"action": displayDeaddrop,				"audience":'private', 'permission_required': DEADDROP_ADMIN,	'title': 'DeadDrops', 'Navbar':true   }, 
+	{ "name": NAV_CREATE_DEADDROP, 	"action": displayCreateDeaddrop,		"audience":'private', 'permission_required': DEADDROP_ADMIN,	'title': 'Create Deaddrop', 'Navbar':true   },
+	]
+}
+
+
 function getFetchOptions(method, postData) {
 	var authentication_token = "";
 	var user_id = "";

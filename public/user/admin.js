@@ -1,4 +1,3 @@
-console.log("loadding admin.js")
 
 function displayUserAdmin() {
 	if (validatePermission(SYS_ADMINISTRATOR, data.userObj.permissions)) {

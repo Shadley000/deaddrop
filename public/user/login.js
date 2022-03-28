@@ -6,6 +6,8 @@ function displayLogin() {
 	html += '<label for="password">password:</label>'
 	html += '<input type="password" id="password" name="password" value="password"><br>'
 	html += '<button onclick="login()">Login</button>'
+	html += `<button onclick="navigate('${NAV_CREATE_ACCOUNT}')">Create a New Account</button>`
+	
 	document.getElementById("article").innerHTML = html;
 }
 
@@ -51,5 +53,6 @@ function validatePermission(permission, permissions) {
 	if (!permissions || permissions.length == 0) {
 		return undefined;
 	}
+	if(!permission) return true;
 	return (permissions.find(o => o.permission_id === permission))
 }
