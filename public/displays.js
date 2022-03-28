@@ -1,10 +1,4 @@
 
-function buildDisplay() {
-	displayHeader();
-	displayNav();
-	displayArticle();
-	displayFooter();
-}
 
 function displayHeader() {
 	document.getElementById("header").innerHTML = "<h2>DeadDrop</h2>"
@@ -14,75 +8,79 @@ function displayFooter() {
 	document.getElementById("footer").innerHTML = "<h4>DeadDrop</h4>"
 }
 
-function navigate(destination) {
-	//console.log('navigate:', destination);
-	data.articleState = destination;
-	displayArticle();
-}
-
 function displayNav() {
 	var html = '<ul>';
-	//console.log("displayNav ");
 	if (data && data.userObj && data.userObj.authentication_token) {
-		html += '<li><button onclick="navigate(`deaddrops`)">DeadDrops</button></li>'
 		if (validatePermission(DEADDROP_ADMIN, data.userObj.permissions)) {
-			html += '<li><button onclick="navigate(`createdeaddrop`)">Create DeadDrop</button></li>'
+			html += `<li><button onclick="navigate('${NAV_CREATE_DEADDROP}')">Create DeadDrop</button></li>`
 		}
-		html += '<li><button onclick="navigate(`account`)">Account</button></li>'
-		html += '<li><button onclick="navigate(`addpermission`)">Add Permission</button></li>'
-		html += '<li><button onclick="navigate(`about`)">About</button></li>'
-		html += '<li><button onclick="navigate(`logout`)">Logout</button></li>'
+		html += `<li><button onclick="navigate('${NAV_DEADDROPS}')">DeadDrops</button></li>`
+		html += `<li></li>`
+		html += `<li><button onclick="navigate('${NAV_ACCOUNT}')">Account</button></li>`
+		html += `<li></li>`
+		html += `<li><button onclick="navigate('${NAV_ABOUT}')">About</button></li>`
+		html += `<li><button onclick="navigate('${NAV_LOGOUT}')">Logout</button></li>`
 		if (validatePermission(SYS_ADMINISTRATOR, data.userObj.permissions)) {
-			html += '<li><button onclick="navigate(`useradmin`)">User Administration</button></li>'
+			html += `<li><button onclick="navigate('${NAV_USER_ADMIN}')">User Administration</button></li>`
 		}
 	} else {
-		html += '<li><button onclick="navigate(`login`)">Login</button></li>'
-		html += '<li><button onclick="navigate(`createaccount`)">Create Account</button></li>'
-		html += '<li><button onclick="navigate(`about`)">About</button></li>'
+		html += `<li><button onclick="navigate('${NAV_LOGIN}')">Login</button></li>`
+		html += `<li><button onclick="navigate('${NAV_CREATE_ACCOUNT}')">Create Account</button></li>`
+		html += `<li><button onclick="navigate('${NAV_ABOUT}')">About</button></li>`
 	}
 	html += '</ul>'
 	document.getElementById("nav").innerHTML = html;
 }
 
-function displayArticle() {
+var screenList = [];
+function buildDisplayData()
+{
+	screenList.push({
+		
+	});
+}
+
+function navigate(destination) {
+	if(destination)
+		data.articleState = destination;
+
 	if (data) {
-		console.log("displayArticle ", data.articleState);
 		if (data.userObj && data.userObj.authentication_token) {
-			if (data.articleState == "logout") {
+			if (data.articleState == NAV_LOGOUT) {
 				displayLogout()
-			} else if (data.articleState == "deaddrops") {
+			} else if (data.articleState == NAV_DEADDROPS) {
 				displayDeaddrop();
-			} else if (data.articleState == "createdeaddrop") {
+			} else if (data.articleState == NAV_CREATE_DEADDROP) {
 				displayCreateDeaddrop();
-			} else if (data.articleState == "account") {
+			} else if (data.articleState == NAV_ACCOUNT) {
 				displayAccount()
-			} else if (data.articleState == "useradmin") {
+			} else if (data.articleState == NAV_USER_ADMIN) {
 				displayUserAdmin();
-			}else if (data.articleState == "addpermission") {
+			}else if (data.articleState == NAV_ADD_PERMISSON) {
 				displayManualAddPermission();
 			}			
 		}
 		else {
-			if (data.articleState == "login") {
+			if (data.articleState == NAV_LOGIN) {
 				displayLogin()
-			} else if (data.articleState == "createaccount") {
+			} else if (data.articleState == NAV_CREATE_ACCOUNT) {
 				displayCreateAccount()
 			}
 		}
-		if (data.articleState == "about") {
+		if (data.articleState == NAV_ABOUT) {
 			displayAbout()
+		}
+		if (data.articleState == NAV_ERROR) {
+			displayError()
+		}
+		if (data.articleState == NAV_BLANK) {
+			document.getElementById("article").innerHTML = "";
 		}
 	}
 	else {
-		document.getElementById("article").innerHTML = "<h3>Something has gone wrong</h3>";
+		displayError();
 	}
 }
 
-function displayAbout() {
-	var html = "";
-	html += "<h3>About DeadDrop</h3>"
-	html += "<p>Deaddrop is an anonymous and secure message hosting service</p>"
-	document.getElementById("article").innerHTML = html;
-}
 
 
