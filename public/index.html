@@ -4,8 +4,9 @@
 <meta charset="UTF-8">
 <title>DeadDrop</title>
 <script type="text/javascript" src="globals.js"></script>
-<script type="text/javascript" src="displays.js"></script>
-<script type="text/javascript" src="error.js"></script>
+<script type="text/javascript" src="displayNav.js"></script>
+<script type="text/javascript" src="displayBlank.js"></script>
+<script type="text/javascript" src="displayError.js"></script>
 <script type="text/javascript" src="./user/account.js"></script>
 <script type="text/javascript" src="./user/login.js"></script>
 <script type="text/javascript" src="./user/logout.js"></script>
@@ -20,21 +21,19 @@
 </head>
 
 <body>
-	<header id='header'> </header>
+	<header id='header'><h2>DeadDrop</h2> </header>
 
 	<section>
 		<nav id='nav'></nav>
 		<article id='article'></article>
 	</section>
 
-	<footer id='footer'> </footer>
+	<footer id='footer'><h4>DeadDrop</h4></footer>
 
 	<script>
 	buildDisplayData();
-	displayHeader();
 	displayNav();
 	navigate(NAV_LOGIN);
-	displayFooter();
 	</script>
 </body>
 </html>

@@ -35,24 +35,3 @@ function login() {
 }
 
 
-function refreshPermissions() 	{
-	return new Promise(function(resolve, reject) {
-		getUrl("/v1/user/" + data.userObj.user_id)
-			.then(function(userObj) {
-				data.userObj = userObj;
-				resolve()
-			})
-			.catch(function(err) {
-				console.log('error: ' + err);
-				reject(err)
-			});
-	})
-}
-
-function validatePermission(permission, permissions) {
-	if (!permissions || permissions.length == 0) {
-		return undefined;
-	}
-	if(!permission) return true;
-	return (permissions.find(o => o.permission_id === permission))
-}

@@ -1,14 +1,5 @@
 
 
-function displayHeader() {
-	document.getElementById("header").innerHTML = "<h2>DeadDrop</h2>"
-}
-
-function displayFooter() {
-	document.getElementById("footer").innerHTML = "<h4>DeadDrop</h4>"
-}
-
-
 function displayNav() {
 	var html = '<ul>';
 
@@ -33,15 +24,4 @@ function displayNav() {
 	document.getElementById("nav").innerHTML = html;
 }	
 
-function navigate(destination) {
-	if (destination)
-		data.articleState = destination;
-	if (!data.articleState) data.articleState = NAV_BLANK;
-	displayList.find(o => o.name === data.articleState).action();
-}	
-
-function displayBlank() {
-	document.getElementById("article").innerHTML = "";
-	
-}
 

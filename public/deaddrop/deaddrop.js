@@ -14,8 +14,9 @@ function displayDeaddrop() {
 		//console.log("data.selected_deaddrop_id:",data.selected_deaddrop_id)
 		
 		var html = ""
+		
 		html += '<label for="deaddrops">Deaddrop:</label>'
-		html += "<select id='deaddrops' onchange='selectDeadDrop()'>"
+		html += "<select id='deaddrops' onchange='selectDeadDrop()'><BR>"
 		var permissions = data.userObj.permissions;
 		for (var i = 0; i < permissions.length; i++) {
 			var permission = permissions[i];
@@ -30,7 +31,10 @@ function displayDeaddrop() {
 			
 			//console.log("selected_deaddrop_id:'%s' selected:'%s' permission_id:'%s'",data.selected_deaddrop_id, selected, permission.permission_id)
 		}
-		html += "</select>";
+		html += "</select><BR>";
+		html += "<button onclick='displayDeaddrop()'>refresh</button>"
+		html += `<button onclick='navigate("${NAV_CREATE_DEADDROP}")'>Create a new Deaddrop</button><br>`
+						
 		html += "<div id=div_messages></div>"
 		document.getElementById("article").innerHTML = html;
 		
@@ -56,13 +60,12 @@ function displayDeaddrop() {
 							}
 							html += "</table>"
 						}
-						html += "<button onclick='displayDeaddrop()'>refresh</button><BR>"
 						html += '<label for="title">Title:</label>'
 						html += '<input type="text" id="title" name="title" value=""><br>'
 						//html += '<label for="message">Message:</label>'
 						//html += '<input type="text" id="message" name="message" value=""><br>'
-						html += `<textarea id="message" name="message" rows ="10" cols="50" maxlength="2048"></textarea>`
-						html += "<button onclick='addMessage()'>Send</button>"
+						html += `<textarea id="message" name="message" rows ="10" cols="50" maxlength="2048"></textarea><BR>`
+						html += "<button onclick='addMessage()'>Post Message</button>"
 						document.getElementById("div_messages").innerHTML = html;
 					} else {
 						var html = "<h3>"+data.selected_deaddrop_id+" not found</h3>"
