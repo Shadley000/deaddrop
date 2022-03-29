@@ -1,14 +1,16 @@
 
+var isUserSearchOn = false;
+
 function displayContacts() {
 
 	getUrl(`/v1/user/${data.userObj.user_id}/contacts/contacts`)
 		.then(contacts => {
 			var html = "";
 			html += `<h3>Contacts</h3>`
-			html += `<TD><button onclick='displayUserSearch()'>find</button></TD>`
-
-			html += "<table id='contactListTable'></table>"
+			html += `<DIV id='user_search_div'></DIV>`
+			html += "<DIV id='contactList_div'></DIV>"
 			document.getElementById("article").innerHTML = html;
+			displayUserSearch()
 			displayContactList(contacts)
 		})
 		.catch(function(err) {
@@ -19,8 +21,51 @@ function displayContacts() {
 		});
 }
 
-function displayContactList(contacts) {
+function toggleUserSearch() {
+	isUserSearchOn = !isUserSearchOn;
+	displayUserSearch()
+}
+
+function displayUserSearch() {
+	console.log("displayUserSearch")
+
 	var html = "";
+
+	if (isUserSearchOn) {
+		html += `<input type="text" id="searchstring" name="searchstring" value="${data.searchstring}">`
+		html += `<button onclick='userSearch()'>Search</button>`
+		html += "<DIV id='search_list_DIV'></DIV>"
+	}
+	else {
+		html += `<button onclick='toggleUserSearch()'>Find</button>`
+	}
+
+
+	document.getElementById("user_search_div").innerHTML = html;
+
+}
+
+function displayUserIdListTable(userObjs) {
+	console.log("displayUserIdListTable ",userObjs)
+	var html = "<TABLE>";
+	if (userObjs) {
+		for (var i = 0; i < userObjs.length; i++) {
+			var userObj = userObjs[i];
+
+			html += `<TR>`
+			html += `<TD>${userObj.user_id}</TD>`
+			html += `<TD>${userObj.display_name}</TD>`
+			html += `<TD><button onclick='addContact("${userObj.user_id}")'>add</button></TD>`
+			html += '</TR>';
+		}
+	}
+	html += "</TABLE>";
+	document.getElementById("search_list_DIV").innerHTML = html;
+}
+
+function displayContactList(contacts) {
+	console.log("displayContactList", contacts)
+	var html = "<TABLE>";
 
 	for (var i = 0; i < contacts.length; i++) {
 		var userObj = contacts[i];
@@ -32,9 +77,32 @@ function displayContactList(contacts) {
 		html += '</TR>';
 
 	}
+	html += "</TABLE>";
 
-	document.getElementById("contactListTable").innerHTML = html;
+	document.getElementById("contactList_div").innerHTML = html;
 }
+
+function addContact(contact_user_id) {
+	postUrl(`/v1/user/${data.userObj.user_id}/contacts/${contact_user_id}`)
+		.then(contacts => {
+			getUrl(`/v1/user/${data.userObj.user_id}/contacts/contacts`)
+				.then(contacts => {
+					isUserSearchOn = false;
+					displayUserSearch();
+					displayContactList(contacts)
+				})
+		})
+}
+
+
+function userSearch() {
+	var searchstring = document.getElementById("searchstring").value;
+	getUrl(`/v1/user/search?searchstring=${searchstring}`)
+		.then(userObjs => {
+			displayUserIdListTable(userObjs)
+		})
+}
+
 
 function deleteContact(contact_user_id) {
 
@@ -49,11 +117,11 @@ function deleteContact(contact_user_id) {
 
 
 function viewContact(contact_user_id) {
-	getUrl(`/v1/user/${data.userObj.user_id}/contacts/${contact_user_id}`)
+	/*getUrl(`/v1/user/${data.userObj.user_id}/contacts/${contact_user_id}`)
 		.then(contacts => {
 			navigate(NAV_CONTACTS)
 
-		})
+		})*/
 }
 
 
