@@ -6,18 +6,13 @@ module.exports = function(toolKit, userService, user2PermissionService, permissi
 	function GET(req, res, next) {
 		try {
 
-			var user_id = req.params.user_id;
+			var searchString = req.query.searchstring;
 
-			if (user_id == req.session.user_id) {
-
-				contactsService.getContacts(user_id)
+			userService.search(searchString)
 					.then((contactsList) => {
 						res.status(200).json(contactsList);
 					})
 
-			} else {
-				res.status(403).json(toolKit.createSimpleResponse("error", "can only retrieve contacts for yourself"));
-			}
 		}
 		catch (e) {
 			res.status(500).json(toolKit.createSimpleResponse("error", e.message));
@@ -25,18 +20,18 @@ module.exports = function(toolKit, userService, user2PermissionService, permissi
 	};
 
 	GET.apiDoc = {
-		"summary": "Get a users contacts",
+		"summary": "search users for a matching user_id",
 		"parameters": [
 			{
-				"in": 'path',
-				"name": 'user_id',
+				"in": 'query',
+				"name": 'searchstring',
 				"type": 'string',
 				"required": true
 			}
 		],
 		"responses": {
 			"200": {
-				"description": "a list of users",
+				"description": "a list of userObjs",
 				"schema": {
 					"$ref": "#/definitions/User"
 				}

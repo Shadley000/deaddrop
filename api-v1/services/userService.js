@@ -55,7 +55,7 @@ const userService = {
 			var connection = toolKit.getConnection();
 			connection.query(sql, [], function(error, results, fields) {
 				if (error) return reject(error);
-				console.log('getusers');
+				//console.log('getusers');
 				if (results) {
 					var list = [];
 					results.forEach((item, index) => {
@@ -96,6 +96,37 @@ const userService = {
 			connection.end();
 		})
 	},
+	search(searchString) {
+		if (searchString.length > 0) {
+			return new Promise(function(resolve, reject) {
+
+				var likeSearchstring = searchString + '%'
+				var sql = `SELECT user_id, email, display_name FROM users WHERE user_id LIKE ?`;
+				var connection = toolKit.getConnection();
+				connection.query(sql, [likeSearchstring], function(error, results, fields) {
+					if (error) return reject(error);
+					console.log('getusers');
+					if (results) {
+						var list = [];
+						results.forEach((item, index) => {
+							list.push({
+								"user_id": item.user_id,
+								"password": "",
+								"email": "",
+								"authentication_token": "",
+								"display_name": item.display_name
+							});
+						});
+						resolve(list);
+					}
+					else resolve([]);
+
+				});
+				connection.end();
+			})
+		}
+
+	}
 
 };
 

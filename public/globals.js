@@ -18,6 +18,7 @@ const NAV_USER_ADMIN = "useradmin"
 const NAV_ADD_PERMISSON = "addpermission"
 const NAV_LOGIN = "login"
 const NAV_CREATE_ACCOUNT = "createaccount"
+const NAV_USER_SEARCH = "userSearch"
 const NAV_ABOUT = "about"
 const NAV_ERROR = "ERROR"
 const NAV_BLANK = "BLANK"
@@ -43,12 +44,13 @@ function buildDisplayData() {
 	displayList = [
 	{ "name": NAV_DEADDROPS, 		"action": displayDeaddrop,				"audience":'private', 'permission_required': DEADDROP_ADMIN,	'title': 'DeadDrops', 'Navbar':true   }, 
 	{ "name": NAV_ACCOUNT, 			"action": displayAccount, 				"audience":'private', 'permission_required': SYS_LOGIN,			'title': 'Account Management', 'Navbar':true   },
+	{ "name": NAV_CONTACTS,		 	"action": displayContacts,				"audience":'private', 'permission_required': SYS_LOGIN,			'title': 'Contacts', 'Navbar':true   },
 	{ "name": NAV_USER_ADMIN, 		"action": displayUserAdmin,				"audience":'private', 'permission_required': SYS_ADMINISTRATOR,	'title': 'User Administration', 'Navbar':true  },
 	{ "name": NAV_LOGOUT, 			"action": displayLogout, 				"audience":'private', 'permission_required': SYS_LOGIN,			'title': 'Logout', 'Navbar':true },
 	
 	{ "name": NAV_CREATE_DEADDROP, 	"action": displayCreateDeaddrop,		"audience":'private', 'permission_required': DEADDROP_ADMIN,	'title': 'Create Deaddrop', 'Navbar':false   },
-	{ "name": NAV_CONTACTS,		 	"action": displayContacts,				"audience":'private', 'permission_required': SYS_LOGIN,			'title': 'Contacts', 'Navbar':false   },
 	{ "name": NAV_ADD_PERMISSON, 	"action": displayManualAddPermission, 	"audience":'private', 'permission_required': SYS_LOGIN,			'title': 'Add Permission', 'Navbar':false   },
+	{ "name": NAV_USER_SEARCH, 		"action": displayUserSearch, 			"audience":'private', 'permission_required': SYS_LOGIN,			'title': 'User Search', 'Navbar':false   },
 	
 	{ "name": NAV_LOGIN, 			"action": displayLogin,					"audience":'public_only', 	'permission_required': undefined,		'title': 'Login', 'Navbar':true  },
 	{ "name": NAV_ABOUT, 			"action": displayAbout,					"audience":'public', 		'permission_required': undefined,		'title': 'About', 'Navbar':true  },
