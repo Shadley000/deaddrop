@@ -1,4 +1,5 @@
 
+const NAV_ADD_PERMISSON = "addpermission"
 
 function displayManualAddPermission() {
 	var html = "";
@@ -34,3 +35,12 @@ function addManualPermission() {
 		});
 
 }
+
+displayList.push({ "name": NAV_ADD_PERMISSON, 
+	"action": displayManualAddPermission, 	
+	"audience":'private', 
+	'permission_required': SYS_LOGIN,			
+	'title': 'Add Permission', 
+	'Navbar':false   });
+
+

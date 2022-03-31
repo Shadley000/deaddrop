@@ -1,3 +1,4 @@
+const NAV_USER_SEARCH = "userSearch"
 
 function displayUserSearch() {
 
@@ -29,16 +30,23 @@ function displayUserIdListTable(userObjs) {
 
 function addContact(contact_user_id) {
 	postUrl(`/v1/user/${data.userObj.user_id}/contacts/${contact_user_id}`)
-		.then(contacts => {
-			navigate(NAV_CONTACTS)
-		})
+	.then(contacts => {
+		navigate(NAV_CONTACTS)
+	})
 }
 
 
 function userSearch() {
 	var searchstring = document.getElementById("searchstring").value;
 	getUrl(`/v1/user/search?searchstring=${searchstring}`)
-		.then(userObjs => {
-			 displayUserIdListTable(userObjs)
-		})
+	.then(userObjs => {
+		displayUserIdListTable(userObjs)
+	})
 }
+
+displayList.push({ "name": NAV_USER_SEARCH, 		
+	"action": displayUserSearch, 			
+	"audience":'private', 
+	'permission_required': SYS_LOGIN,			
+	'title': 'User Search', 
+	'Navbar':false   });

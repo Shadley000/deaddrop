@@ -1,3 +1,5 @@
+const NAV_LOGOUT = "logout"
+
 
 function displayLogout() {
 	var html = "";
@@ -22,3 +24,10 @@ function logout() {
 			console.log('error: ' + err);
 		});
 }
+
+displayList.push({ "name": NAV_LOGOUT, 
+	"action": displayLogout, 
+	"audience":'private', 
+	'permission_required': SYS_LOGIN,	
+	'title': 'Logout', 
+	'Navbar':'top'});

@@ -2,13 +2,11 @@ var toolKit = require('./toolKit').toolKit;
 
 const inviteService = {
 
-
-
 	getInvites(invitee_user_id) {
 		return new Promise(function(resolve, reject) {
 			var sql = "SELECT invitee_user_id, inviter_user_id, deaddrop_id, details"
-				+ " FROM    deaddrop_invite"
-				+ " WHERE   invitee_user_id = ?"
+			+ " FROM    deaddrop_invite"
+			+ " WHERE   invitee_user_id = ?"
 
 			var connection = toolKit.getConnection();
 			connection.query(sql, [invitee_user_id], function(error, results, fields) {
@@ -31,11 +29,12 @@ const inviteService = {
 			connection.end();
 		})
 	},
+	
 	getInvite(inviter_user_id, invitee_user_id, deaddrop_id) {
 		return new Promise(function(resolve, reject) {
 			var sql = "SELECT invitee_user_id, inviter_user_id, deaddrop_id, details"
-				+ " FROM    deaddrop_invite"
-				+ " WHERE   inviter_user_id = ? AND invitee_user_id = ? AND deaddrop_id = ?"
+			+ " FROM    deaddrop_invite"
+			+ " WHERE   inviter_user_id = ? AND invitee_user_id = ? AND deaddrop_id = ?"
 
 			var connection = toolKit.getConnection();
 			connection.query(sql, [inviter_user_id, invitee_user_id, deaddrop_id], function(error, results, fields) {
@@ -43,17 +42,18 @@ const inviteService = {
 				if (results && results.length >0) {
 					
 					resolve({
-							"inviter_user_id": results[0].inviter_user_id,
-							"invitee_user_id": results[0].invitee_user_id,
-							"deaddrop_id": results[0].deaddrop_id,
-							"details": results[0].details
-						});
+						"inviter_user_id": results[0].inviter_user_id,
+						"invitee_user_id": results[0].invitee_user_id,
+						"deaddrop_id": results[0].deaddrop_id,
+						"details": results[0].details
+					});
 				}
 				else resolve();
 			});
 			connection.end();
 		})
 	},
+	
 	addInvite(inviter_user_id, invitee_user_id, deaddrop_id, details) {
 		return new Promise(function(resolve, reject) {
 			var sql = "insert into deaddrop_invite (inviter_user_id, invitee_user_id, deaddrop_id, details) VALUES (?, ?, ?, ?)    "
@@ -66,6 +66,7 @@ const inviteService = {
 			connection.end();
 		})
 	},
+	
 	deleteInvite(inviter_user_id, invitee_user_id, deaddrop_id) {
 		return new Promise(function(resolve, reject) {
 			var sql = "DELETE FROM deaddrop_invite WHERE  inviter_user_id = ? AND invitee_user_id = ? AND deaddrop_id = ?  "

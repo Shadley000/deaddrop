@@ -1,3 +1,5 @@
+const NAV_CREATE_DEADDROP = "createdeaddrop"
+
 
 function displayCreateDeaddrop() {
 	var html = "";
@@ -43,3 +45,9 @@ function createDeadDrop() {
 			});
 	}
 }
+displayList.push({ "name": NAV_CREATE_DEADDROP, 
+	"action": displayCreateDeaddrop,		
+	"audience":'private', 
+	'permission_required': DEADDROP_ADMIN,	
+	'title': 'Create Deaddrop', 
+	'Navbar':false   });

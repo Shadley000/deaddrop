@@ -1,3 +1,6 @@
+const NAV_CONTACTS = "contacts"
+
+
 
 var isUserSearchOn = false;
 
@@ -123,5 +126,12 @@ function viewContact(contact_user_id) {
 
 		})*/
 }
+
+displayList.push({ "name": NAV_CONTACTS,
+	"action": displayContacts,
+	"audience":'private', 
+	'permission_required': SYS_LOGIN,
+	'title': 'Contacts', 
+	'Navbar':'top'});
 
 

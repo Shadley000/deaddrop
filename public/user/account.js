@@ -1,3 +1,5 @@
+const NAV_ACCOUNT = "account"
+
 
 
 function displayAccount() {
@@ -76,3 +78,10 @@ function deletePermission(permission_id) {
 			console.log('error: ' + err);
 		});
 }
+displayList.push({ "name": NAV_ACCOUNT, 
+	"action": displayAccount, 
+	"audience":'private', 
+	'permission_required': SYS_LOGIN,			
+	'title': 'Account Management', 
+	'Navbar':'top'}
+);

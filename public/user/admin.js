@@ -1,3 +1,5 @@
+const NAV_USER_ADMIN = "useradmin"
+
 
 function displayUserAdmin() {
 	if (validatePermission(SYS_ADMINISTRATOR, data.userObj.permissions)) {
@@ -161,4 +163,11 @@ function adminDeleteUser() {
 		console.log("user does not have permission");
 	}
 }
+
+displayList.push({ "name": NAV_USER_ADMIN, 	
+	"action": displayUserAdmin,				
+	"audience":'private', 
+	'permission_required': SYS_ADMINISTRATOR,	
+	'title': 'User Administration', 
+	'Navbar':'top'});
 

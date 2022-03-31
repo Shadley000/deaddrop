@@ -1,3 +1,5 @@
+const NAV_LOGIN = "login"
+
 
 function displayLogin() {
 	var html = "<h3>Login</h3>"
@@ -20,18 +22,24 @@ function login() {
 	let url = `/v1/login?user_id=${user_id}&password=${password}&t=` + Math.random();
 
 	getUrl(url)
-		.then(function(userObj) {
-			data.userObj = userObj;
-			console.log("userObj: ", userObj)
-			displayNav();
-			navigate(NAV_DEADDROPS);
-		})
-		.catch(function(err) {
-			console.log('error: ' + err);
-			initData();
-			displayNav();
-			navigate(NAV_ERROR);
-		});
+	.then(function(userObj) {
+		data.userObj = userObj;
+		console.log("userObj: ", userObj)
+		displayNav();
+		navigate(NAV_DEADDROPS);
+	})
+	.catch(function(err) {
+		console.log('error: ' + err);
+		initData();
+		displayNav();
+		navigate(NAV_ERROR);
+	});
 }
 
 
+displayList.push({ "name": NAV_LOGIN,
+	"action": displayLogin,
+	"audience":'public_only',
+	'permission_required': undefined,
+	'title': 'Login',
+	'Navbar':'top'  });

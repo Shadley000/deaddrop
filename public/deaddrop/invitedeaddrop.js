@@ -1,4 +1,7 @@
 
+const NAV_INVITE_DEADDROP = "invitedeaddrop"
+
+
 function displayInviteDeaddrop() {
 	if (data && data.userObj && data.userObj.permissions) {
 
@@ -113,3 +116,11 @@ function inviteContact(invitee_user_id) {
 		});
 
 }
+
+displayList.push({ "name": NAV_INVITE_DEADDROP, 
+	"action": displayInviteDeaddrop,		
+	"audience":'private', 
+	'permission_required': DEADDROP_ADMIN,	
+	'title': 'Invite Deaddrop', 
+	'Navbar':true   },
+);

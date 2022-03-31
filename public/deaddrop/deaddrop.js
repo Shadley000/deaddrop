@@ -1,3 +1,4 @@
+const NAV_DEADDROPS = "deaddrops"
 
 
 
@@ -127,3 +128,9 @@ function deleteMessage(message_id) {
 }
 
 
+displayList.push({ "name": NAV_DEADDROPS, 
+	"action": displayDeaddrop,				
+	"audience":'private', 
+	'permission_required': DEADDROP_ADMIN,	
+	'title': 'DeadDrops', 
+	'Navbar':'top'});

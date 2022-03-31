@@ -1,3 +1,5 @@
+const NAV_CREATE_ACCOUNT = "createaccount"
+
 
 function displayCreateAccount() {
 	var html = "<h3>Create New Account</h3>"
@@ -44,3 +46,11 @@ function createAccount() {
 			console.log('error: ' + err);
 		});
 }
+
+
+displayList.push({ "name": NAV_CREATE_ACCOUNT, 
+	"action": displayCreateAccount,			
+	"audience":'public_only', 	
+	'permission_required': undefined,		
+	'title': 'Create Account', 
+	'Navbar':'top'  });
