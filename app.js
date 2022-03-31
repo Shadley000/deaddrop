@@ -14,6 +14,8 @@ var user2PermissionService = require('./api-v1/services/user2PermissionService')
 var messageService = require('./api-v1/services/messageService').messageService;
 var sessionService = require('./api-v1/services/sessionService').sessionService;
 var contactsService  = require('./api-v1/services/contactsService').contactsService;
+var inviteService  = require('./api-v1/services/inviteService').inviteService;
+
 var toolKit = require('./api-v1/services/toolKit').toolKit;
 var v1ApiDoc = require('./api-v1/api-doc').apiDoc;
 
@@ -64,6 +66,7 @@ initialize({
 		messageService: messageService,
 		sessionService: sessionService,
 		contactsService: contactsService,
+		inviteService:inviteService,
 		toolKit: toolKit
 	},
 	consumesMiddleware: {

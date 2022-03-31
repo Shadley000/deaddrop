@@ -148,7 +148,7 @@ module.exports = function(toolKit, deaddropService, messageService, permissionSe
 			var user_id = req.session.user_id;
 			var deaddrop_id = req.params.deaddrop_id;
 
-			if (user2PermissionService.isCacheUserPermission(req,  deaddrop_id,toolKit.getConstants().SYS_DETAILS_DELETE)) {
+			if (user2PermissionService.isCacheUserPermission(req,  deaddrop_id,toolKit.getConstants().SYS_DETAILS_ADMIN)) {
 				user2PermissionService.deleteUserPermissionsByPermission(deaddrop_id)
 					.then(() => {
 						res.stats(200).json(toolKit.createSimpleResponse("success", "deaddrop removed"));
@@ -161,7 +161,7 @@ module.exports = function(toolKit, deaddropService, messageService, permissionSe
 							})
 					})
 			} else {
-				res.status(401).json(toolKit.createSimpleResponse("error", `${user_id} does not have ${toolKit.getConstants().SYS_DETAILS_DELETE} permissions for ${deaddrop_id}`));
+				res.status(401).json(toolKit.createSimpleResponse("error", `${user_id} does not have ${toolKit.getConstants().SYS_DETAILS_ADMIN} permissions for ${deaddrop_id}`));
 			}
 		}
 		catch (e) {

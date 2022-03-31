@@ -96,6 +96,12 @@ module.exports = function(toolKit, userService, user2PermissionService, permissi
 										console.log(`${user_id} ${toolKit.getConstants().SYS_LOGIN} permission added`);
 										res.status(200).json(toolKit.createSimpleResponse("success", "User created"))
 									});
+									
+								user2PermissionService.addUserPermission(user_id, toolKit.getConstants().DEADDROP_ADMIN, toolKit.getConstants().SYS_DETAILS_ALL)
+									.then(() => {
+										console.log(`${user_id} ${toolKit.getConstants().DEADDROP_ADMIN} permission added`);
+										res.status(200).json(toolKit.createSimpleResponse("success", "User created"))
+									});
 
 								var details = toolKit.getConstants().SYS_DETAILS_ALL;
 								user2PermissionService.addUserPermission(user_id, "public deaddrop", details)

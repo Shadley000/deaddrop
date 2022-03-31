@@ -41,6 +41,28 @@ const apiDoc = {
 				}
 			}
 		},
+		"Invite": {
+			"type": 'object',
+			"properties": {
+				"inviter_user_id": {
+					"description": 'The user_id making the invitation',
+					"type": 'string'
+				},
+				"invitee_user_id": {
+					"description": 'The user_id of the user being invited.',
+					"type": 'string'
+				},
+				"deaddrop_id": {
+					"description": 'The name of the deaddrop.',
+					"type": 'string'
+				},
+				"detail": {
+					"description": 'permission details.',
+					"type": 'string'
+				},
+				
+			}
+		},
 		"Message": {
 			"type": 'object',
 			"properties": {

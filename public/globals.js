@@ -4,12 +4,13 @@ const SYS_TAGS = "SYSTEM DEADDROP MAILDROP";
 const SYS_TAGS_SYSTEM = "SYSTEM";
 const SYS_TAGS_DEADDROP = "DEADDROP";
 const SYS_TAGS_MAILDROP = "MAILDROP";
-const SYS_DETAILS_ALL = "CREATE READ UPDATE DELETE";
+const SYS_DETAILS_ALL = "CREATE READ UPDATE DELETE ADMIN";
 const DEADDROP_ADMIN = "DEADDROP_ADMIN";
 const SYS_DETAILS_CREATE = "CREATE";
 const SYS_DETAILS_READ = "READ";
 const SYS_DETAILS_UPDATE = "UPDATE";
 const SYS_DETAILS_DELETE = "DELETE";
+const SYS_DETAILS_ADMIN = "ADMIN";
 
 const NAV_LOGOUT = "logout"
 const NAV_ACCOUNT = "account"
@@ -25,6 +26,7 @@ const NAV_BLANK = "BLANK"
 
 const NAV_DEADDROPS = "deaddrops"
 const NAV_CREATE_DEADDROP = "createdeaddrop"
+const NAV_INVITE_DEADDROP = "invitedeaddrop"
 
 function initData() {
 	data = {
@@ -49,6 +51,7 @@ function buildDisplayData() {
 	{ "name": NAV_LOGOUT, 			"action": displayLogout, 				"audience":'private', 'permission_required': SYS_LOGIN,			'title': 'Logout', 'Navbar':true },
 	
 	{ "name": NAV_CREATE_DEADDROP, 	"action": displayCreateDeaddrop,		"audience":'private', 'permission_required': DEADDROP_ADMIN,	'title': 'Create Deaddrop', 'Navbar':false   },
+	{ "name": NAV_INVITE_DEADDROP, 	"action": displayInviteDeaddrop,		"audience":'private', 'permission_required': DEADDROP_ADMIN,	'title': 'Invite Deaddrop', 'Navbar':true   },
 	{ "name": NAV_ADD_PERMISSON, 	"action": displayManualAddPermission, 	"audience":'private', 'permission_required': SYS_LOGIN,			'title': 'Add Permission', 'Navbar':false   },
 	{ "name": NAV_USER_SEARCH, 		"action": displayUserSearch, 			"audience":'private', 'permission_required': SYS_LOGIN,			'title': 'User Search', 'Navbar':false   },
 	
@@ -86,12 +89,16 @@ function refreshPermissions() 	{
 	})
 }
 
-function validatePermission(permission, permissions) {
+function getPermissionObj(permission_id){
+	return (data.userObj.permissions.find(o => o.permission_id === permission_id))
+}
+
+function validatePermission(permission_id, permissions) {
 	if (!permissions || permissions.length == 0) {
 		return undefined;
 	}
-	if(!permission) return true;
-	return (permissions.find(o => o.permission_id === permission))
+	if(!permission_id) return true;
+	return (permissions.find(o => o.permission_id === permission_id))
 }
 
 function getFetchOptions(method, postData) {

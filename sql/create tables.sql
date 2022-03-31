@@ -69,6 +69,17 @@ CREATE TABLE contacts (
     PRIMARY KEY (user_id, contact_user_id)
 );
 
+CREATE TABLE deaddrop_invite (
+	inviter_user_id VARCHAR(64) NOT NULL,
+	invitee_user_id VARCHAR(64) NOT NULL,
+    deaddrop_id VARCHAR(64) NOT NULL,
+    details VARCHAR(64) NOT NULL,
+    FOREIGN KEY (deaddrop_id) REFERENCES deaddrop(deaddrop_id),
+    FOREIGN KEY (inviter_user_id) REFERENCES users(user_id),
+    FOREIGN KEY (invitee_user_id) REFERENCES users(user_id),
+    PRIMARY KEY (inviter_user_id, invitee_user_id,deaddrop_id)
+);
+
 insert into users (user_id, user_password, email, display_name) values ('admin', 'password', 'stephenjhadley@gmail.com', 'Administrator');
 insert into users (user_id, user_password, email, display_name) values ('guest', 'password', 'guest@anywhere.com', 'A Guest');
 insert into users (user_id, user_password, email, display_name) values ('testuser', 'password', 'somewhere@nowhere.com', 'TestUser');
@@ -95,11 +106,11 @@ insert into message(deaddrop_id, user_id,publish_date,title,message) values ('pu
 insert into message(deaddrop_id, user_id,publish_date,title,message) values ('some random deaddrop', 'admin', now(),'Welcome to Random Deaddrop', 'play nice');
 
 
-insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'SYS_ADMINISTRATOR','CREATE READ UPDATE DELETE');
-insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'SYS_LOGIN','CREATE READ UPDATE DELETE');
-insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'DEADDROP_ADMIN','CREATE READ UPDATE DELETE');
-insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'public deaddrop','CREATE READ UPDATE DELETE');
-insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'admin maildrop','CREATE READ UPDATE DELETE');
+insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'SYS_ADMINISTRATOR','CREATE READ UPDATE DELETE ADMIN');
+insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'SYS_LOGIN','CREATE READ UPDATE DELETE ADMIN');
+insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'DEADDROP_ADMIN','CREATE READ UPDATE DELETE ADMIN');
+insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'public deaddrop','CREATE READ UPDATE DELETE ADMIN');
+insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'admin maildrop','CREATE READ UPDATE DELETE ADMIN');
 
 insert into user_id2permission_id(user_id, permission_id, details) values ('guest', 'SYS_LOGIN','READ');
 insert into user_id2permission_id(user_id, permission_id, details) values ('guest', 'public deaddrop','READ');

@@ -9,7 +9,7 @@ module.exports = function(toolKit, messageService, user2PermissionService) {
 		var deaddrop_id = req.params.deaddrop_id;
 		var messageObj = req.body;
 		try {
-			if (user2PermissionService.isCacheUserPermission(req,  deaddrop_id,toolKit.getConstants().SYS_DETAILS_CREATE)) {
+			if (user2PermissionService.isCacheUserPermission(req, deaddrop_id, toolKit.getConstants().SYS_DETAILS_CREATE)) {
 				if (messageObj.user_id == user_id && messageObj.deaddrop_id == deaddrop_id) {
 					messageService.addMessage(messageObj)
 						.then(() => {
@@ -20,6 +20,9 @@ module.exports = function(toolKit, messageService, user2PermissionService) {
 					console.log("attempted forgery user_id: %s deaddrop_id: %s messageObj: %j", user_id, deaddrop_id, messageObj)
 					res.status(404).json(toolKit.createSimpleResponse("error", "attempted forgery"));
 				}
+			} else {
+				console.log("user does not have permission: %s deaddrop_id: %s permission: %j", user_id, deaddrop_id, toolKit.getConstants().SYS_DETAILS_CREATE)
+				res.status(403).json(toolKit.createSimpleResponse("error", "user does not have permission: " + toolKit.getConstants().SYS_DETAILS_CREATE));
 			}
 		}
 		catch (e) {
@@ -75,11 +78,23 @@ module.exports = function(toolKit, messageService, user2PermissionService) {
 		var user_id = req.session.user_id;
 
 		try {
-			if (user2PermissionService.isCacheUserPermission(req,  deaddrop_id,toolKit.getConstants().SYS_DETAILS_DELETE)) {
-				messageService.deleteMessage(user_id, deaddrop_id, message_id)
-					.then(() => {
-						res.status(200).json(toolKit.createSimpleResponse("Success", "message deleted"));
-					});
+			if (user2PermissionService.isCacheUserPermission(req, deaddrop_id, toolKit.getConstants().SYS_DETAILS_DELETE)) {
+				if (user2PermissionService.isCacheUserPermission(req, deaddrop_id, toolKit.getConstants().SYS_DETAILS_ADMIN)) {
+					messageService.adminDeleteMessage(deaddrop_id,message_id)
+						.then(() => {
+							res.status(200).json(toolKit.createSimpleResponse("Success", "message deleted"));
+						});
+				} else {
+					messageService.deleteMessage(user_id, deaddrop_id, message_id)
+						.then(() => {
+							res.status(200).json(toolKit.createSimpleResponse("Success", "message deleted"));
+						});
+				}
+
+			}
+			else {
+				console.log("user does not have permission: %s deaddrop_id: %s permission: %j", user_id, deaddrop_id, toolKit.getConstants().SYS_DETAILS_DELETE)
+				res.status(403).json(toolKit.createSimpleResponse("error", "user does not have permission: " + toolKit.getConstants().SYS_DETAILS_DELETE));
 			}
 		}
 		catch (e) {
