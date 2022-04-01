@@ -78,7 +78,7 @@ module.exports = function(toolKit, inviteService, user2PermissionService) {
 							.then(()=>{
 								inviteService.deleteInvite(aInviteObj.inviter_user_id, aInviteObj.invitee_user_id, aInviteObj.deaddrop_id)
 								res.status(200).json(toolKit.createSimpleResponse("success", "Invite accepted"));
-							}
+							})
 						
 						} else {
 							
@@ -86,8 +86,8 @@ module.exports = function(toolKit, inviteService, user2PermissionService) {
 							.then(()=>{
 								inviteService.deleteInvite(aInviteObj.inviter_user_id, aInviteObj.invitee_user_id, aInviteObj.deaddrop_id)
 								res.status(200).json(toolKit.createSimpleResponse("success", "Invite accepted"));
-							}
-						})
+							})
+						}
 					})
 					
 					
