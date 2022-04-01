@@ -37,6 +37,27 @@ const user2PermissionService = {
 			connection.end();
 		})
 	},
+	getUserPermission(user_id,permission_id) {
+		return new Promise(function(resolve, reject) {
+			var sql = `SELECT p.permission_id, p.permission_name, p.tags, u.details ` +
+				`FROM user_id2permission_id u, permissions p ` +
+				`WHERE user_id = ? and p.permission_id = u.permission_id and p.permission_id =`;
+			var connection = toolKit.getConnection();
+			connection.query(sql, [user_id, permission_id], function(error, results, fields) {
+				if (error) return reject(error);
+				if (results && results.length>0) {					
+					resolve({
+							'permission_id': results[0].permission_id,
+							'permission_name': results[0].permission_name,
+							'tags': results[0].tags,
+							'details': results[0].details
+						});
+				}
+				else resolve([]);
+			});
+			connection.end();
+		})
+	},
 
 	addUserPermission(user_id, permission_id, details) {
 		return new Promise(function(resolve, reject) {

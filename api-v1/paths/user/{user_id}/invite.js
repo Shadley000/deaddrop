@@ -60,15 +60,37 @@ module.exports = function(toolKit, inviteService, user2PermissionService) {
 				res.status(403).json(toolKit.createSimpleResponse("error", "can only accept invites for yourself"));
 				return
 			}
-			inviteService.getInvite(inviteObj.inviter_user_id, invitee_user_id, inviteObj.deaddrop_id)
+			inviteService.getInvite(invitee_user_id, inviteObj.deaddrop_id)
 			.then((aInviteObj) => {
 				if(aInviteObj){
 					console.log(aInviteObj)
-					user2PermissionService.addUserPermission(aInviteObj.invitee_user_id, aInviteObj.deaddrop_id, aInviteObj.details)
-					.then(()=>{
-						inviteService.deleteInvite(aInviteObj.inviter_user_id, aInviteObj.invitee_user_id, aInviteObj.deaddrop_id)
-						res.status(200).json(toolKit.createSimpleResponse("success", "Invite accepted"));
+					user2PermissionService.getUserPermission(user_id,permission_id)
+					.then((permissionObj)=>{
+						if(permissionObj){
+							
+							var details_original = permissionObj.details.split(" ");
+							var details_new = aInviteObj.details.split(" ");
+							var reduced = details_original.filter(aitem => !details_new.find(bitem => aitem === bitem))
+							var details_updated =  reduced.concat(details_new);
+							var details_str = details_updated.join(" ");
+							
+							user2PermissionService.updateUserPermission(aInviteObj.invitee_user_id, aInviteObj.deaddrop_id, details_str)
+							.then(()=>{
+								inviteService.deleteInvite(aInviteObj.inviter_user_id, aInviteObj.invitee_user_id, aInviteObj.deaddrop_id)
+								res.status(200).json(toolKit.createSimpleResponse("success", "Invite accepted"));
+							}
+						
+						} else {
+							
+							user2PermissionService.addUserPermission(aInviteObj.invitee_user_id, aInviteObj.deaddrop_id, aInviteObj.details)
+							.then(()=>{
+								inviteService.deleteInvite(aInviteObj.inviter_user_id, aInviteObj.invitee_user_id, aInviteObj.deaddrop_id)
+								res.status(200).json(toolKit.createSimpleResponse("success", "Invite accepted"));
+							}
+						})
 					})
+					
+					
 				} else {
 					console.log("unable to locate this invite ",inviteObj)
 					res.status(404).json(toolKit.createSimpleResponse("error", "Unable to locate this invite"));
@@ -135,7 +157,7 @@ module.exports = function(toolKit, inviteService, user2PermissionService) {
 				res.status(403).json(toolKit.createSimpleResponse("error", "must only post invites from yourself"));
 				return;
 			}
-			inviteService.getInvite(inviteObj.inviter_user_id, invitee_user_id, inviteObj.deaddrop_id)
+			inviteService.getInvite(invitee_user_id, inviteObj.deaddrop_id)
 			.then((existingInviteObj) => {
 				if (!existingInviteObj) {
 					inviteService.addInvite(inviteObj.inviter_user_id, inviteObj.invitee_user_id, inviteObj.deaddrop_id, inviteObj.details)
@@ -196,7 +218,7 @@ module.exports = function(toolKit, inviteService, user2PermissionService) {
 				res.status(403).json(toolKit.createSimpleResponse("error", "can only delete invites for yourself"));
 				return;
 			}
-			inviteService.deleteInvite(inviteObj.inviter_user_id, invitee_user_id, inviteObj.deaddrop_id)
+			inviteService.deleteInvite(invitee_user_id, inviteObj.deaddrop_id)
 			.then((contactsList) => {
 				res.status(200).json(contactsList);
 			})

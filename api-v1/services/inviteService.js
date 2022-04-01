@@ -30,7 +30,7 @@ const inviteService = {
 		})
 	},
 	
-	getInvite(inviter_user_id, invitee_user_id, deaddrop_id) {
+	getInvite(invitee_user_id, deaddrop_id) {
 		return new Promise(function(resolve, reject) {
 			var sql = "SELECT invitee_user_id, inviter_user_id, deaddrop_id, details"
 			+ " FROM    deaddrop_invite"
@@ -67,9 +67,9 @@ const inviteService = {
 		})
 	},
 	
-	deleteInvite(inviter_user_id, invitee_user_id, deaddrop_id) {
+	deleteInvite(invitee_user_id, deaddrop_id) {
 		return new Promise(function(resolve, reject) {
-			var sql = "DELETE FROM deaddrop_invite WHERE  inviter_user_id = ? AND invitee_user_id = ? AND deaddrop_id = ?  "
+			var sql = "DELETE FROM deaddrop_invite WHERE invitee_user_id = ? AND deaddrop_id = ?  "
 
 			var connection = toolKit.getConnection();
 			connection.query(sql, [inviter_user_id, invitee_user_id, deaddrop_id], function(error, results, fields) {

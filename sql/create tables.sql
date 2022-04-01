@@ -77,7 +77,7 @@ CREATE TABLE deaddrop_invite (
     FOREIGN KEY (deaddrop_id) REFERENCES deaddrop(deaddrop_id),
     FOREIGN KEY (inviter_user_id) REFERENCES users(user_id),
     FOREIGN KEY (invitee_user_id) REFERENCES users(user_id),
-    PRIMARY KEY (inviter_user_id, invitee_user_id,deaddrop_id)
+    PRIMARY KEY (invitee_user_id,deaddrop_id)
 );
 
 insert into users (user_id, user_password, email, display_name) values ('admin', 'password', 'stephenjhadley@gmail.com', 'Administrator');
