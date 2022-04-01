@@ -14,10 +14,10 @@ const SYS_DETAILS_ADMIN = "ADMIN";
 
 function initData() {
 	data = {
-articleState: "login",
-permissions: [],
+		articleState: "login",
+		permissions: [],
 		selected_deaddrop_id: undefined,
-userObj: undefined,
+		userObj: undefined,
 		selected_user_id: undefined
 	};
 }
@@ -29,7 +29,7 @@ var displayList = [];
 
 function navigate(destination) {
 	if (destination)
-		data.articleState = destination;
+	data.articleState = destination;
 	//if (!data.articleState)
 	//	data.articleState = NAV_BLANK;
 	var displayItem = displayList.find(o => o.name === data.articleState)

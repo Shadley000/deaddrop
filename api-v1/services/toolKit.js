@@ -1,7 +1,6 @@
 var MYSQL_URL = process.env.MYSQL_URL;
 var mysql = require('mysql');
 
-
 const toolKit = {
 
 	getConnection() {
@@ -39,7 +38,6 @@ const toolKit = {
 			'SYS_DETAILS_READ': 'READ',
 			'SYS_DETAILS_UPDATE': 'UPDATE',
 			'SYS_DETAILS_DELETE': 'DELETE',
-			'SYS_DETAILS_CREATE_READ': 'READ',
 			'SYS_DETAILS_ADMIN': 'ADMIN',
 
 			'DEADDROP_ADMIN': 'DEADDROP_ADMIN'

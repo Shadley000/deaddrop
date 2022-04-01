@@ -3,7 +3,6 @@ var toolKit = require('./toolKit').toolKit;
 const permissionService = {
 	createPermission(permission_id, permission_name, tags, permission_key) {
 		return new Promise(function(resolve, reject) {
-
 			var sql = `INSERT INTO permissions ( permission_id, permission_name, tags, permission_key) VALUES (?,?,?,?)`;
 			var connection = toolKit.getConnection();
 			connection.query(sql, [permission_id, permission_name, tags, permission_key], function(error, results, fields) {
@@ -16,7 +15,6 @@ const permissionService = {
 
 	deletePermission(permission_id) {
 		return new Promise(function(resolve, reject) {
-			;
 			var sql = `DELETE FROM permissions WHERE permission_id = ?)`;
 			var connection = toolKit.getConnection();
 			connection.query(sql, [permission_id], function(error, results, fields) {
