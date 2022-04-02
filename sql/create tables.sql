@@ -93,7 +93,7 @@ INSERT INTO permissions (permission_id,permission_name,tags, permission_key) val
 INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('SYS_LOGIN','the most basic login priviledge','SYSTEM','password');
 INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('DEADDROP_ADMIN','is the user allowed to create a deaddrop','SYSTEM','password');
 
-INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('admin maildrop','access to admin maildrop','DEADDROP MAILBOX','password');
+INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('admin maildrop','access to admin maildrop','DEADDROP MAILDROP','password');
 INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('public deaddrop','access to public deaddrop','DEADDROP','password');
 INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('some random deaddrop','access to some random deaddrop','DEADDROP','password');
 

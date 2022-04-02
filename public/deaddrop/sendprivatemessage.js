@@ -56,7 +56,7 @@ function addPrivateMessage(user_id) {
 	var messageObj = {
 		"message_id": "newmesssage",
 		"user_id": data.userObj.user_id,
-		"deaddrop_id": user_id + " mailbox",
+		"deaddrop_id": user_id + " maildrop",
 		"title": document.getElementById("title").value,
 		"message": document.getElementById("message").value
 	};
@@ -71,7 +71,7 @@ function addPrivateMessage(user_id) {
 
 displayList.push({ "name": NAV_SEND_PRIVATE_MESSAGE, 			
 	"action": displaySendPrivateMessage,					
-	"audience":'public', 		
+	"audience":'private', 		
 	'permission_required': undefined,		
 	'title': 'Private Message', 
 	'Navbar':'top'  })

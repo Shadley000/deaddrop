@@ -76,13 +76,20 @@ function displayContactList(contacts) {
 		html += `<TR>`
 		html += `<TD>${userObj.user_id}</TD>`
 		html += `<TD>${userObj.display_name}</TD>`
-		html += `<TD><button onclick='viewContact("${userObj.user_id}")'>view</button><button onclick='deleteContact("${userObj.user_id}")'>delete</button></TD>`
+		html += `<TD><button onclick='viewContact("${userObj.user_id}")'>view</button>`
+		html += `<button onclick='messageContact("${userObj.user_id}")'>message</button>`
+		html += `<button onclick='deleteContact("${userObj.user_id}")'>delete</button></TD>`
 		html += '</TR>';
 
 	}
 	html += "</TABLE>";
 
 	document.getElementById("contactList_div").innerHTML = html;
+}
+
+function messageContact(contact_user_id) {
+	data.selected_user_id = contact_user_id;
+	navigate(NAV_SEND_PRIVATE_MESSAGE);
 }
 
 function addContact(contact_user_id) {

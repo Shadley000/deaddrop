@@ -6,17 +6,17 @@ const messageService = {
 			var sql = `INSERT INTO message (deaddrop_id, user_id, publish_date, title, message) VALUES (?,?,now(),?,?)`;
 			var connection = toolKit.getConnection();
 			connection.query(sql, [
-				messageObj.deaddrop_id,
-				messageObj.user_id,
+			messageObj.deaddrop_id,
+			messageObj.user_id,
 
-				messageObj.title,
-				messageObj.message
+			messageObj.title,
+			messageObj.message
 			],
-				function(error, results, fields) {
+			function(error, results, fields) {
 
-					if (error) reject(error);
-					resolve();
-				});
+				if (error) reject(error);
+				resolve();
+			});
 			connection.end()
 		})
 	},
@@ -50,12 +50,12 @@ const messageService = {
 	getDeadDropMessages(user_id, deaddrop_id) {
 		return new Promise(function(resolve, reject) {
 			var sql = "SELECT    d.deaddrop_id, m.user_id, m.message_id, m.title, m.message, m.publish_date"
-				+ " FROM    user_id2permission_id k,    deaddrop d,    message m"
-				+ " WHERE  k.permission_id = m.deaddrop_id"
-				+ " AND k.permission_id = d.deaddrop_id"
-				+ " AND k.user_id = ?"
-				+ " AND k.permission_id = ?"
-				+ "order by d.deaddrop_id, m.publish_date";
+			+ " FROM    user_id2permission_id k,    deaddrop d,    message m"
+			+ " WHERE  k.permission_id = m.deaddrop_id"
+			+ " AND k.permission_id = d.deaddrop_id"
+			+ " AND k.user_id = ?"
+			+ " AND k.permission_id = ?"
+			+ "order by d.deaddrop_id, m.publish_date";
 
 			var connection = toolKit.getConnection();
 			connection.query(sql, [user_id, deaddrop_id], function(error, results, fields) {

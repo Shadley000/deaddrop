@@ -1,4 +1,4 @@
-module.exports = function(toolKit, messageService, user2PermissionService) {
+module.exports = function(toolKit, messageService, user2PermissionService, permissionService) {
 	let operations = {
 		POST,
 		DELETE
@@ -17,16 +17,19 @@ module.exports = function(toolKit, messageService, user2PermissionService) {
 						res.status(200).json(toolKit.createSimpleResponse("Success", "message added"));
 					});
 				} else {
-					permissionService.getPermission(permission_id)
-					.next((permissionObj) => {
-						if(permissionObj.tags.includes(toolKit.constants.SYS_TAGS_MAILDROP)){
+					permissionService.getPermission(deaddrop_id)
+					.then((permissionObj) => {
+						console.log(permissionObj);
+						if(permissionObj && permissionObj.tags.indexOf(toolKit.getConstants.SYS_TAGS_MAILDROP>-1)){
 							//mailbox tags are a special case that anyone can send to
-							messageService.addMessage(messageObj)
+							messageService.addMessage(messageObj).then(() => {
+								res.status(200).json(toolKit.createSimpleResponse("Success", "message added"));
+							});
 						} else {
 							console.log("user does not have permission: %s deaddrop_id: %s permission: %j", user_id, deaddrop_id, toolKit.getConstants().SYS_DETAILS_CREATE)
 							res.status(403).json(toolKit.createSimpleResponse("error", "user does not have permission: " + toolKit.getConstants().SYS_DETAILS_CREATE));
 						}
-					})
+					});
 				}	
 			}
 			else {
