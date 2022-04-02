@@ -40,7 +40,8 @@ const toolKit = {
 			'SYS_DETAILS_DELETE': 'DELETE',
 			'SYS_DETAILS_ADMIN': 'ADMIN',
 
-			'DEADDROP_ADMIN': 'DEADDROP_ADMIN'
+			'DEADDROP_ADMIN': 'DEADDROP_ADMIN',
+			'ADMIN': "admin"
 		};
 	}
 }

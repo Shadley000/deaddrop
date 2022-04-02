@@ -3,7 +3,7 @@ const NAV_USER_ADMIN = "useradmin"
 
 function displayUserAdmin() {
 	if (validatePermission(SYS_ADMINISTRATOR, data.userObj.permissions)) {
-		getUrl("/v1/administration?" + "&t=" + Math.random())
+		getUrl("/v1/administration/administration?" + "&t=" + Math.random())
 			.then(function(userObjs) {
 				console.log("displayUserAdmin", userObjs);
 				if (userObjs) {

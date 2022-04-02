@@ -19,7 +19,7 @@ function login() {
 	//console.log('login %s', user_id);
 	initData();
 
-	let url = `/v1/login?user_id=${user_id}&password=${password}&t=` + Math.random();
+	let url = `/v1/user/login?user_id=${user_id}&password=${password}&t=` + Math.random();
 
 	getUrl(url)
 	.then(function(userObj) {

@@ -8,12 +8,10 @@ module.exports = function(toolKit, userService, user2PermissionService) {
 			try {
 				var user_id = req.session.user_id;
 
-				if (user_id == "admin") {
-					userService.getUsers()
-						.then((users) => {
-							res.status(200).json(users)
-						});
-				}
+				userService.getUsers()
+				.then((users) => {
+					res.status(200).json(users)
+				});
 			}
 			catch (e) {
 				res.status(500).json(toolKit.createSimpleResponse("error", e.message));

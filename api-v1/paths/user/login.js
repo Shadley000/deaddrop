@@ -1,4 +1,4 @@
-module.exports = function(toolKit, userService, user2PermissionService, permissionService, sessionService, deaddropService, messageService) {
+module.exports = function(toolKit, userService, user2PermissionService, permissionService, sessionService, deaddropService, messageService,contactsService) {
 	let operations = {
 		GET,
 		POST,
@@ -131,6 +131,7 @@ module.exports = function(toolKit, userService, user2PermissionService, permissi
 												messageService.addMessage(messageObj);
 											})
 									})
+								contactsService.addContact(user_id, toolKit.getConstants().ADMIN;
 							});
 					}
 					else {
