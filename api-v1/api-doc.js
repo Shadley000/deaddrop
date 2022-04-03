@@ -88,6 +88,39 @@ const apiDoc = {
 				}
 			}
 		},
+		"Node": {
+			"type": "object",
+			"properties": {
+				"node_id": {
+					"description": 'The permission id.',
+					"type": 'string'
+				},
+				"parent_node_id": {
+					"description": 'The permission name.',
+					"type": 'string'
+				},
+				"root_node_id": {
+					"description": 'The permission key.',
+					"type": 'string'
+				},
+				"node_name": {
+					"description": 'tags',
+					"type": 'string'
+				},
+				"node_type": {
+					"description": 'tags',
+					"type": 'string'
+				},
+				"creater_user_id": {
+					"description": 'tags',
+					"type": 'string'
+				},
+				"publish_date": {
+					"description": 'tags',
+					"type": 'string'
+				}
+			}
+		},
 		"Messages": {
 			"type": "array",
 			"items": {

@@ -12,6 +12,7 @@
     "express": "^4.17.3",
     "express-openapi": "^10.1.0",
     "express-session": "^1.17.2",
+    "fast-csv": "^4.3.6",
     "fs": "*",
     "https": "^1.0.0",
     "mysql": "^2.18.1",

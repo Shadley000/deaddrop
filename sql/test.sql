@@ -13,8 +13,10 @@ select * from permissions;
 
 select * from deaddrop_invite;
 
-SELECT    d.deaddrop_id, d.title
- FROM    user_id2permission_id p,    deaddrop d
-			 WHERE   p.permission_id = d.deaddrop_id
-			 AND p.user_id = 'admin'
-			 AND d.deaddrop_id = 'administration deaddrop'
+select * from node;
+
+select * from node_parameter;
+
+
+SELECT node_id,parent_node_id, root_node_id, node_name, node_type,  creater_user_id, publish_date 
+			 FROM node where node_name = "Test Rig 1" AND root_node_id = 2

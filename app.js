@@ -15,6 +15,8 @@ var messageService = require('./api-v1/services/messageService').messageService;
 var sessionService = require('./api-v1/services/sessionService').sessionService;
 var contactsService  = require('./api-v1/services/contactsService').contactsService;
 var inviteService  = require('./api-v1/services/inviteService').inviteService;
+var nodeService  = require('./api-v1/services/nodeService').nodeService;
+var nodeParameterService  = require('./api-v1/services/nodeParameterService').nodeParameterService;
 
 var toolKit = require('./api-v1/services/toolKit').toolKit;
 var v1ApiDoc = require('./api-v1/api-doc').apiDoc;
@@ -67,6 +69,8 @@ initialize({
 		sessionService: sessionService,
 		contactsService: contactsService,
 		inviteService:inviteService,
+		treenodeService: treenodeService,
+		nodeParameterService: nodeParameterService,
 		toolKit: toolKit
 	},
 	consumesMiddleware: {

@@ -1,0 +1,114 @@
+parent_node_name,node_name,node_type
+Test Rig 1, A - UNIT SPECIFICATION, Organization
+Test Rig 1, B - GENERAL RIG SPECIFICATIONS, Organization
+Test Rig 1, C - POWER SUPPLY SYSTEMS, Organization
+Test Rig 1, D - DRILLSTRING EQUIPMENT, Organization
+Test Rig 1, E - WELL CONTROL/SUBSEA EQUIPMENT, Organization
+Test Rig 1, F - MUD SYSTEM/BULK SYSTEM, Organization
+Test Rig 1, G - CASING/CEMENTING EQUIPMENT, Organization
+Test Rig 1, H - INSTRUMENTATlON/COMMUNlCATlON, Organization
+Test Rig 1, I - PRODUCTION TEST EQUIPMENT, Organization
+Test Rig 1, J - WORKOVER TOOLS, Organization
+Test Rig 1, K - ACCOMMODATION, Organization
+Test Rig 1, L - SAFETY EQUIPMENT, Organization
+Test Rig 1, M - POLLUTION PREVENTION EQUIPMENT, Organization
+Test Rig 1, N - ADDITIONAL INFORMATION, Organization
+B - GENERAL RIG SPECIFICATIONS, B.01 - DERRICK AND SUBSTRUCTURE, Organization
+B - GENERAL RIG SPECIFICATIONS, B.02 - DRAWWORKS AND ASSOCIATED EQUIPMENT, Organization
+B - GENERAL RIG SPECIFICATIONS, B.03 - DERRICK HOISTING EQUIPMENT, Organization
+B - GENERAL RIG SPECIFICATIONS, B.04 - Rotating System, Organization
+B - GENERAL RIG SPECIFICATIONS, B.05 - Offline Stand building in Derrick, Organization
+B.01 - DERRICK AND SUBSTRUCTURE, B.01.01 - Derrick/Mast, Organization
+B.01 - DERRICK AND SUBSTRUCTURE, B.01.02 - Racking Platform, Organization
+B.01 - DERRICK AND SUBSTRUCTURE, B.01.03 - Pipe Handling, Organization
+B.01 - DERRICK AND SUBSTRUCTURE, B.01.04 - Casing Stabbing Board, Organization
+B.01 - DERRICK AND SUBSTRUCTURE, B.01.05 - Substructure, Organization
+B.01 - DERRICK AND SUBSTRUCTURE, B.01.06 - Weather Proofing, Organization
+B.01 - DERRICK AND SUBSTRUCTURE, B.01.07 - Derrick TV Camera System, Organization
+B.02 - DRAWWORKS AND ASSOCIATED EQUIPMENT, B.02.01 - Drawworks, Organization
+B.02 - DRAWWORKS AND ASSOCIATED EQUIPMENT, B.02.02 - Auxiliary Brake, Organization
+B.02 - DRAWWORKS AND ASSOCIATED EQUIPMENT, B.02.03 - Sandline, Organization
+B.02 - DRAWWORKS AND ASSOCIATED EQUIPMENT, B.02.04 - Wireline, Organization
+B.03 - DERRICK HOISTING EQUIPMENT, B.03.01 - Crown Block, Organization
+B.03 - DERRICK HOISTING EQUIPMENT, B.03.02 - Travel Block, Organization
+B.03 - DERRICK HOISTING EQUIPMENT, B.03.03 - Hook, Organization
+B.03 - DERRICK HOISTING EQUIPMENT, B.03.04 - Swivel, Organization
+B.03 - DERRICK HOISTING EQUIPMENT, B.03.05 - Drilling Line, Organization
+B.03 - DERRICK HOISTING EQUIPMENT, B.03.06 - Anchor Dead Line, Organization
+B.03 - DERRICK HOISTING EQUIPMENT, B.03.07 - Block Guidance System, Organization
+B.04 - Rotating System, B.04.01 - Rotary Table, Organization
+B.04 - Rotating System, B.04.02 - Master Bushings, Organization
+B.04 - Rotating System, B.04.03 - Kelly Bushing, Organization
+B.04 - Rotating System, B.04.04 - Top Drive (DDM), Organization
+B.05 - Offline Stand building in Derrick, B.05.00 - Offline Stand Building in Derrick, Organization
+B.01.01 - Derrick/Mast, Loadmaster DJ2000 / Offset Beam Leg, Equipment
+B.01.02 - Racking Platform, LoadMaster Racking Platform, Equipment
+B.01.04 - Casing Stabbing Board, Loadmaster Pneumatic Adj., Equipment
+B.01.05 - Substructure, Letourneau, Equipment
+B.01.07 - Derrick TV Camera System, Pelco CCTV, Equipment
+B.02.01 - Drawworks, Lewco LDW3000 HD, Equipment
+B.02.02 - Auxiliary Brake, Baylor 15050 Elmagco, Equipment
+B.03.01 - Crown Block, LoadMaster Crown Block, Equipment
+B.03.02 - Travel Block, Lewco / TB1000, Equipment
+B.03.03 - Hook, NOV/31108Y, Equipment
+B.03.05 - Drilling Line, '1 3/4 wire rope', Equipment
+B.03.06 - Anchor Dead Line, Loadmaster LMRDLA-200, Equipment
+B.03.07 - Block Guidance System, Loadmaster Block dolly & side skid assembly, Equipment
+B.04.01 - Rotary Table, Lewco L495, Equipment
+B.04.02 - Master Bushings, Varco/MPCH, Equipment
+B.04.04 - Top Drive (DDM), Lewco LTI/DDTD750-V2, Equipment
+B.04.04 - Top Drive (DDM), LTI / DDTD-750, Equipment
+C - POWER SUPPLY SYSTEMS, C.01 - RIG POWER PLANT, Organization
+C - POWER SUPPLY SYSTEMS, C.02 - EMERGENCY GENERATOR, Organization
+C - POWER SUPPLY SYSTEMS, C.03 - UPS Systems, Organization
+C - POWER SUPPLY SYSTEMS, C.04 - Machinery Space Ventilation, Organization
+C.01 - RIG POWER PLANT, C.01.01 - Diesel Engines, Organization
+C.01 - RIG POWER PLANT, C.01.02 - DC -Generator, Organization
+C.01 - RIG POWER PLANT, C.01.03 - AC -Generator, Organization
+C.01 - RIG POWER PLANT, C.01.04 - SCR System, Organization
+C.01 - RIG POWER PLANT, C.01.05 - VFD System, Organization
+C.01 - RIG POWER PLANT, C.01.06 - Transformer System, Organization
+C.01 - RIG POWER PLANT, C.01.07 - Emergency Shutdown, Organization
+C.01 - RIG POWER PLANT, C.01.08 - Auxilliary Power Supply, Organization
+C.01 - RIG POWER PLANT, C.01.09 - Compressed Air Systems, Organization
+C.01 - RIG POWER PLANT, C.01.10 - Air Receivers, Organization
+C.02 - EMERGENCY GENERATOR, C.02.01 - Engine, Organization
+C.02 - EMERGENCY GENERATOR, C.02.02 - AC - Generator, Organization
+C.02 - EMERGENCY GENERATOR, C.02.03 - Emergency Power Supply, Organization
+C.03 - UPS Systems, C.03.01 - UPS for Main Distribution, Organization
+C.03 - UPS Systems, C.03.02 - UPS for Drilling VFD, Organization
+C.03 - UPS Systems, C.03.03 - UPS for BOP, Organization
+C.03 - UPS Systems, C.03.04 - UPS for Drilling Control, Organization
+C.03 - UPS Systems, C.03.05 - UPS for PAGA System, Organization
+C.03 - UPS Systems, C.03.05 - UPS for ESD System, Organization
+C.03 - UPS Systems, C.03.06 - UPS for Heli Deck Light, Organization
+C.03 - UPS Systems, C.03.07 - UPS for general use, Organization
+C.03 - UPS Systems, C.03.08 - UPS for communications, Organization
+C.03 - UPS Systems, C.03.09 - UPS for D/G, Organization
+C.03 - UPS Systems, C.03.10 - UPS for mud mixing, Organization
+C.01.01 - Diesel Engines, Caterpiller 3516 CHD, Equipment
+C.01.03 - AC -Generator, Kato 6P6.6-3200HR, Equipment
+C.01.04 - SCR System, OEM VFD, Equipment
+C.01.06 - Transformer System, Olsun K4, Equipment
+C.01.07 - Emergency Shutdown, Rig Floor / Control Room, Equipment
+C.01.09 - Compressed Air Systems, Ingersoll Rand 2545, Equipment
+C.01.09 - Compressed Air Systems, Domnick Hunter modular desiccant, Equipment
+C.01.09 - Compressed Air Systems, Quincy QSI-600 Rotary Screw, Equipment
+C.01.09 - Compressed Air Systems, Domnick Hunter MPXs112/DS, Equipment
+C.01.10 - Air Receivers, Air Pressure Tank 1060 gal Port, Equipment
+C.01.10 - Air Receivers, Air Pressure Tank 1060 gal Starboardfrom treenode, Equipment
+C.01.10 - Air Receivers, Air Pressure Tank 400 gal, Equipment
+C.02.01 - Engine, Caterpillar 3516 C, Equipment
+C.02.02 - AC - Generator, KATO / AA27832003, Equipment
+C.04 - Machinery Space Ventilation, Main Engine Room Supply Fan, Equipment
+C.04 - Machinery Space Ventilation, Main Engine Room Exhaust Fan, Equipment
+C.04 - Machinery Space Ventilation, Mud Pump Room Supply Fan, Equipment
+C.04 - Machinery Space Ventilation, Mud Pump Room Exhaust Fan, Equipment
+C.04 - Machinery Space Ventilation, Emergency Generator Room Supply Fan, Equipment
+Main Engine Room Supply Fan, Installation quality, Acceptance
+Main Engine Room Supply Fan, Verify air flow direction, Acceptance
+Lewco LDW3000 HD, Verfiy minimum deadline wraps, Acceptance
+Caterpiller 3516 CHD, Installation quality, Acceptance
+Caterpiller 3516 CHD, Test Rig Saver, Acceptance
+Caterpiller 3516 CHD, Verify Gauges are functional, Acceptance
+Caterpiller 3516 CHD, check oil quality, Acceptance

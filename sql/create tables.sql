@@ -120,9 +120,50 @@ insert into user_id2permission_id(user_id, permission_id, details) values ('test
 insert into user_id2permission_id(user_id, permission_id, details) values ('testuser', 'public deaddrop','READ');
 insert into user_id2permission_id(user_id, permission_id, details) values ('testuser', 'some random deaddrop','READ');
 
+CREATE TABLE node_type (
+    node_type VARCHAR(64),
+    PRIMARY KEY (node_type)
+);
 
+insert into node_type( node_type) values ( "Root");
+insert into node_type( node_type) values ( "Installation");
+insert into node_type( node_type) values ( "Organization");
+insert into node_type( node_type) values ( "Equipment");
+insert into node_type( node_type) values ( "Acceptance");
+insert into node_type( node_type) values ( "Deficiency");
+insert into node_type( node_type) values ( "Status");
+insert into node_type( node_type) values ( "Photograph");
 
+CREATE TABLE node (
+    node_id INT NOT NULL AUTO_INCREMENT,
+    parent_node_id INT NOT NULL ,
+    root_node_id INT NOT NULL ,
+    node_name VARCHAR(256),
+    node_type VARCHAR(64),
+    creater_user_id VARCHAR(64) NOT NULL, 
+    publish_date DATETIME DEFAULT NOW(),
+    PRIMARY KEY (node_id),
+	FOREIGN KEY (node_type)
+        REFERENCES node_type (node_type),
+    CONSTRAINT UC_Node UNIQUE (parent_node_id , node_name , node_type)
+    );
+insert into node (node_id, parent_node_id, root_node_id, node_name, node_type, creater_user_id) values (1,1,1,"Root", "Root", "admin");
 
+ALTER table node Add FOREIGN KEY (parent_node_id)    REFERENCES node (node_id);
+ALTER table node Add FOREIGN KEY (root_node_id)      REFERENCES node (node_id);
+ 
+       
+CREATE TABLE node_parameter (
+    parameter_name VARCHAR(64) NOT NULL,
+    node_id INT NOT NULL,
+    parameter_value VARCHAR(2048),
+    creater_user_id VARCHAR(64) NOT NULL, 
+    publish_date DATETIME DEFAULT NOW(),
+    PRIMARY KEY (node_id, parameter_name),
+    FOREIGN KEY (node_id)
+        REFERENCES node (node_id),
+    CONSTRAINT UC_NodeParameter UNIQUE (node_id , parameter_name)
+);
 
 
 

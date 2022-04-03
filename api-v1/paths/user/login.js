@@ -131,7 +131,7 @@ module.exports = function(toolKit, userService, user2PermissionService, permissi
 												messageService.addMessage(messageObj);
 											})
 									})
-								contactsService.addContact(user_id, toolKit.getConstants().ADMIN;
+								contactsService.addContact(user_id, toolKit.getConstants().ADMIN);
 							});
 					}
 					else {
