@@ -25,7 +25,7 @@ const messageService = {
 		return new Promise(function(resolve, reject) {
 			var sql = `DELETE FROM message WHERE message_id =? AND deaddrop_id = ? `;
 			var connection = toolKit.getConnection();
-			connection.query(sql, [message_id, user_id, deaddrop_id], function(error, results, fields) {
+			connection.query(sql, [message_id, deaddrop_id], function(error, results, fields) {
 
 				if (error) reject(error);
 				resolve();

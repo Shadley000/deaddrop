@@ -1,2 +1,0 @@
-export PORT=3000
-export MAX_MESSAGES=20

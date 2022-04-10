@@ -1,7 +1,5 @@
 const NAV_DEADDROPS = "deaddrops"
 
-
-
 function displayDeaddrop() {
 	if (data && data.userObj && data.userObj.permissions) {
 
@@ -32,14 +30,14 @@ function displayCreateNewDeadDropMessage(deaddropObj) {
 	var html = ""
 	
 	const aDeaddropPermissionObj = data.userObj.permissions.find(permission => permission.tags.includes(SYS_TAGS_DEADDROP));
-			if (aDeaddropPermissionObj) {
-				data.selected_deaddrop_id = aDeaddropPermissionObj.permission_id.trim();
-				console.log("defaulting deaddrop_id:", data.selected_deaddrop_id)
-			}
+	if (aDeaddropPermissionObj) {
+		data.selected_deaddrop_id = aDeaddropPermissionObj.permission_id.trim();
+		console.log("defaulting deaddrop_id:", data.selected_deaddrop_id)
+	}
 	if (deaddropObj) {
-		html += '<label for="title">Title:</label>'
-		html += '<input type="text" id="title" name="title" value=""><br>'
-		html += `<textarea id="message" name="message" rows ="10" cols="50" maxlength="2048"></textarea><BR>`
+		html += '<h4>New Deaddrop Message</h4>'
+		html += '<input type="text" id="title" name="title" value="" style="width: 100%"></input><br>'
+		html += `<textarea id="message" name="message" rows ="10" style="width: 100%" maxlength="2048"></textarea><BR>`
 		html += "<button onclick='addMessage()'>Post Message</button>"
 		document.getElementById("div_create_new_message").innerHTML = html;
 	}
@@ -51,35 +49,52 @@ function displayCreateNewDeadDropMessage(deaddropObj) {
 function displayDeadDropMessages() {
 	if (data.selected_deaddrop_id) {
 		getUrl("/v1/deaddrop/" + data.selected_deaddrop_id + "?" + "&t=" + Math.random())
-			.then(function(deaddropObj) {
-				if (deaddropObj && deaddropObj.messages) {
-					var html = ""
-					html += "<table>"
-					for (var j = 0; j < deaddropObj.messages.length; j++) {
-						var messageObj = deaddropObj.messages[j];
-						html += `<TR><TH>${messageObj.user_id}</TH><TH>${messageObj.publish_date}</TH>`
-						if (messageObj.user_id == data.userObj.user_id)
-							html += "<TD><button onclick='deleteMessage(" + messageObj.message_id + ")'>delete</button></TD>"
-						else
-							html += `<TD></TD>`
-						html += `</TR><TR>`
-						html += `<TH colspan="3">${messageObj.title}</TH>`
-						html += `</TR><TR>`
-						html += `<TD colspan="3">${messageObj.message}</TD>`;
-						html += `</TR>`;
-					}
-					html += "</table>"
-					document.getElementById("div_messages").innerHTML = html;
+		.then(function(deaddropObj) {
+			if (deaddropObj && deaddropObj.messages) {
+				var html = "";
+				for (var j = 0; j < deaddropObj.messages.length; j++) {
+					var messageObj = deaddropObj.messages[j];
+					html+= displayMessage(messageObj)
+					
 				}
-				displayCreateNewDeadDropMessage(deaddropObj)
-			})
-
+				document.getElementById("div_messages").innerHTML = html;
+			}
+			displayCreateNewDeadDropMessage(deaddropObj)
+		})
 	} else {
 		var html = "<h3>please select a deaddrop</h3>"
 		document.getElementById("div_messages").innerHTML = html;
 	}
 }
 
+function displayMessage(messageObj){
+	var html = `<DIV id='${messageObj.message_id_div}'>`
+	
+	html += `<table style="width: 100%">`
+	html += `<TR>`
+	html += `<TH style="text-align:left">`
+	html += `${messageObj.user_id}`
+	html += `<img src="./images/message.jpg" alt="deaddrop" float="left" onclick='messageContact("${messageObj.user_id}")'>`
+	html += `<img src="./images/delete_small.jpg" alt="deaddrop" float="left" onclick='deleteMessage("${messageObj.message_id}")'>`
+	html += `</TH>`
+	html += `<TH style="text-align:right">${messageObj.publish_date}</TH></TR>`
+	html += `</TR>`
+	html += `<TR><TH colspan="2" style="text-align:left">${messageObj.title}</TH></TR>`
+	html += `<TR><TD colspan="2" style="text-align:left">${messageObj.message}</TD></TR>`
+	
+	
+	if (messageObj.user_id == data.userObj.user_id)
+	//html += `<TR><TD><button >delete</button></TD><TD></TD></TR>`
+	html += `<TR><TD></TD><TD></TD></TR>`
+	html += "</table>"
+	html += "</DIV>"
+	return html;
+}
+
+function messageContact(contact_user_id) {
+	data.selected_user_id = contact_user_id;
+	navigate(NAV_SEND_PRIVATE_MESSAGE);
+}
 
 function selectDeadDrop() {
 	data.selected_deaddrop_id = document.getElementById("deaddrops").value;
@@ -101,30 +116,30 @@ function addMessage() {
 	document.getElementById('message').value = "";
 	//console.log(messageObj)
 	postUrl("/v1/deaddrop/" + messageObj.deaddrop_id + "/" + messageObj.message_id, messageObj)
-		.then(data => {
-			displayDeadDropMessages()
-		})
-		.catch(function(err) {
-			console.log('error: ' + err);
-			html = "<h3>Error</H3>";
-			html += "<p>" + err + "</p>";
-			document.getElementById("article").innerHTML = html;
-		});
+	.then(data => {
+		displayDeadDropMessages()
+	})
+	.catch(function(err) {
+		console.log('error: ' + err);
+		html = "<h3>Error</H3>";
+		html += "<p>" + err + "</p>";
+		document.getElementById("article").innerHTML = html;
+	});
 }
 
 function deleteMessage(message_id) {
 	console.log("deleteMessage ", message_id)
 	var deaddrop_id = data.selected_deaddrop_id;
 	deleteUrl("/v1/deaddrop/" + deaddrop_id + "/" + message_id)
-		.then(data => {
-			displayDeaddrop();
-		})
-		.catch(function(err) {
-			console.log('error: ' + err);
-			html = "<h3>Error</H3>";
-			html += "<p>" + err + "</p>";
-			document.getElementById("article").innerHTML = html;
-		});
+	.then(data => {
+		displayDeaddrop();
+	})
+	.catch(function(err) {
+		console.log('error: ' + err);
+		html = "<h3>Error</H3>";
+		html += "<p>" + err + "</p>";
+		document.getElementById("article").innerHTML = html;
+	});
 }
 
 

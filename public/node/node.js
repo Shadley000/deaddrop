@@ -27,87 +27,17 @@ function displayNode(nodeObj, nodeList){
 	var html =  `<DIV id="${nodeObj.node_id}_div" onclick="divClick(${nodeObj.node_id})">`
 	html += `${nodeObj.node_id} ${nodeObj.node_name} ${nodeObj.parent_node_id}`;
 	
-	var children = getChildren(nodeObj.node_id, nodeList);
 	
-	if(children.length>0){
-		console.log(children);
-		html += `<UL>`;
-		for(i =0; i< children.length; i++) {
-			var childObj = children[i]
-			//html += `<LI>${childObj.node_id} ${childObj.node_name} ${childObj.parent_node_id}</LI>`
-			html += `<LI>${displayNode2(childObj, nodeList)}</LI>`
-		}
-		html += `</UL>`;
-	}
+	html += `<UL>`;
+	getChildren(nodeObj.node_id, nodeList).forEach(childObj => {
+		html += `<LI>${displayNode(childObj, nodeList)}</LI>`
+	});
+	html += `</UL>`;
+
 	html+= "</DIV>"
 	return html;
 }
 
-function displayNode2(nodeObj, nodeList){
-	console.log(`nodeObj.node_id:${nodeObj.node_id}`);
-	
-	var html =  `<DIV id="${nodeObj.node_id}_div" onclick="divClick(${nodeObj.node_id})">`
-	html += `${nodeObj.node_id} ${nodeObj.node_name} ${nodeObj.parent_node_id}`;
-	
-	var children = getChildren(nodeObj.node_id, nodeList);
-	
-	if(children.length>0){
-		console.log(children);
-		html += `<UL>`;
-		for(i =0; i< children.length; i++) {
-			var childObj = children[i]
-			//html += `<LI>${childObj.node_id} ${childObj.node_name} ${childObj.parent_node_id}</LI>`
-			html += `<LI>${displayNode3(childObj, nodeList)}</LI>`
-		}
-		html += `</UL>`;
-	}
-	html+= "</DIV>"
-	return html;
-}
-
-function displayNode3(nodeObj, nodeList){
-	console.log(`nodeObj.node_id:${nodeObj.node_id}`);
-	
-	var html =  `<DIV id="${nodeObj.node_id}_div" onclick="divClick(${nodeObj.node_id})">`
-	html += `${nodeObj.node_id} ${nodeObj.node_name} ${nodeObj.parent_node_id}`;
-	
-	var children = getChildren(nodeObj.node_id, nodeList);
-	
-	if(children.length>0){
-		console.log(children);
-		html += `<UL>`;
-		for(i =0; i< children.length; i++) {
-			var childObj = children[i]
-			html += `<LI>${childObj.node_id} ${childObj.node_name} ${childObj.parent_node_id}</LI>`
-			//html += `<LI>${displayNode4(childObj, nodeList)}</LI>`
-		}
-		html += `</UL>`;
-	}
-	html+= "</DIV>"
-	return html;
-}
-
-function displayNode4(nodeObj, nodeList){
-	console.log(`nodeObj.node_id:${nodeObj.node_id}`);
-	
-	var html =  `<DIV id="${nodeObj.node_id}_div" onclick="divClick(${nodeObj.node_id})">`
-	html += `${nodeObj.node_id} ${nodeObj.node_name} ${nodeObj.parent_node_id}`;
-	
-	var children = getChildren(nodeObj.node_id, nodeList);
-	
-	if(children.length>0){
-		console.log(children);
-		html += `<UL>`;
-		for(i =0; i< children.length; i++) {
-			var childObj = children[i]
-			html += `<LI>${childObj.node_id} ${childObj.node_name} ${childObj.parent_node_id}</LI>`
-			//html += `<LI>${displayNode(childObj, nodeList)}</LI>`
-		}
-		html += `</UL>`;
-	}
-	html+= "</DIV>"
-	return html;
-}
 
 function getChildren(parent_node_id, nodeList){
 	return nodeList.filter((o) => {return o.parent_node_id === parent_node_id && o.node_id != o.parent_node_id})

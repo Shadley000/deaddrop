@@ -1,13 +1,6 @@
 drop database deaddrop;
 CREATE DATABASE deaddrop;
 USE deaddrop;
-drop user 'deaddrop'@'localhost';
-create user 'deaddrop'@'localhost' identified by 'deaddroppassword';
-GRANT all privileges  ON deaddrop . * TO 'deaddrop'@'localhost';
-ALTER USER 'deaddrop'@'localhost' IDENTIFIED WITH mysql_native_password BY 'deaddroppassword';
-FLUSH PRIVILEGES;
-
-show grants for 'deaddrop'@'localhost';
 
 CREATE TABLE users (
     user_id VARCHAR(64) NOT NULL,
