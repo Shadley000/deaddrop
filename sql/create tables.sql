@@ -92,6 +92,7 @@ insert into contacts (user_id, contact_user_id) values ('testuser', 'banneduser'
 INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('SYS_ADMINISTRATOR','System adminstration','SYSTEM','password');
 INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('SYS_LOGIN','the most basic login priviledge','SYSTEM','password');
 INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('DEADDROP_ADMIN','is the user allowed to create a deaddrop','SYSTEM','password');
+INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('NODE_ADMIN','is the user allowed to administer node editor','SYSTEM','password');
 
 INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('admin maildrop','access to admin maildrop','DEADDROP MAILDROP','password');
 INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('public deaddrop','access to public deaddrop','DEADDROP','password');
@@ -109,6 +110,7 @@ insert into message(deaddrop_id, user_id,publish_date,title,message) values ('so
 insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'SYS_ADMINISTRATOR','CREATE READ UPDATE DELETE ADMIN');
 insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'SYS_LOGIN','CREATE READ UPDATE DELETE ADMIN');
 insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'DEADDROP_ADMIN','CREATE READ UPDATE DELETE ADMIN');
+insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'NODE_ADMIN','CREATE READ UPDATE DELETE ADMIN');
 insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'public deaddrop','CREATE READ UPDATE DELETE ADMIN');
 insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'admin maildrop','CREATE READ UPDATE DELETE ADMIN');
 
@@ -144,8 +146,8 @@ CREATE TABLE node (
     publish_date DATETIME DEFAULT NOW(),
     PRIMARY KEY (node_id),
 	FOREIGN KEY (node_type)
-        REFERENCES node_type (node_type),
-    CONSTRAINT UC_Node UNIQUE (parent_node_id , node_name , node_type)
+        REFERENCES node_type (node_type)
+  --  CONSTRAINT UC_Node UNIQUE (parent_node_id , node_name , node_type)
     );
 insert into node (node_id, parent_node_id, root_node_id, node_name, node_type, creater_user_id) values (1,1,1,"Root", "Root", "admin");
 

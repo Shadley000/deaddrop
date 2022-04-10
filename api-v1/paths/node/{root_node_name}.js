@@ -6,17 +6,16 @@ module.exports = function(toolKit,  nodeService, nodeParameterService) {
 	function GET(req, res, next) {
 		try {
 			var user_id = req.session.user_id;
-			var root_node_id = req.path.root_node_id;
+			var root_node_name = req.params.root_node_name;
 			
-			nodeService.getFromRoot(root_node_id)
-			.then((rootnodeObj) => {
-				if (deaddropObj) {
-					res.status(200).json(rootnodeObj);
+			nodeService.getFromRoot(root_node_name)
+			.then((nodeData) => {
+				if (nodeData) {
+					res.status(200).json(nodeData);
 				} else {
-					res.status(404).json(toolKit.createSimpleResponse("error", "root not found:" + deaddrop_id));
+					res.status(404).json(toolKit.createSimpleResponse("error", "root not found:" + root_node_name));
 				}
 			});
-			
 		}
 		catch (e) {
 			res.status(500).json(toolKit.createSimpleResponse("error", e.message));
@@ -28,7 +27,7 @@ module.exports = function(toolKit,  nodeService, nodeParameterService) {
 		"parameters": [
 		{
 			"in": 'path',
-			"name": 'root_node_id',
+			"name": 'root_node_name',
 			"type": 'string',
 			"required": true
 		}

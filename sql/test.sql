@@ -15,6 +15,10 @@ select * from deaddrop_invite;
 
 select * from node;
 
+select * from node where parent_node_id = 2
+
+SELECT *  FROM node where node_name = "Test Rig 1" and node_id = root_node_id order by node_id
+
 select * from node_parameter;
 
 

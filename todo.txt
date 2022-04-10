@@ -1,0 +1,10 @@
+todo list
+
+deaddrop 
+	prevent duplicate invitation and contact	
+	contacts -> exclude contacts already in list
+	error reporting
+	sql fatal error
+
+node
+	finish main page

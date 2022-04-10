@@ -69,7 +69,7 @@ initialize({
 		sessionService: sessionService,
 		contactsService: contactsService,
 		inviteService:inviteService,
-		treenodeService: treenodeService,
+		nodeService: nodeService,
 		nodeParameterService: nodeParameterService,
 		toolKit: toolKit
 	},

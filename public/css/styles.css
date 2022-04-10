@@ -1,0 +1,44 @@
+.login{
+    
+}
+
+ul.nav{
+    list-style-type: none;
+    padding: 0;
+}
+   
+li.nav {
+    text-decoration: none;
+}
+
+
+#div_header {
+    padding: 1em;
+    color: black;
+    background-color: lightgray;
+    clear: left;
+    text-align: left;
+}
+
+ 
+#div_nav {
+    float: left;
+    max-width: 190px;
+    margin: 0;
+    padding: 1em;
+}
+
+#div_report {
+    margin-left: 200px;
+    border-left: 1px solid gray;
+    padding: 1em;
+    overflow: hidden;
+}
+
+#div_footer {
+    padding: 1em;
+    color: black;
+    background-color: WhiteSmoke ;
+    clear: left;
+    text-align: right;
+}
