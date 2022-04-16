@@ -9,9 +9,16 @@ module.exports = function(toolKit,  nodeService, nodeParameterService) {
 			var root_node_name = req.params.root_node_name;
 			
 			nodeService.getFromRoot(root_node_name)
-			.then((nodeData) => {
-				if (nodeData) {
-					res.status(200).json(nodeData);
+			.then((nodeObjList) => {
+				if (nodeObjList) {
+					nodeService.getParameters(nodeObjList[0].root_node_id)
+					.then((parameterObjList) => {
+						var nodeData = { 
+							"nodeObjList": nodeObjList, 
+							"parameterObjList": parameterObjList
+						}
+						res.status(200).json(nodeData);
+					})
 				} else {
 					res.status(404).json(toolKit.createSimpleResponse("error", "root not found:" + root_node_name));
 				}

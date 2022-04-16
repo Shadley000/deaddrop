@@ -6,7 +6,7 @@ const SYS_TAGS_DEADDROP = "DEADDROP";
 const SYS_TAGS_MAILDROP = "MAILDROP";
 const SYS_DETAILS_ALL = "CREATE READ UPDATE DELETE ADMIN";
 const DEADDROP_ADMIN = "DEADDROP_ADMIN";
-const NODE_ADMIN = "NODE_ADMIN";
+const NODE_USER = "NODE_USER";
 const SYS_DETAILS_CREATE = "CREATE";
 const SYS_DETAILS_READ = "READ";
 const SYS_DETAILS_UPDATE = "UPDATE";
@@ -19,7 +19,8 @@ function initData() {
 		permissions: [],
 		selected_deaddrop_id: undefined,
 		userObj: undefined,
-		selected_user_id: undefined
+		selected_user_id: undefined,
+		nodeData: undefined
 	};
 }
 

@@ -85,11 +85,16 @@ insert into contacts (user_id, contact_user_id) values ('testuser', 'banneduser'
 INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('SYS_ADMINISTRATOR','System adminstration','SYSTEM','password');
 INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('SYS_LOGIN','the most basic login priviledge','SYSTEM','password');
 INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('DEADDROP_ADMIN','is the user allowed to create a deaddrop','SYSTEM','password');
-INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('NODE_ADMIN','is the user allowed to administer node editor','SYSTEM','password');
+INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('NODE_USER','is the user allowed to administer node editor','SYSTEM','password');
 
 INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('admin maildrop','access to admin maildrop','DEADDROP MAILDROP','password');
 INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('public deaddrop','access to public deaddrop','DEADDROP','password');
 INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('some random deaddrop','access to some random deaddrop','DEADDROP','password');
+
+INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('Test Rig 1 Admin','administrative access to Test Rig 1','NODE','password');
+INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('Test Rig 1 Inspector','administrative access to Test Rig 1','NODE','password');
+INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('Test Rig 1 Operator','administrative access to Test Rig 1','NODE','password');
+INSERT INTO permissions (permission_id,permission_name,tags, permission_key) values ('Test Rig 1 Contractor','administrative access to Test Rig 1','NODE','password');
 
 insert into deaddrop (deaddrop_id, title) values ('admin maildrop', 'Administration Maildrop');
 insert into deaddrop (deaddrop_id, title) values ('public deaddrop', 'Public Deaddrop');
@@ -103,9 +108,13 @@ insert into message(deaddrop_id, user_id,publish_date,title,message) values ('so
 insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'SYS_ADMINISTRATOR','CREATE READ UPDATE DELETE ADMIN');
 insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'SYS_LOGIN','CREATE READ UPDATE DELETE ADMIN');
 insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'DEADDROP_ADMIN','CREATE READ UPDATE DELETE ADMIN');
-insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'NODE_ADMIN','CREATE READ UPDATE DELETE ADMIN');
+insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'NODE_USER','CREATE READ UPDATE DELETE ADMIN');
 insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'public deaddrop','CREATE READ UPDATE DELETE ADMIN');
 insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'admin maildrop','CREATE READ UPDATE DELETE ADMIN');
+
+insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'Test Rig 1 Admin','CREATE READ UPDATE DELETE ADMIN');
+insert into user_id2permission_id(user_id, permission_id, details) values ('admin', 'Test Rig 1 Inspector','CREATE READ UPDATE DELETE ADMIN');
+
 
 insert into user_id2permission_id(user_id, permission_id, details) values ('guest', 'SYS_LOGIN','READ');
 insert into user_id2permission_id(user_id, permission_id, details) values ('guest', 'public deaddrop','READ');
@@ -126,7 +135,7 @@ insert into node_type( node_type) values ( "Organization");
 insert into node_type( node_type) values ( "Equipment");
 insert into node_type( node_type) values ( "Acceptance");
 insert into node_type( node_type) values ( "Deficiency");
-insert into node_type( node_type) values ( "Status");
+insert into node_type( node_type) values ( "Comment");
 insert into node_type( node_type) values ( "Photograph");
 
 CREATE TABLE node (
@@ -147,7 +156,6 @@ insert into node (node_id, parent_node_id, root_node_id, node_name, node_type, c
 ALTER table node Add FOREIGN KEY (parent_node_id)    REFERENCES node (node_id);
 ALTER table node Add FOREIGN KEY (root_node_id)      REFERENCES node (node_id);
  
-       
 CREATE TABLE node_parameter (
     parameter_name VARCHAR(64) NOT NULL,
     node_id INT NOT NULL,
