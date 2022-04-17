@@ -1,5 +1,7 @@
 const NAV_DEADDROPS = "deaddrops"
 
+
+
 function displayDeaddrop() {
 	if (data && data.userObj && data.userObj.permissions) {
 
@@ -12,8 +14,11 @@ function displayDeaddrop() {
 		}
 		var html = ""
 		html += "<DIV id='div_deaddrop_select'></DIV>"
-		html += "<button onclick='displayDeaddrop()'>refresh</button>"
-		html += `<button onclick='navigate("${NAV_CREATE_DEADDROP}")'>Create a new Deaddrop</button><br>`
+		//html += "<button onclick='displayDeaddrop()'>refresh</button>"
+		html += `<img src="./images/refresh32x32.jpg" alt="deaddrop" float="left" onclick='displayDeaddrop()'>`
+		html += `<img src="./images/add32x32.jpg" alt="deaddrop" float="left" onclick='navigate("${NAV_CREATE_DEADDROP}")'>`
+	
+		//html += `<button onclick='navigate("${NAV_CREATE_DEADDROP}")'>Create a new Deaddrop</button><br>`
 
 		html += "<DIV id='div_messages'></DIV>"
 		html += "<DIV id='div_create_new_message'></DIV>"
@@ -25,7 +30,6 @@ function displayDeaddrop() {
 	}
 }
 
-
 function displayCreateNewDeadDropMessage(deaddropObj) {
 	var html = ""
 	
@@ -36,7 +40,7 @@ function displayCreateNewDeadDropMessage(deaddropObj) {
 	}
 	if (deaddropObj) {
 		html += '<h4>New Deaddrop Message</h4>'
-		html += '<input type="text" id="title" name="title" value="" style="width: 100%"></input><br>'
+		html += '<input type="text" id="title" name="title" value="" style="width: 100%"  maxlength="64"></input><br>'
 		html += `<textarea id="message" name="message" rows ="10" style="width: 100%" maxlength="2048"></textarea><BR>`
 		html += "<button onclick='addMessage()'>Post Message</button>"
 		document.getElementById("div_create_new_message").innerHTML = html;
@@ -74,8 +78,8 @@ function displayMessage(messageObj){
 	html += `<TR>`
 	html += `<TH style="text-align:left">`
 	html += `${messageObj.user_id}`
-	html += `<img src="./images/message.jpg" alt="deaddrop" float="left" onclick='messageContact("${messageObj.user_id}")'>`
-	html += `<img src="./images/delete_small.jpg" alt="deaddrop" float="left" onclick='deleteMessage("${messageObj.message_id}")'>`
+	html += `<img src="./images/message16x16.jpg" alt="deaddrop" float="left" onclick='messageContact("${messageObj.user_id}")'>`
+	html += `<img src="./images/delete16x16.jpg" alt="deaddrop" float="left" onclick='deleteMessage("${messageObj.message_id}")'>`
 	html += `</TH>`
 	html += `<TH style="text-align:right">${messageObj.publish_date}</TH></TR>`
 	html += `</TR>`
@@ -83,10 +87,11 @@ function displayMessage(messageObj){
 	html += `<TR><TD colspan="2" style="text-align:left">${messageObj.message}</TD></TR>`
 	
 	
-	if (messageObj.user_id == data.userObj.user_id)
+	//if (messageObj.user_id == data.userObj.user_id)
 	//html += `<TR><TD><button >delete</button></TD><TD></TD></TR>`
-	html += `<TR><TD></TD><TD></TD></TR>`
+	//html += `<TR><TD></TD><TD></TD></TR>`
 	html += "</table>"
+	html += "<BR>"
 	html += "</DIV>"
 	return html;
 }
