@@ -1,87 +1,88 @@
-const NAV_ACCEPT_INVITE = "acceptinvitedeaddrop"
 
-
-function displayAcceptInvite() {
-	if (data && data.userObj && data.userObj.permissions) {
-
-		var html = ""
-		html += "<h2>Invites</h2>"
-		html += "<DIV id='inviteList_div'></DIV>"
-		document.getElementById("article").innerHTML = html;
-
-		displayActiveInvites()
-		
-	}
-}
-
-
-function displayActiveInvites(){
+class AcceptInviteDisplay {
 	
-	getUrl(`/v1/user/${data.userObj.user_id}/invite`)
-	.then(invites => {
-		var html = "<TABLE>";
+	constructor(){
+		this.name = "NAV_ACCEPT_INVITE";
+		this.audience='private', 
+		this.permission_required= 'DEADDROP_ADMIN',	
+		this.title= 'Accept Invites', 
+		this.Navbar=true
+	}
 
-		for (var i = 0; i < invites.length; i++) {
-			var inviteObj = invites[i];
+	 display() {
+		if (global && global.userObj ) {
 
-			html += `<TR>`
-			html += `<TD>${inviteObj.inviter_user_id}</TD>`
-			html += `<TD>${inviteObj.deaddrop_id}</TD>`
-			html += `<TD><button onclick='acceptInvite("${inviteObj.inviter_user_id}", "${inviteObj.deaddrop_id}")'>Accept</button></TD>`
-			html += `<TD><button onclick='refuseInvite("${inviteObj.inviter_user_id}", "${inviteObj.deaddrop_id}")'>Refuse</button></TD>`
-			html += '</TR>';
+			var html = ""
+			html += "<h2>Invites</h2>"
+			html += "<DIV id='inviteList_div'></DIV>"
+			document.getElementById("article").innerHTML = html;
 
+			this.displayActiveInvites()
+			
 		}
-		html += "</TABLE>";
-
-		document.getElementById("inviteList_div").innerHTML = html;
-	})
-	
-}
-
-
-function acceptInvite(inviter_user_id, deaddrop_id){
-	console.log("acceptInvite",inviter_user_id, deaddrop_id);
-	
-	var inviteObj = {
-		"inviter_user_id":inviter_user_id,
-		"invitee_user_id":data.userObj.user_id,
-		"deaddrop_id":deaddrop_id,
-		"details": ""
 	}
-	console.log(inviteObj)
-	putUrl(`/v1/user/${data.userObj.user_id}/invite`, inviteObj)
-	.then(() => {
-		refreshPermissions()
-		.then(()=> {
-			displayActiveInvites()
+
+
+	 displayActiveInvites(){
+		
+		getUrl(`/v1/user/${global.userObj.user_id}/invite`)
+		.then(invites => {
+			var html = "<TABLE>";
+
+			for (var i = 0; i < invites.length; i++) {
+				var inviteObj = invites[i];
+
+				html += `<TR>`
+				html += `<TD>${inviteObj.inviter_user_id}</TD>`
+				html += `<TD>${inviteObj.deaddrop_id}</TD>`
+				html += `<TD><button onclick='acceptInviteDisplay.acceptInvite("${inviteObj.inviter_user_id}", "${inviteObj.deaddrop_id}")'>Accept</button></TD>`
+				html += `<TD><button onclick='acceptInviteDisplay.refuseInvite("${inviteObj.inviter_user_id}", "${inviteObj.deaddrop_id}")'>Refuse</button></TD>`
+				html += '</TR>';
+			}
+			html += "</TABLE>";
+
+			document.getElementById("inviteList_div").innerHTML = html;
 		})
 		
-	})
-	
-}
-
-
-function refuseInvite(inviter_user_id, deaddrop_id){
-	console.log("refuseInvite",inviter_user_id, deaddrop_id);
-	var inviteObj = {
-		"inviter_user_id":inviter_user_id,
-		"invitee_user_id":data.userObj.user_id,
-		"deaddrop_id":deaddrop_id,
-		"details": ""
 	}
-	
-	deleteUrl(`/v1/user/${data.userObj.user_id}/invite`, inviteObj)
-	.then(() => {
-		displayActiveInvites()
-	})
+
+
+	 acceptInvite(inviter_user_id, deaddrop_id){
+		console.log("acceptInvite",inviter_user_id, deaddrop_id);
+		
+		var inviteObj = {
+			"inviter_user_id":inviter_user_id,
+			"invitee_user_id":global.userObj.user_id,
+			"deaddrop_id":deaddrop_id,
+			"details": ""
+		}
+		console.log(inviteObj)
+		putUrl(`/v1/user/${global.userObj.user_id}/invite`, inviteObj)
+		.then(() => {
+			refreshPermissions()
+			.then(()=> {
+				this.displayActiveInvites()
+			})
+			
+		})
+		
+	}
+
+
+	 refuseInvite(inviter_user_id, deaddrop_id){
+		console.log("refuseInvite",inviter_user_id, deaddrop_id);
+		var inviteObj = {
+			"inviter_user_id":inviter_user_id,
+			"invitee_user_id":global.userObj.user_id,
+			"deaddrop_id":deaddrop_id,
+			"details": ""
+		}
+		
+		deleteUrl(`/v1/user/${global.userObj.user_id}/invite`, inviteObj)
+		.then(() => {
+			this.displayActiveInvites()
+		})
+	}
 }
+var acceptInviteDisplay = new AcceptInviteDisplay()
 
-
-displayList.push({ "name": NAV_ACCEPT_INVITE, 	
-	"action": displayAcceptInvite,			
-	"audience":'private', 
-	'permission_required': DEADDROP_ADMIN,	
-	'title': 'Accept Invites', 
-	'Navbar':true   },
-);

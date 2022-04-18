@@ -34,10 +34,10 @@ const inviteService = {
 		return new Promise(function(resolve, reject) {
 			var sql = "SELECT invitee_user_id, inviter_user_id, deaddrop_id, details"
 			+ " FROM    deaddrop_invite"
-			+ " WHERE   inviter_user_id = ? AND invitee_user_id = ? AND deaddrop_id = ?"
+			+ " WHERE   invitee_user_id = ? AND deaddrop_id = ?"
 
 			var connection = toolKit.getConnection();
-			connection.query(sql, [inviter_user_id, invitee_user_id, deaddrop_id], function(error, results, fields) {
+			connection.query(sql, [ invitee_user_id, deaddrop_id], function(error, results, fields) {
 				if (error) reject(error)
 				if (results && results.length >0) {
 					

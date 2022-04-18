@@ -24,7 +24,7 @@ module.exports = function(toolKit, userService, user2PermissionService, permissi
 								user2PermissionService.getUserPermissions(user_id)
 									.then((permissions) => {
 										userObj.permissions = permissions;
-										console.log(userObj);
+										//console.log(userObj);
 										if(permissions && permissions.find(o => o.permission_id == toolKit.getConstants().SYS_LOGIN)){
 											res.status(200).json(userObj)
 										}
@@ -100,7 +100,6 @@ module.exports = function(toolKit, userService, user2PermissionService, permissi
 								user2PermissionService.addUserPermission(user_id, toolKit.getConstants().DEADDROP_ADMIN, toolKit.getConstants().SYS_DETAILS_ALL)
 									.then(() => {
 										console.log(`${user_id} ${toolKit.getConstants().DEADDROP_ADMIN} permission added`);
-										res.status(200).json(toolKit.createSimpleResponse("success", "User created"))
 									});
 
 								var details = toolKit.getConstants().SYS_DETAILS_ALL;

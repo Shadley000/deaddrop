@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>DeadDrop</title>
 <script type="text/javascript" src="globals.js"></script>
-<script type="text/javascript" src="displayNav.js"></script>
 <script type="text/javascript" src="displayBlank.js"></script>
 <script type="text/javascript" src="displayError.js"></script>
 <script type="text/javascript" src="./user/account.js"></script>
@@ -12,10 +11,8 @@
 <script type="text/javascript" src="./user/login.js"></script>
 <script type="text/javascript" src="./user/logout.js"></script>
 <script type="text/javascript" src="./administration/admin.js"></script>
-<!--  <script type="text/javascript" src="./user/userSearch.js"></script>-->
 <script type="text/javascript" src="./user/createaccount.js"></script>
 <script type="text/javascript" src="./user/manualaddpermission.js"></script>
-<script type="text/javascript" src="./deaddrop/div_deaddrop_select.js"></script>
 <script type="text/javascript" src="./deaddrop/createdeaddrop.js"></script>
 <script type="text/javascript" src="./deaddrop/invitedeaddrop.js"></script>
 <script type="text/javascript" src="./deaddrop/acceptinvite.js"></script>
@@ -23,6 +20,7 @@
 <script type="text/javascript" src="./deaddrop/deaddrop.js"></script>
 <script type="text/javascript" src="./deaddrop/about.js"></script>
 <script type="text/javascript" src="./node/node.js"></script>
+<script type="text/javascript" src="Navigation.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- <link rel="stylesheet" href="./css/styles.css"> -->
 <link rel="stylesheet" href="./css/deaddrop.css">
@@ -43,8 +41,32 @@
 	<!-- <footer id='footer'><h4>DeadDrop</h4></footer> -->
 
 	<script>
-	displayNav();
-	navigate(NAV_LOGIN);
+	var navigation  = new  Navigation() 
+	navigation.register(blankDisplay);
+	navigation.register(errorDisplay);
+	navigation.register(loginDisplay);
+	navigation.register(createAccountDisplay);
+	
+	
+	navigation.register(deaddropDisplay);
+	navigation.register(createDeaddropDisplay)
+	
+	navigation.register(accountDisplay)
+	navigation.register(manualAddPermissionDisplay)
+	navigation.register(contactsDisplay)
+	navigation.register(sendPrivateMessageDisplay);
+	navigation.register(inviteDeaddropDisplay);
+	navigation.register(acceptInviteDisplay);
+	
+	navigation.register(nodeDisplay);
+	
+	navigation.register(userAdminDisplay)
+	
+	navigation.register(aboutDisplay)
+	navigation.register(logoutDisplay);
+	
+	navigation.display();
+	navigation.navigate(loginDisplay.name);
 	</script>
 </body>
 </html>

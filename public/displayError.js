@@ -1,12 +1,21 @@
-const NAV_ERROR = "ERROR"
 
-function displayError() {
-	document.getElementById("article").innerHTML = "<h3>Something has gone wrong</h3>";
+
+class ErrorDisplay {
+	
+	constructor(){
+		this.name = "NAV_ERROR";
+		this.audience='public'
+		this.permission_required= undefined
+		this.title='Error'
+		this.Navbar=false 
+	}
+	
+	display() {
+		document.getElementById("article").innerHTML = "<h3>Something has gone horriblely wrong</h3>";
+	}
 }
 
-displayList.push({ "name": NAV_ERROR, 			
-	"action": displayError,					
-	"audience":'public', 		
-	'permission_required': undefined,		
-	'title': 'Error', 
-	'Navbar':false  })
+var errorDisplay = new ErrorDisplay()
+
+
+

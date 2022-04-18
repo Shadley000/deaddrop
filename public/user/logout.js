@@ -1,33 +1,40 @@
-const NAV_LOGOUT = "logout"
 
+class LogoutDisplay {
+	
+	constructor(){
+		this.name = "NAV_LOGOUT"
+		this.audience= 'private'
+		this.permission_required= 'SYS_LOGIN'
+		this.title= 'Logout'
+		this.Navbar='top'
 
-function displayLogout() {
-	var html = "";
-	html += "<h3>logout</h3>"
-	html += '<button onclick="logout()">Logout</button>'
-	document.getElementById("article").innerHTML = html;
-}
+	}
 
-function logout() {
-	console.log('logout ');
-	initData();
-	displayNav();
-	navigate(NAV_BLANK);
+	display() {
+		var html = "";
+		html += "<h3>logout</h3>"
+		html += '<button onclick="logoutDisplay.logout()">Logout</button>'
+		document.getElementById("article").innerHTML = html;
+	}
 
-	deleteUrl("/v1/logout?t=" + Math.random())
+	logout() {
+		console.log('logout ');
+		initData();
+		navigation.display();
+		navigation.navigate(blankDisplay.name);
+
+		deleteUrl("/v1/logout?t=" + Math.random())
 		.then(data => {
 			initData();
-			displayNav();
-			navigate(NAV_LOGIN);
+			navigation.display();
+			navigation.navigate(loginDisplay.name);
 		})
 		.catch(function(err) {
 			console.log('error: ' + err);
+			document.getElementById("article").innerHTML =  `<h3>Error</H3><p>${err}</p>`;;
 		});
+	}
 }
 
-displayList.push({ "name": NAV_LOGOUT, 
-	"action": displayLogout, 
-	"audience":'private', 
-	'permission_required': SYS_LOGIN,	
-	'title': 'Logout', 
-	'Navbar':'top'});
+var logoutDisplay = new LogoutDisplay()
+

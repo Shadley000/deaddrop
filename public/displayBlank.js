@@ -1,14 +1,17 @@
-const NAV_BLANK = "BLANK"
-
-function displayBlank() {
-	document.getElementById("article").innerHTML = "";
+class BlankDisplay {
 	
+	constructor(){
+		this.name = "NAV_BLANK";
+		this.audience='public'
+		this.permission_required= undefined
+		this.title='Blank'
+		this.Navbar=false 
+	}
+
+	display() {
+		document.getElementById("article").innerHTML = "<H2>This page left intentionally blank</h2>";
+	}
 }
 
-displayList.push({ "name": NAV_BLANK, 			
-	"action": displayBlank,					
-	"audience":'public', 		
-	'permission_required': undefined,		
-	'title': 'Blank', 
-	'Navbar':false  })
-	
+var blankDisplay = new BlankDisplay()
+
